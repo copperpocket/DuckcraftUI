@@ -1,0 +1,60 @@
+# -------------------------------------------------------------------
+# Operating System Files
+# -------------------------------------------------------------------
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+
+# Windows
+Thumbs.db
+Ehthumbs.db
+Desktop.ini
+$RECYCLE.BIN/
+
+# Linux
+.fuse_hidden*
+.directory
+.trash/
+
+# -------------------------------------------------------------------
+# Common IDEs and Editors
+# -------------------------------------------------------------------
+# Visual Studio Code
+.vscode/
+!.vscode/extensions.json
+*.code-workspace
+
+# JetBrains (IntelliJ, WebStorm, PyCharm, etc.)
+.idea/
+
+# -------------------------------------------------------------------
+# Logs and Databases
+# -------------------------------------------------------------------
+*.log
+*.sqlite
+
+# -------------------------------------------------------------------
+# Environment Variables and Secrets (CRITICAL Security)
+# -------------------------------------------------------------------
+.env
+.env.local
+.env.*.local
+*.env
+*.pem
+*.key
+
+# -------------------------------------------------------------------
+# Common Dependency and Build Folders (Language Specific)
+# -------------------------------------------------------------------
+# Node / JavaScript
+node_modules/
+dist/
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+venv/
+.venv/
+env/
