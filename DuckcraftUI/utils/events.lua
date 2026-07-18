@@ -1,5 +1,5 @@
 -- ============================================================================
--- DragonUI - Event Package System
+-- DuckcraftUI - Event Package System
 -- Centralized event registration and dispatch for addon subsystems.
 -- ============================================================================
 

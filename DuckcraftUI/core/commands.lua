@@ -1,8 +1,8 @@
 --[[
 ================================================================================
-DragonUI - Slash Commands
+DuckcraftUI - Slash Commands
 ================================================================================
-Centralized slash command handling for DragonUI.
+Centralized slash command handling for DuckcraftUI.
 Based on ElvUI's Commands.lua pattern.
 ================================================================================
 ]]
@@ -14,7 +14,7 @@ local L = addon.L
 -- COMMAND HANDLERS
 -- ============================================================================
 
--- Open configuration panel (uses ToggleOptionsUI which loads DragonUI_Options)
+-- Open configuration panel (uses ToggleOptionsUI which loads DuckcraftUI_Options)
 local function OpenConfig(msg)
     addon:ToggleOptionsUI(msg)
 end
@@ -54,14 +54,14 @@ local function ResetPositions(arg)
             addon.MoversSystem:ResetAllPositions()
         elseif addon.HideAllEditableFrames then
             -- Legacy system - just inform user
-            addon:Print(L["Use /dragonui edit to enter edit mode, then right-click frames to reset."])
+            addon:Print(L["Use /duckcraftui edit to enter edit mode, then right-click frames to reset."])
         end
     end
 end
 
 -- Show module status
 local function ShowStatus()
-    addon:Print(L["=== DragonUI Status ==="])
+    addon:Print(L["=== DuckcraftUI Status ==="])
     
     -- Show registered modules from ModuleRegistry (if available)
     if addon.ModuleRegistry and addon.ModuleRegistry.Count and addon.ModuleRegistry:Count() > 0 then
@@ -150,28 +150,28 @@ local function SetDebugMode(arg)
         return
     end
 
-    addon:Print(L["Usage: /dragonui debug on|off|status"])
+    addon:Print(L["Usage: /duckcraftui debug on|off|status"])
 end
 
 -- Print version info
 local function ShowVersion()
-    local version = GetAddOnMetadata("DragonUI", "Version") or "Unknown"
-    addon:Print(L["DragonUI Version: "] .. version)
+    local version = GetAddOnMetadata("DuckcraftUI", "Version") or "Unknown"
+    addon:Print(L["DuckcraftUI Version: "] .. version)
 end
 
 -- Show help
 local function ShowHelp()
-    addon:Print(L["=== DragonUI Commands ==="])
-    print("  " .. L["/dragonui or /dui - Open configuration"])
-    print("  " .. L["/dragonui config - Open configuration"])
-    print("  " .. L["/dragonui edit - Toggle editor mode (move UI elements)"])
-    print("  " .. L["/dragonui reset - Reset all positions to defaults"])
-    print("  " .. L["/dragonui reset <name> - Reset specific mover"])
-    print("  " .. L["/dragonui status - Show module status"])
-    print("  " .. L["/dragonui debug on|off|status - Toggle diagnostic logging"])
-    print("  " .. L["/dragonui kb - Toggle keybind mode"])
-    print("  " .. L["/dragonui version - Show version info"])
-    print("  " .. L["/dragonui help - Show this help"])
+    addon:Print(L["=== DuckcraftUI Commands ==="])
+    print("  " .. L["/duckcraftui or /dui - Open configuration"])
+    print("  " .. L["/duckcraftui config - Open configuration"])
+    print("  " .. L["/duckcraftui edit - Toggle editor mode (move UI elements)"])
+    print("  " .. L["/duckcraftui reset - Reset all positions to defaults"])
+    print("  " .. L["/duckcraftui reset <name> - Reset specific mover"])
+    print("  " .. L["/duckcraftui status - Show module status"])
+    print("  " .. L["/duckcraftui debug on|off|status - Toggle diagnostic logging"])
+    print("  " .. L["/duckcraftui kb - Toggle keybind mode"])
+    print("  " .. L["/duckcraftui version - Show version info"])
+    print("  " .. L["/duckcraftui help - Show this help"])
     print("  " .. L["/rl - Reload UI"])
 end
 
@@ -204,7 +204,7 @@ local function SlashCommandHandler(input)
         ShowVersion()
     elseif cmd == "debugvehicle" then
         if not addon.debugMode then
-            addon:Print(L["Enable debug mode first with /dragonui debug on"])
+            addon:Print(L["Enable debug mode first with /duckcraftui debug on"])
             return
         end
         if addon.DebugVehicle then addon.DebugVehicle() else addon:Print(L["Vehicle debug not available"]) end
@@ -212,7 +212,7 @@ local function SlashCommandHandler(input)
         if addon.DiagnoseUnitFrameLayers then addon.DiagnoseUnitFrameLayers() else addon:Print("UFL diagnostic not available") end
     elseif cmd == "debugshadow" then
         if not addon.debugMode then
-            addon:Print(L["Enable debug mode first with /dragonui debug on"])
+            addon:Print(L["Enable debug mode first with /duckcraftui debug on"])
             return
         end
         -- Enumerate ALL visible children/textures of TargetFrame to find the shadow source
@@ -257,11 +257,11 @@ local function SlashCommandHandler(input)
         ShowHelp()
     elseif cmd == "shadowcolor" then
         if not addon.debugMode then
-            addon:Print(L["Enable debug mode first with /dragonui debug on"])
+            addon:Print(L["Enable debug mode first with /duckcraftui debug on"])
             return
         end
-        -- Tint DragonUI_TargetBG bright red/green to visualize its full extent
-        local bg = _G["DragonUI_TargetBG"]
+        -- Tint DuckcraftUI_TargetBG bright red/green to visualize its full extent
+        local bg = _G["DuckcraftUI_TargetBG"]
         if not bg then
             print(L["BG texture not found"])
         else
@@ -291,11 +291,11 @@ local function SlashCommandHandler(input)
         end
     elseif cmd == "shadowcrop" then
         if not addon.debugMode then
-            addon:Print(L["Enable debug mode first with /dragonui debug on"])
+            addon:Print(L["Enable debug mode first with /duckcraftui debug on"])
             return
         end
         -- Real-time SetTexCoord adjustment on BG
-        local bg = _G["DragonUI_TargetBG"]
+        local bg = _G["DuckcraftUI_TargetBG"]
         if not bg then
             print(L["BG texture not found"])
         elseif not arg or arg == "" then
@@ -321,7 +321,7 @@ local function SlashCommandHandler(input)
         end
     elseif cmd == "shadowtest" then
         if not addon.debugMode then
-            addon:Print(L["Enable debug mode first with /dragonui debug on"])
+            addon:Print(L["Enable debug mode first with /duckcraftui debug on"])
             return
         end
         -- Interactive element hiding to find the shadow source
@@ -392,7 +392,7 @@ function Commands:RegisterCommands()
     -- Register with AceConsole if available
     if addon.core and addon.core.RegisterChatCommand then
         -- Main commands
-        addon.core:RegisterChatCommand("dragonui", SlashCommandHandler)
+        addon.core:RegisterChatCommand("duckcraftui", SlashCommandHandler)
         addon.core:RegisterChatCommand("dui", SlashCommandHandler)
         
         -- Legacy alias
@@ -402,13 +402,13 @@ function Commands:RegisterCommands()
         addon.core:RegisterChatCommand("rl", ReloadUICommand)
     else
         -- Fallback to direct slash command registration
-        SLASH_DRAGONUI1 = "/dragonui"
-        SLASH_DRAGONUI2 = "/dui"
-        SLASH_DRAGONUI3 = "/pi"
-        SlashCmdList["DRAGONUI"] = SlashCommandHandler
+        SLASH_DUCKCRAFTUI1 = "/duckcraftui"
+        SLASH_DUCKCRAFTUI2 = "/dui"
+        SLASH_DUCKCRAFTUI3 = "/pi"
+        SlashCmdList["DUCKCRAFTUI"] = SlashCommandHandler
         
-        SLASH_DRAGONUIRL1 = "/rl"
-        SlashCmdList["DRAGONUIRL"] = ReloadUICommand
+        SLASH_DUCKCRAFTUIRL1 = "/rl"
+        SlashCmdList["DUCKCRAFTUIRL"] = ReloadUICommand
     end
 end
 

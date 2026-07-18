@@ -1,7 +1,7 @@
 -- ============================================================================
--- DragonUI Options - XP & Rep Bars Tab
+-- DuckcraftUI Options - XP & Rep Bars Tab
 -- ============================================================================
-local addon = DragonUI
+local addon = DuckcraftUI
 if not addon then return end
 
 local L = addon.L
@@ -38,7 +38,7 @@ local function BuildXpRepTab(scroll)
             C:SetDBValue("style.xpbar", newStyle)
             -- Prompt reload — style is saved to DB but NOT applied live.
             -- On reload, the new style initializes cleanly from scratch.
-            StaticPopupDialogs["DRAGONUI_RELOAD_XPSTYLE"] = {
+            StaticPopupDialogs["DUCKCRAFTUI_RELOAD_XPSTYLE"] = {
                 text = LO["XP bar style changed to "] .. (newStyle == "retailui" and LO["RetailUI"] or LO["DragonflightUI"]) .. ".\n" .. LO["A UI reload is required to apply this change."],
                 button1 = LO["Reload Now"],
                 button2 = LO["Cancel"],
@@ -55,7 +55,7 @@ local function BuildXpRepTab(scroll)
                 hideOnEscape = false,
                 preferredIndex = 3,
             }
-            StaticPopup_Show("DRAGONUI_RELOAD_XPSTYLE")
+            StaticPopup_Show("DUCKCRAFTUI_RELOAD_XPSTYLE")
         end,
     })
 

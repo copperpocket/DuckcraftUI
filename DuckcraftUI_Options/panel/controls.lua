@@ -1,13 +1,13 @@
 --[[
 ================================================================================
-DragonUI Options Panel - Controls Library
+DuckcraftUI Options Panel - Controls Library
 ================================================================================
 Reusable control builders with auto-binding to addon.db.profile.
 Post-skins AceGUI widgets for a clean, dark look.
 ================================================================================
 ]]
 
-local addon = DragonUI
+local addon = DuckcraftUI
 if not addon then return end
 
 local L = addon.L
@@ -42,7 +42,7 @@ Controls.Theme = {
     widgetBorder = { 0.25, 0.25, 0.28, 1 },
     buttonBg    = { 0.16, 0.16, 0.18, 1 },
     buttonHover = { 0.09, 0.52, 0.82, 0.3 },
-    font        = (addon.Fonts and addon.Fonts.NARROW) or "Interface\\AddOns\\DragonUI_Options\\fonts\\PTSansNarrow.ttf",
+    font        = (addon.Fonts and addon.Fonts.NARROW) or "Interface\\AddOns\\DuckcraftUI_Options\\fonts\\PTSansNarrow.ttf",
     fontSize    = 13,
 }
 
@@ -551,7 +551,7 @@ function Controls:AddToggle(parent, opts)
             self:SetDBValue(opts.dbPath, value)
         end
         if opts.callback then opts.callback(value) end
-        if opts.requiresReload then StaticPopup_Show("DRAGONUI_RELOAD_UI") end
+        if opts.requiresReload then StaticPopup_Show("DUCKCRAFTUI_RELOAD_UI") end
     end)
 
     SkinCheckBox(cb)

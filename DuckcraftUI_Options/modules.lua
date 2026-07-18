@@ -1,6 +1,6 @@
 --[[
 ================================================================================
-DragonUI Options - Modules (Legacy Stub)
+DuckcraftUI Options - Modules (Legacy Stub)
 ================================================================================
 Legacy AceConfig options have been removed.
 All settings are now managed through the modern custom panel (panel/).

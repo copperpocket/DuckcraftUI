@@ -1,6 +1,6 @@
 --[[
 ================================================================================
-DragonUI - English Locale (Default)
+DuckcraftUI - English Locale (Default)
 ================================================================================
 Base locale. All keys use `true` (the key itself is the display value).
 
@@ -11,7 +11,7 @@ When adding new strings:
 ================================================================================
 ]]
 
-local L = LibStub("AceLocale-3.0"):NewLocale("DragonUI", "esMX")
+local L = LibStub("AceLocale-3.0"):NewLocale("DuckcraftUI", "esMX")
 if not L then return end
 
 -- ============================================================================
@@ -32,7 +32,7 @@ L["Keybind mode not available."] = "Modo de atajos no disponible."
 L["Vehicle debug not available"] = "Depuración de vehículo no disponible"
 L["KeyBinding module not available"] = "Módulo de atajos de teclado no disponible"
 L["Unable to open configuration"] = "No se pudo abrir la configuración"
-L["Commands: /dragonui config, /dragonui edit"] = "Comandos: /dragonui config, /dragonui edit"
+L["Commands: /duckcraftui config, /duckcraftui edit"] = "Comandos: /duckcraftui config, /duckcraftui edit"
 L["Reset position: %s"] = "Posición restablecida: %s"
 L["All positions reset to defaults"] = "Todas las posiciones restablecidas a valores predeterminados"
 L["Editor mode enabled - Drag frames to reposition"] = "Modo editor activado - Arrastra los marcos para reposicionar"
@@ -49,30 +49,30 @@ L["Rested: "] = "Descanso: "
 
 -- Errors
 L["Error executing pending operation:"] = "Error al ejecutar operación pendiente:"
-L["Error -- Addon 'DragonUI_Options' not found or is disabled."] = "Error -- El addon 'DragonUI_Options' no se encontró o está desactivado."
+L["Error -- Addon 'DuckcraftUI_Options' not found or is disabled."] = "Error -- El addon 'DuckcraftUI_Options' no se encontró o está desactivado."
 
 -- ============================================================================
 -- SLASH COMMANDS / HELP
 -- ============================================================================
 
 L["Unknown command: "] = "Comando desconocido: "
-L["=== DragonUI Commands ==="] = "=== Comandos de DragonUI ==="
-L["/dragonui or /dui - Open configuration"] = "/dragonui o /dui - Abrir configuración"
-L["/dragonui config - Open configuration"] = "/dragonui config - Abrir configuración"
-L["/dragonui edit - Toggle editor mode (move UI elements)"] = "/dragonui edit - Cambiar modo editor (mover elementos de UI)"
-L["/dragonui reset - Reset all positions to defaults"] = "/dragonui reset - Restablecer todas las posiciones"
-L["/dragonui reset <name> - Reset specific mover"] = "/dragonui reset <nombre> - Restablecer posición específica"
-L["/dragonui status - Show module status"] = "/dragonui status - Mostrar estado de módulos"
-L["/dragonui kb - Toggle keybind mode"] = "/dragonui kb - Cambiar modo de atajos"
-L["/dragonui version - Show version info"] = "/dragonui version - Mostrar versión"
-L["/dragonui help - Show this help"] = "/dragonui help - Mostrar esta ayuda"
+L["=== DuckcraftUI Commands ==="] = "=== Comandos de DuckcraftUI ==="
+L["/duckcraftui or /dui - Open configuration"] = "/duckcraftui o /dui - Abrir configuración"
+L["/duckcraftui config - Open configuration"] = "/duckcraftui config - Abrir configuración"
+L["/duckcraftui edit - Toggle editor mode (move UI elements)"] = "/duckcraftui edit - Cambiar modo editor (mover elementos de UI)"
+L["/duckcraftui reset - Reset all positions to defaults"] = "/duckcraftui reset - Restablecer todas las posiciones"
+L["/duckcraftui reset <name> - Reset specific mover"] = "/duckcraftui reset <nombre> - Restablecer posición específica"
+L["/duckcraftui status - Show module status"] = "/duckcraftui status - Mostrar estado de módulos"
+L["/duckcraftui kb - Toggle keybind mode"] = "/duckcraftui kb - Cambiar modo de atajos"
+L["/duckcraftui version - Show version info"] = "/duckcraftui version - Mostrar versión"
+L["/duckcraftui help - Show this help"] = "/duckcraftui help - Mostrar esta ayuda"
 L["/rl - Reload UI"] = "/rl - Recargar interfaz"
 
 -- ============================================================================
 -- STATUS DISPLAY
 -- ============================================================================
 
-L["=== DragonUI Status ==="] = "=== Estado de DragonUI ==="
+L["=== DuckcraftUI Status ==="] = "=== Estado de DuckcraftUI ==="
 L["Detected Modules:"] = "Módulos detectados:"
 L["Loaded"] = "Cargado"
 L["Not Loaded"] = "No cargado"
@@ -82,8 +82,8 @@ L["Party Frames"] = true
 L["Cooldowns"] = true
 L["Registered Movers: "] = "Movedores registrados: "
 L["Editable Frames: "] = "Marcos editables: "
-L["DragonUI Version: "] = "Versión de DragonUI: "
-L["Use /dragonui edit to enter edit mode, then right-click frames to reset."] = "Usa /dragonui edit para entrar en modo edición, luego haz clic derecho en marcos para restablecer."
+L["DuckcraftUI Version: "] = "Versión de DuckcraftUI: "
+L["Use /duckcraftui edit to enter edit mode, then right-click frames to reset."] = "Usa /duckcraftui edit para entrar en modo edición, luego haz clic derecho en marcos para restablecer."
 
 -- ============================================================================
 -- EDITOR MODE
@@ -119,7 +119,7 @@ L["Keybinding mode deactivated."] = "Modo de atajos desactivado."
 -- MINIMAP MODULE
 -- ============================================================================
 
-L["DragonUI: Minimap module restored to Blizzard defaults"] = "DragonUI: Módulo de minimapa restaurado a los valores de Blizzard"
+L["DuckcraftUI: Minimap module restored to Blizzard defaults"] = "DuckcraftUI: Módulo de minimapa restaurado a los valores de Blizzard"
 
 -- ============================================================================
 -- EDITOR MODE LABELS (displayed on mover overlays)
@@ -178,55 +178,55 @@ L["All editable frames hidden, positions saved"] = "Marcos ocultados, posiciones
 -- ============================================================================
 
 -- Conflict warning popup
-L["DragonUI Conflict Warning"] = "Advertencia de Conflicto de DragonUI"
-L["The addon |cFFFFFF00%s|r conflicts with DragonUI."] = "El addon |cFFFFFF00%s|r entra en conflicto con DragonUI."
+L["DuckcraftUI Conflict Warning"] = "Advertencia de Conflicto de DuckcraftUI"
+L["The addon |cFFFFFF00%s|r conflicts with DuckcraftUI."] = "El addon |cFFFFFF00%s|r entra en conflicto con DuckcraftUI."
 L["Reason:"] = "Razón:"
 L["Disable the conflicting addon now?"] = "¿Desactivar el addon conflictivo ahora?"
 L["Keep Both"] = "Mantener Ambos"
-L["DragonUI - D3D9Ex Warning"] = "DragonUI - Aviso de D3D9Ex"
-L["DragonUI detected that your client is using D3D9Ex."] = "DragonUI ha detectado que tu cliente está usando D3D9Ex."
-L["DragonUI's action bar system is not compatible with D3D9Ex."] = "El sistema de barras de acción de DragonUI no es compatible con D3D9Ex."
-L["Some DragonUI action bar textures will be missing while this mode is active."] = "Faltarán algunas texturas de las barras de acción de DragonUI mientras este modo esté activo."
+L["DuckcraftUI - D3D9Ex Warning"] = "DuckcraftUI - Aviso de D3D9Ex"
+L["DuckcraftUI detected that your client is using D3D9Ex."] = "DuckcraftUI ha detectado que tu cliente está usando D3D9Ex."
+L["DuckcraftUI's action bar system is not compatible with D3D9Ex."] = "El sistema de barras de acción de DuckcraftUI no es compatible con D3D9Ex."
+L["Some DuckcraftUI action bar textures will be missing while this mode is active."] = "Faltarán algunas texturas de las barras de acción de DuckcraftUI mientras este modo esté activo."
 L["If you want to disable this mode, open WTF\\Config.wtf."] = "Si quieres desactivar este modo, abre WTF\\Config.wtf."
 L["Delete this line:"] = "Borra esta línea:"
 L["Or replace it with:"] = "O cámbiala por esta otra:"
 L["Hide Gryphons"] = "Esconder grifos"
 L["Understood"] = "Entendido"
-L["DragonUI - UnitFrameLayers Detected"] = "DragonUI - UnitFrameLayers Detectado"
-L["DragonUI already includes Unit Frame Layers functionality (heal prediction, absorb shields, and animated health loss)."] = "DragonUI ya incluye la funcionalidad de Unit Frame Layers (predicción de curación, escudos de absorción y pérdida de vida animada)."
+L["DuckcraftUI - UnitFrameLayers Detected"] = "DuckcraftUI - UnitFrameLayers Detectado"
+L["DuckcraftUI already includes Unit Frame Layers functionality (heal prediction, absorb shields, and animated health loss)."] = "DuckcraftUI ya incluye la funcionalidad de Unit Frame Layers (predicción de curación, escudos de absorción y pérdida de vida animada)."
 L["Choose how to resolve this overlap:"] = "Elige cómo resolver esta superposición:"
-L["Use DragonUI: disable external UnitFrameLayers and enable DragonUI layers."] = "Usar DragonUI: desactiva UnitFrameLayers externo y activa las capas de DragonUI."
-L["Disable Both: disable external UnitFrameLayers and keep DragonUI layers disabled."] = "Desactivar ambos: desactiva UnitFrameLayers externo y mantiene desactivadas las capas de DragonUI."
-L["Use DragonUI"] = "Usar DragonUI"
+L["Use DuckcraftUI: disable external UnitFrameLayers and enable DuckcraftUI layers."] = "Usar DuckcraftUI: desactiva UnitFrameLayers externo y activa las capas de DuckcraftUI."
+L["Disable Both: disable external UnitFrameLayers and keep DuckcraftUI layers disabled."] = "Desactivar ambos: desactiva UnitFrameLayers externo y mantiene desactivadas las capas de DuckcraftUI."
+L["Use DuckcraftUI"] = "Usar DuckcraftUI"
 L["Disable Both"] = "Desactivar ambos"
-L["Use DragonUI Unit Frame Layers"] = "Usar Unit Frame Layers de DragonUI"
+L["Use DuckcraftUI Unit Frame Layers"] = "Usar Unit Frame Layers de DuckcraftUI"
 L["Disable both Unit Frame Layers"] = "Desactivar ambos Unit Frame Layers"
-L["DragonUI - Party Frame Issue"] = true
+L["DuckcraftUI - Party Frame Issue"] = true
 L["You joined a party while in combat. Due to CompactRaidFrame taint issues, party frames may not display correctly."] = true
 L["Reload the UI to fix party frame display?"] = true
 
 -- Conflict reasons
-L["Conflicts with DragonUI's custom unit frame textures and power bar system."] = "Entra en conflicto con las texturas personalizadas de marcos de unidad y el sistema de barra de poder de DragonUI."
-L["Known taint issues when manipulating party frames during combat. DragonUI provides automatic fixes."] = "Problemas conocidos de contaminación al manipular marcos de grupo en combate. DragonUI proporciona correcciones automáticas."
-L["Resets minimap mask and blip textures. DragonUI re-applies its custom textures automatically."] = "Restablece la máscara del minimapa y las texturas de puntos. DragonUI vuelve a aplicar sus texturas personalizadas automáticamente."
-L["SexyMap modifies the minimap borders, shape, and zone text which conflicts with DragonUI's minimap module."] = "SexyMap modifica los bordes del minimapa, la forma y el texto de zona, lo cual entra en conflicto con el módulo de minimapa de DragonUI."
+L["Conflicts with DuckcraftUI's custom unit frame textures and power bar system."] = "Entra en conflicto con las texturas personalizadas de marcos de unidad y el sistema de barra de poder de DuckcraftUI."
+L["Known taint issues when manipulating party frames during combat. DuckcraftUI provides automatic fixes."] = "Problemas conocidos de contaminación al manipular marcos de grupo en combate. DuckcraftUI proporciona correcciones automáticas."
+L["Resets minimap mask and blip textures. DuckcraftUI re-applies its custom textures automatically."] = "Restablece la máscara del minimapa y las texturas de puntos. DuckcraftUI vuelve a aplicar sus texturas personalizadas automáticamente."
+L["SexyMap modifies the minimap borders, shape, and zone text which conflicts with DuckcraftUI's minimap module."] = "SexyMap modifica los bordes del minimapa, la forma y el texto de zona, lo cual entra en conflicto con el módulo de minimapa de DuckcraftUI."
 
 -- SexyMap compatibility popup
-L["DragonUI - SexyMap Detected"] = "DragonUI - SexyMap Detectado"
+L["DuckcraftUI - SexyMap Detected"] = "DuckcraftUI - SexyMap Detectado"
 L["Which minimap do you want to use?"] = "¿Qué minimapa quieres usar?"
 L["SexyMap"] = "SexyMap"
-L["DragonUI"] = "DragonUI"
+L["DuckcraftUI"] = "DuckcraftUI"
 L["Hybrid"] = "Híbrido"
 L["Recommended"] = "Recomendado"
 
 -- SexyMap options panel
 L["SexyMap Compatibility"] = "Compatibilidad SexyMap"
 L["Minimap Mode"] = "Modo de Minimapa"
-L["Choose how DragonUI and SexyMap share the minimap."] = "Elige cómo comparten el minimapa DragonUI y SexyMap."
+L["Choose how DuckcraftUI and SexyMap share the minimap."] = "Elige cómo comparten el minimapa DuckcraftUI y SexyMap."
 L["Requires UI reload to apply."] = "Requiere recargar la interfaz para aplicar."
 L["Uses SexyMap for the minimap."] = "Usa SexyMap para el minimapa."
-L["Uses DragonUI for the minimap."] = "Usa DragonUI para el minimapa."
-L["SexyMap visuals with DragonUI editor and positioning."] = "Aspecto de SexyMap, movible y configurable desde DragonUI."
+L["Uses DuckcraftUI for the minimap."] = "Usa DuckcraftUI para el minimapa."
+L["SexyMap visuals with DuckcraftUI editor and positioning."] = "Aspecto de SexyMap, movible y configurable desde DuckcraftUI."
 L["Minimap mode changed. Reload UI to apply?"] = "Modo de minimapa cambiado. ¿Recargar interfaz para aplicar?"
 
 -- SexyMap slash commands
@@ -247,12 +247,12 @@ L["Not Now"] = "Ahora No"
 L["Disable"] = "Desactivar"
 L["Ignore"] = "Ignorar"
 L["Skip"] = "Omitir"
-L["The Blizzard option |cFFFFFF00Party/Arena Background|r is enabled. This conflicts with DragonUI's party frames."] = "La opción de Blizzard |cFFFFFF00Fondo de Grupo/Arena|r está activada. Esto entra en conflicto con los marcos de grupo de DragonUI."
+L["The Blizzard option |cFFFFFF00Party/Arena Background|r is enabled. This conflicts with DuckcraftUI's party frames."] = "La opción de Blizzard |cFFFFFF00Fondo de Grupo/Arena|r está activada. Esto entra en conflicto con los marcos de grupo de DuckcraftUI."
 L["Disable it now?"] = "¿Desactivarla ahora?"
-L["Some interface settings are not configured optimally for DragonUI."] = "Algunas opciones de interfaz no están configuradas de forma óptima para DragonUI."
-L["This includes settings that conflict with DragonUI and settings recommended for the best visual experience."] = "Esto incluye opciones que entran en conflicto con DragonUI y opciones recomendadas para una mejor experiencia visual."
+L["Some interface settings are not configured optimally for DuckcraftUI."] = "Algunas opciones de interfaz no están configuradas de forma óptima para DuckcraftUI."
+L["This includes settings that conflict with DuckcraftUI and settings recommended for the best visual experience."] = "Esto incluye opciones que entran en conflicto con DuckcraftUI y opciones recomendadas para una mejor experiencia visual."
 L["Affected settings:"] = "Opciones afectadas:"
-L["Some interface settings are not configured optimally for DragonUI. Do you want to fix them?"] = "Algunas opciones de interfaz no están configuradas de forma óptima para DragonUI. ¿Quieres corregirlas?"
+L["Some interface settings are not configured optimally for DuckcraftUI. Do you want to fix them?"] = "Algunas opciones de interfaz no están configuradas de forma óptima para DuckcraftUI. ¿Quieres corregirlas?"
 L["Do you want to fix them now?"] = "¿Quieres corregirlas ahora?"
 L["Party/Arena Background"] = "Fondo de Grupo/Arena"
 L["Default Status Text"] = "Texto de estado predeterminado"
@@ -282,9 +282,9 @@ L["Latency"] = "Latencia"
 -- STABILIZATION PATCH STRINGS
 -- ============================================================================
 
-L["/dragonui debug on|off|status - Toggle diagnostic logging"] = "/dragonui debug on|off|status - Activar o desactivar el registro de diagnóstico"
-L["Usage: /dragonui debug on|off|status"] = "Uso: /dragonui debug on|off|status"
-L["Enable debug mode first with /dragonui debug on"] = "Activa primero el modo depuración con /dragonui debug on"
+L["/duckcraftui debug on|off|status - Toggle diagnostic logging"] = "/duckcraftui debug on|off|status - Activar o desactivar el registro de diagnóstico"
+L["Usage: /duckcraftui debug on|off|status"] = "Uso: /duckcraftui debug on|off|status"
+L["Enable debug mode first with /duckcraftui debug on"] = "Activa primero el modo depuración con /duckcraftui debug on"
 L["Debug mode is %s"] = "El modo depuración está %s"
 L["Debug mode enabled"] = "Modo depuración activado"
 L["Debug mode disabled"] = "Modo depuración desactivado"
@@ -325,7 +325,7 @@ L["Total elements: %d"] = true
 L["HIDDEN: %d. %s [%s]"] = true
 L["SHOWN: %d. %s [%s]"] = true
 L["Invalid element number. Use /dui shadowtest to list."] = true
-L["DragonUI Compatibility:"] = true
+L["DuckcraftUI Compatibility:"] = true
 L["Registered Modules:"] = "Módulos registrados:"
 L["No modules registered in ModuleRegistry"] = "No hay módulos registrados en ModuleRegistry"
 L["load-once"] = "cargar una vez"

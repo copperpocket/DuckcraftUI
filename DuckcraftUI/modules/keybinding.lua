@@ -1,5 +1,5 @@
 -- ============================================================================
--- DragonUI - Keybinding Module
+-- DuckcraftUI - Keybinding Module
 -- Integrates LibKeyBound-1.0 for intuitive hover + key press binding.
 -- ============================================================================
 
@@ -15,7 +15,7 @@ end)
 if success then
     LibKeyBound = result
 else
-    print("|cFFFF0000[DragonUI KeyBind]|r " .. L["LibKeyBound-1.0 not found or failed to load:"], result)
+    print("|cFFFF0000[DuckcraftUI KeyBind]|r " .. L["LibKeyBound-1.0 not found or failed to load:"], result)
     return
 end
 
@@ -182,13 +182,13 @@ function KeyBindingModule:Enable()
     
 
     
-    -- Add slash commands for DragonUI
-    SLASH_DRAGONUI_KEYBIND1 = "/dukeybind"
-    SLASH_DRAGONUI_KEYBIND2 = "/dukb"
-    SlashCmdList["DRAGONUI_KEYBIND"] = function(msg)
+    -- Add slash commands for DuckcraftUI
+    SLASH_DUCKCRAFTUI_KEYBIND1 = "/dukeybind"
+    SLASH_DUCKCRAFTUI_KEYBIND2 = "/dukb"
+    SlashCmdList["DUCKCRAFTUI_KEYBIND"] = function(msg)
         local command = msg:lower():trim()
         if command == "help" then
-            print("|cFF00FF00[DragonUI KeyBind]|r " .. L["Commands:"])
+            print("|cFF00FF00[DuckcraftUI KeyBind]|r " .. L["Commands:"])
             print("  " .. L["/dukb - Toggle keybinding mode"])
             print("  " .. L["/dukb help - Show this help"])
         else
@@ -215,10 +215,10 @@ function KeyBindingModule:Disable()
     end
     
     -- Unregister slash commands
-    SlashCmdList["DRAGONUI_KEYBIND"] = nil
+    SlashCmdList["DUCKCRAFTUI_KEYBIND"] = nil
     
     self.enabled = false
-    print("|cFF00FF00[DragonUI KeyBind]|r " .. L["Module disabled."])
+    print("|cFF00FF00[DuckcraftUI KeyBind]|r " .. L["Module disabled."])
 end
 
 -- ============================================================================
@@ -226,11 +226,11 @@ end
 -- ============================================================================
 
 function KeyBindingModule:LIBKEYBOUND_ENABLED()
-    print("|cFF00FF00[DragonUI KeyBind]|r " .. L["Keybinding mode activated. Hover over buttons and press keys to bind them."])
+    print("|cFF00FF00[DuckcraftUI KeyBind]|r " .. L["Keybinding mode activated. Hover over buttons and press keys to bind them."])
 end
 
 function KeyBindingModule:LIBKEYBOUND_DISABLED()
-    print("|cFF00FF00[DragonUI KeyBind]|r " .. L["Keybinding mode deactivated."])
+    print("|cFF00FF00[DuckcraftUI KeyBind]|r " .. L["Keybinding mode deactivated."])
 end
 
 
@@ -239,7 +239,7 @@ end
 -- AUTO-REGISTRATION SYSTEM
 -- ============================================================================
 
--- Auto-register DragonUI action buttons when they're created
+-- Auto-register DuckcraftUI action buttons when they're created
 function KeyBindingModule:AutoRegisterActionButtons()
     if not self.enabled then
         return
@@ -283,12 +283,12 @@ end
 -- INITIALIZATION
 -- ============================================================================
 
--- Auto-enable when DragonUI loads
+-- Auto-enable when DuckcraftUI loads
 local initFrame = CreateFrame("Frame")
 initFrame:RegisterEvent("ADDON_LOADED")
 initFrame:RegisterEvent("PLAYER_ENTERING_WORLD")
 initFrame:SetScript("OnEvent", function(self, event, addonName)
-    if event == "ADDON_LOADED" and addonName == "DragonUI" then
+    if event == "ADDON_LOADED" and addonName == "DuckcraftUI" then
         -- Check if keybinding module should be enabled
         local isEnabled = addon.db and addon.db.profile and addon.db.profile.modules and 
                          addon.db.profile.modules.keybinding and addon.db.profile.modules.keybinding.enabled

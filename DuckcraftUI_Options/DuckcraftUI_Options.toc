@@ -1,10 +1,10 @@
 ## Interface: 30300
-## Title: |cff1784d1DragonUI|r |cffffffffOptions|r
-## Notes: Configuration UI for DragonUI
-## Author: DragonUI Team
-## Version: 2.5
+## Title: |cff1784d1DuckcraftUI|r |cffffffffOptions|r
+## Notes: Configuration UI for DuckcraftUI
+## Author: Copperpocket
+## Version: 0.1.0
 ## LoadOnDemand: 1
-## Dependencies: DragonUI
+## Dependencies: DuckcraftUI
 ## X-License: MIT for project-authored code; bundled dependencies retain their own licenses
 
 # Libraries for options UI (loaded only when options are opened)
@@ -14,7 +14,7 @@ libs\AceGUI-3.0\AceGUI-3.0.xml
 libs\AceConfig-3.0\AceConfig-3.0.xml
 libs\AceDBOptions-3.0\AceDBOptions-3.0.xml
 
-# Localization for options (AceLocale-3.0 already loaded by main DragonUI addon)
+# Localization for options (AceLocale-3.0 already loaded by main DuckcraftUI addon)
 Locales\Load_Locales.xml
 
 # Core options system

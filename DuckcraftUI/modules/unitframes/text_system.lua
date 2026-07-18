@@ -1,7 +1,7 @@
 local addon = select(2, ...)
 
 -- ===============================================================
--- DRAGONUI TEXT SYSTEM
+-- DUCKCRAFTUI TEXT SYSTEM
 -- ===============================================================
 
 local TextSystem = {}
@@ -234,14 +234,14 @@ function TextSystem.HookStatusBar(statusBar, parentFrame, prefix, frameType, uni
         return
     end
 
-    if not statusBar.DragonUIHooked then
+    if not statusBar.DuckcraftUIHooked then
         hooksecurefunc(statusBar, "SetValue", function(self, value)
             -- Update our text immediately after Blizzard's SetValue completes
             if updateCallback then
                 updateCallback()
             end
         end)
-        statusBar.DragonUIHooked = true
+        statusBar.DuckcraftUIHooked = true
 
     end
 end
@@ -364,7 +364,7 @@ end
 function TextSystem.SetupHoverEvents(parentFrame, healthBar, manaBar, updateCallback)
     -- Detect if it's PlayerFrame to apply click-through
     local parentName = parentFrame:GetName() or ""
-    local isPlayerFrame = (parentName:find("DragonUIUnitframeFrame") ~= nil)
+    local isPlayerFrame = (parentName:find("DuckcraftUIUnitframeFrame") ~= nil)
     local isFocusFrame = (parentName == "FocusFrame")
     
     if healthBar then
@@ -376,11 +376,11 @@ function TextSystem.SetupHoverEvents(parentFrame, healthBar, manaBar, updateCall
             -- PLAYER FRAME: Click-through enabled
             healthHover:EnableMouse(false)  -- DO NOT capture clicks
             -- Phase 3C: Use HookScript on Blizzard StatusBar to avoid taint
-            if not healthBar.DragonUIHoverSetup then
+            if not healthBar.DuckcraftUIHoverSetup then
                 healthBar:EnableMouse(true)
                 healthBar:HookScript("OnEnter", updateCallback)
                 healthBar:HookScript("OnLeave", updateCallback)
-                healthBar.DragonUIHoverSetup = true
+                healthBar.DuckcraftUIHoverSetup = true
             end
         elseif isFocusFrame then
             -- Focus: keep click-through behavior and poll hover state.
@@ -388,18 +388,18 @@ function TextSystem.SetupHoverEvents(parentFrame, healthBar, manaBar, updateCall
             if healthBar and healthBar.EnableMouse then
                 healthBar:EnableMouse(false)
             end
-            if not healthHover.DragonUIHoverPoller then
-                healthHover.DragonUIHoverPoller = true
-                healthHover.DragonUIHoverElapsed = 0
-                healthHover.DragonUIHoverState = false
+            if not healthHover.DuckcraftUIHoverPoller then
+                healthHover.DuckcraftUIHoverPoller = true
+                healthHover.DuckcraftUIHoverElapsed = 0
+                healthHover.DuckcraftUIHoverState = false
                 healthHover:SetScript("OnUpdate", function(self, elapsed)
-                    self.DragonUIHoverElapsed = (self.DragonUIHoverElapsed or 0) + elapsed
-                    if self.DragonUIHoverElapsed < 0.05 then return end
-                    self.DragonUIHoverElapsed = 0
+                    self.DuckcraftUIHoverElapsed = (self.DuckcraftUIHoverElapsed or 0) + elapsed
+                    if self.DuckcraftUIHoverElapsed < 0.05 then return end
+                    self.DuckcraftUIHoverElapsed = 0
 
                     local isOver = TextSystem.IsMouseOverFrame(self)
-                    if isOver ~= self.DragonUIHoverState then
-                        self.DragonUIHoverState = isOver
+                    if isOver ~= self.DuckcraftUIHoverState then
+                        self.DuckcraftUIHoverState = isOver
                         updateCallback()
                     end
                 end)
@@ -411,7 +411,7 @@ function TextSystem.SetupHoverEvents(parentFrame, healthBar, manaBar, updateCall
             healthHover:SetScript("OnLeave", updateCallback)
         end
 
-        parentFrame.DragonUIHealthHover = healthHover
+        parentFrame.DuckcraftUIHealthHover = healthHover
     end
 
     if manaBar then
@@ -423,11 +423,11 @@ function TextSystem.SetupHoverEvents(parentFrame, healthBar, manaBar, updateCall
             -- PLAYER FRAME: Click-through enabled
             manaHover:EnableMouse(false)  -- DO NOT capture clicks
             -- Phase 3C: Use HookScript on Blizzard StatusBar to avoid taint
-            if not manaBar.DragonUIHoverSetup then
+            if not manaBar.DuckcraftUIHoverSetup then
                 manaBar:EnableMouse(true)
                 manaBar:HookScript("OnEnter", updateCallback)
                 manaBar:HookScript("OnLeave", updateCallback)
-                manaBar.DragonUIHoverSetup = true
+                manaBar.DuckcraftUIHoverSetup = true
             end
         elseif isFocusFrame then
             -- Focus: keep click-through behavior and poll hover state.
@@ -435,18 +435,18 @@ function TextSystem.SetupHoverEvents(parentFrame, healthBar, manaBar, updateCall
             if manaBar and manaBar.EnableMouse then
                 manaBar:EnableMouse(false)
             end
-            if not manaHover.DragonUIHoverPoller then
-                manaHover.DragonUIHoverPoller = true
-                manaHover.DragonUIHoverElapsed = 0
-                manaHover.DragonUIHoverState = false
+            if not manaHover.DuckcraftUIHoverPoller then
+                manaHover.DuckcraftUIHoverPoller = true
+                manaHover.DuckcraftUIHoverElapsed = 0
+                manaHover.DuckcraftUIHoverState = false
                 manaHover:SetScript("OnUpdate", function(self, elapsed)
-                    self.DragonUIHoverElapsed = (self.DragonUIHoverElapsed or 0) + elapsed
-                    if self.DragonUIHoverElapsed < 0.05 then return end
-                    self.DragonUIHoverElapsed = 0
+                    self.DuckcraftUIHoverElapsed = (self.DuckcraftUIHoverElapsed or 0) + elapsed
+                    if self.DuckcraftUIHoverElapsed < 0.05 then return end
+                    self.DuckcraftUIHoverElapsed = 0
 
                     local isOver = TextSystem.IsMouseOverFrame(self)
-                    if isOver ~= self.DragonUIHoverState then
-                        self.DragonUIHoverState = isOver
+                    if isOver ~= self.DuckcraftUIHoverState then
+                        self.DuckcraftUIHoverState = isOver
                         updateCallback()
                     end
                 end)
@@ -458,7 +458,7 @@ function TextSystem.SetupHoverEvents(parentFrame, healthBar, manaBar, updateCall
             manaHover:SetScript("OnLeave", updateCallback)
         end
 
-        parentFrame.DragonUIManaHover = manaHover
+        parentFrame.DuckcraftUIManaHover = manaHover
     end
 end
 

@@ -1,8 +1,8 @@
 --[[
 ================================================================================
-DragonUI - Module Base Template
+DuckcraftUI - Module Base Template
 ================================================================================
-This file contains the base template that all DragonUI modules should follow
+This file contains the base template that all DuckcraftUI modules should follow
 to maintain consistency and correct functionality.
 
 USAGE:
@@ -472,7 +472,7 @@ end
 -- INITIALIZATION
 -- ============================================================================
 
--- Register for initialization when DragonUI is ready
+-- Register for initialization when DuckcraftUI is ready
 local initFrame = CreateFrame("Frame")
 initFrame:RegisterEvent("PLAYER_LOGIN")
 initFrame:SetScript("OnEvent", function(self, event)

@@ -1,13 +1,13 @@
 --[[
 ================================================================================
-DragonUI Options Panel - Unit Frames Tab
+DuckcraftUI Options Panel - Unit Frames Tab
 ================================================================================
 Player, target, focus, pet, party, ToT, ToF unit frame options.
 Sub-tabs for each frame type.
 ================================================================================
 ]]
 
-local addon = DragonUI
+local addon = DuckcraftUI
 if not addon then return end
 
 local L = addon.L
@@ -143,7 +143,7 @@ local function AddCommonControls(parent, unitKey, refreshFunc, opts)
 
         C:AddToggle(parent, {
             label = LO["Alternative Class Icons"],
-            desc = LO["Use DragonUI alternative class icons instead of Blizzard's class icon atlas."],
+            desc = LO["Use DuckcraftUI alternative class icons instead of Blizzard's class icon atlas."],
             dbPath = "unitframe." .. unitKey .. ".alternativeClassIcons",
             disabled = function()
                 return not C:GetDBValue("unitframe." .. unitKey .. ".classPortrait")
@@ -312,7 +312,7 @@ local function BuildPlayerSection(scroll)
         desc = LO["Choose the texture style for the power/mana bar. Only applies in Fat Health Bar mode."],
         dbPath = "unitframe.player.manabar_texture",
         values = {
-            dragonui       = LO["DragonUI (Default)"],
+            duckcraftui       = LO["DuckcraftUI (Default)"],
             blizzard       = LO["Blizzard Classic"],
             blizzard_flat  = LO["Flat Solid"],
             smooth         = LO["Smooth"],
@@ -330,8 +330,8 @@ local function BuildPlayerSection(scroll)
 
     -- Power bar color pickers (only visible when using override textures in fat mode)
     local isFat = C:GetDBValue("unitframe.player.fat_healthbar")
-    local texSetting = C:GetDBValue("unitframe.player.manabar_texture") or "dragonui"
-    local showColors = isFat and texSetting ~= "dragonui"
+    local texSetting = C:GetDBValue("unitframe.player.manabar_texture") or "duckcraftui"
+    local showColors = isFat and texSetting ~= "duckcraftui"
 
     if showColors then
         C:AddHeading(s, LO["Power Bar Colors"])
@@ -508,7 +508,7 @@ local function BuildToTSection(scroll)
 
     local tot = C:AddSection(scroll, LO["Target of Target"])
     C:AddDescription(tot,
-        LO["Follows the Target frame by default. Move it in Editor Mode (/dragonui edit) to detach and position freely."])
+        LO["Follows the Target frame by default. Move it in Editor Mode (/duckcraftui edit) to detach and position freely."])
 
     C:AddSlider(tot, {
         label = LO["Scale"],
@@ -534,7 +534,7 @@ local function BuildToTSection(scroll)
 
     C:AddToggle(tot, {
         label = LO["Alternative Class Icons"],
-        desc = LO["Use DragonUI alternative class icons instead of Blizzard's class icon atlas."],
+        desc = LO["Use DuckcraftUI alternative class icons instead of Blizzard's class icon atlas."],
         dbPath = "unitframe.tot.alternativeClassIcons",
         disabled = function()
             return not C:GetDBValue("unitframe.tot.classPortrait")
@@ -571,7 +571,7 @@ local function BuildToTSection(scroll)
 
     local fot = C:AddSection(scroll, LO["Target of Focus"])
     C:AddDescription(fot,
-        LO["Follows the Focus frame by default. Move it in Editor Mode (/dragonui edit) to detach and position freely."])
+        LO["Follows the Focus frame by default. Move it in Editor Mode (/duckcraftui edit) to detach and position freely."])
 
     C:AddSlider(fot, {
         label = LO["Scale"],
@@ -597,7 +597,7 @@ local function BuildToTSection(scroll)
 
     C:AddToggle(fot, {
         label = LO["Alternative Class Icons"],
-        desc = LO["Use DragonUI alternative class icons instead of Blizzard's class icon atlas."],
+        desc = LO["Use DuckcraftUI alternative class icons instead of Blizzard's class icon atlas."],
         dbPath = "unitframe.fot.alternativeClassIcons",
         disabled = function()
             return not C:GetDBValue("unitframe.fot.classPortrait")

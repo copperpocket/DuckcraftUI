@@ -1,9 +1,9 @@
 --[[
 ================================================================================
-DragonUI - Movers System
+DuckcraftUI - Movers System
 ================================================================================
 Centralized system for managing moveable UI elements.
-Based on ElvUI's Movers.lua pattern, simplified for DragonUI.
+Based on ElvUI's Movers.lua pattern, simplified for DuckcraftUI.
 
 This system provides:
 - Registration of moveable frames
@@ -102,7 +102,7 @@ local function CreateMoverFrame(parent, name, text, configPath)
     local width = parent.dirtyWidth or parent:GetWidth()
     local height = parent.dirtyHeight or parent:GetHeight()
     
-    local mover = CreateFrame("Button", "DragonUI_Mover_" .. name, UIParent)
+    local mover = CreateFrame("Button", "DuckcraftUI_Mover_" .. name, UIParent)
     mover:SetClampedToScreen(true)
     mover:RegisterForDrag("LeftButton", "RightButton")
     mover:SetMovable(true)

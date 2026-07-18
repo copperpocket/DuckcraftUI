@@ -1,5 +1,5 @@
 --[[
-  DragonUI - Target Frame Module (target.lua)
+  DuckcraftUI - Target Frame Module (target.lua)
 
   Target-specific configuration and hooks passed to the
   UF.TargetStyle closure factory defined in target_style.lua.
@@ -246,7 +246,7 @@ local function ApplyDetachedAuraLayout(frame)
 end
 
 local function InstallDetachedAuraLayoutHook()
-    if _G.DragonUI_DetachedAuraLayoutHooked then
+    if _G.DuckcraftUI_DetachedAuraLayoutHooked then
         return
     end
     if type(_G.TargetFrame_UpdateAuras) ~= "function" then
@@ -259,7 +259,7 @@ local function InstallDetachedAuraLayoutHook()
         end
     end)
 
-    _G.DragonUI_DetachedAuraLayoutHooked = true
+    _G.DuckcraftUI_DetachedAuraLayoutHooked = true
 end
 
 -- ============================================================================
@@ -392,7 +392,7 @@ local api = UF.TargetStyle.Create({
     -- Class color hooks
     -- ----------------------------------------------------------------
     setupExtraHooks = function(UpdateHealthBarColor, UpdateClassPortrait)
-        if not _G.DragonUI_TargetHealthHookSetup then
+        if not _G.DuckcraftUI_TargetHealthHookSetup then
             hooksecurefunc("UnitFrameHealthBar_Update",
                 function(statusbar, unit)
                     if statusbar == TargetFrameHealthBar
@@ -410,7 +410,7 @@ local api = UF.TargetStyle.Create({
 
             -- UnitFramePortrait_Update is already hooked in SetupBarHooks
 
-            _G.DragonUI_TargetHealthHookSetup = true
+            _G.DuckcraftUI_TargetHealthHookSetup = true
         end
     end,
 

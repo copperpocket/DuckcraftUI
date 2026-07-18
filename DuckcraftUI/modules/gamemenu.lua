@@ -2,8 +2,8 @@ local addon = select(2,...);
 local L = addon.L
 
 -- ============================================================================
--- DragonUI - Game Menu Button Module
--- Injects a "DragonUI" button into the Escape menu that opens the config panel.
+-- DuckcraftUI - Game Menu Button Module
+-- Injects a "DuckcraftUI" button into the Escape menu that opens the config panel.
 -- ============================================================================
 
 local CreateFrame = CreateFrame
@@ -13,14 +13,14 @@ local function GetGameMenuFrame()
     return _G and _G.GameMenuFrame
 end
 
-local dragonUIButton = nil
+local duckcraftUIButton = nil
 local buttonAdded = false
 local heightAdjustedHost = nil
 local hookInstalled = false
 local updateHookInstalled = false
 local onShowHookInstalled = false
 local ascensionHookInstalled = false
-local CreateDragonUIButton
+local CreateDuckcraftUIButton
 
 local KNOWN_MENU_BUTTON_NAMES = {
     "EscapeMenuButton1", -- Ascension custom: Close
@@ -116,7 +116,7 @@ local function FindBottomButtons(menuHost)
     local bottomMost = nil
 
     local function considerButton(btn)
-        if not btn or btn == dragonUIButton then return end
+        if not btn or btn == duckcraftUIButton then return end
         if not (btn.IsShown and btn:IsShown()) then return end
         if not (btn.IsObjectType and btn:IsObjectType("Button")) then return end
         if not IsDescendantOf(btn, menuHost) then return end
@@ -141,43 +141,43 @@ local function FindBottomButtons(menuHost)
 end
 
 -- Anchors the button below its reference and extends GameMenuFrame height once.
-local function PositionDragonUIButton()
+local function PositionDuckcraftUIButton()
     local menuHost = GetMenuHostFrame()
     if not menuHost then return end
-    if not dragonUIButton then return end
+    if not duckcraftUIButton then return end
 
-    dragonUIButton:SetParent(menuHost)
-    dragonUIButton:SetFrameStrata(menuHost:GetFrameStrata())
-    dragonUIButton:SetFrameLevel((menuHost:GetFrameLevel() or 1) + 20)
+    duckcraftUIButton:SetParent(menuHost)
+    duckcraftUIButton:SetFrameStrata(menuHost:GetFrameStrata())
+    duckcraftUIButton:SetFrameLevel((menuHost:GetFrameLevel() or 1) + 20)
 
     if IsAscensionMenuEnvironment() then
         local closeButton, bottomMost = FindBottomButtons(menuHost)
 
-        -- Ascension: keep DragonUI near the bottom around Close.
+        -- Ascension: keep DuckcraftUI near the bottom around Close.
         if closeButton and closeButton:IsShown() then
-            dragonUIButton:ClearAllPoints()
-            dragonUIButton:SetPoint("BOTTOM", closeButton, "TOP", 0, -2)
+            duckcraftUIButton:ClearAllPoints()
+            duckcraftUIButton:SetPoint("BOTTOM", closeButton, "TOP", 0, -2)
         elseif bottomMost then
-            dragonUIButton:ClearAllPoints()
-            dragonUIButton:SetPoint("TOP", bottomMost, "BOTTOM", 0, -2)
+            duckcraftUIButton:ClearAllPoints()
+            duckcraftUIButton:SetPoint("TOP", bottomMost, "BOTTOM", 0, -2)
         else
-            dragonUIButton:ClearAllPoints()
-            dragonUIButton:SetPoint("TOP", menuHost, "TOP", 0, -200)
+            duckcraftUIButton:ClearAllPoints()
+            duckcraftUIButton:SetPoint("TOP", menuHost, "TOP", 0, -200)
         end
     else
         -- Classic clients: use original-style insertion anchor.
         local afterButton = FindClassicInsertButton(menuHost)
-        dragonUIButton:ClearAllPoints()
+        duckcraftUIButton:ClearAllPoints()
         if afterButton then
-            dragonUIButton:SetPoint("TOP", afterButton, "BOTTOM", 0, -2)
+            duckcraftUIButton:SetPoint("TOP", afterButton, "BOTTOM", 0, -2)
         else
-            dragonUIButton:SetPoint("TOP", menuHost, "TOP", 0, -200)
+            duckcraftUIButton:SetPoint("TOP", menuHost, "TOP", 0, -200)
         end
     end
 
     -- Grow the frame to accommodate the new button (runs exactly once).
     if heightAdjustedHost ~= menuHost then
-        local buttonHeight = dragonUIButton:GetHeight() or 16
+        local buttonHeight = duckcraftUIButton:GetHeight() or 16
         local spacing = 1
         local currentHeight = menuHost:GetHeight()
         menuHost:SetHeight(currentHeight + buttonHeight + spacing)
@@ -187,7 +187,7 @@ local function PositionDragonUIButton()
     -- Custom servers can reset frame height after layout updates.
     -- Ensure our injected button remains inside visible bounds.
     local frameBottom = menuHost:GetBottom()
-    local buttonBottom = dragonUIButton:GetBottom()
+    local buttonBottom = duckcraftUIButton:GetBottom()
     local bottomPadding = 10
     if frameBottom and buttonBottom and buttonBottom < (frameBottom + bottomPadding) then
         local deficit = (frameBottom + bottomPadding) - buttonBottom
@@ -195,12 +195,12 @@ local function PositionDragonUIButton()
     end
 end
 
-local function EnsureDragonUIButton()
+local function EnsureDuckcraftUIButton()
     if not buttonAdded then
-        CreateDragonUIButton()
-    elseif dragonUIButton then
-        dragonUIButton:Show()
-        PositionDragonUIButton()
+        CreateDuckcraftUIButton()
+    elseif duckcraftUIButton then
+        duckcraftUIButton:Show()
+        PositionDuckcraftUIButton()
     end
 end
 
@@ -212,13 +212,13 @@ local function QueueEnsureAfterShow()
         addon:After(delay, function()
             local menuHost = GetMenuHostFrame()
             if menuHost and menuHost:IsShown() then
-                EnsureDragonUIButton()
+                EnsureDuckcraftUIButton()
             end
         end)
     end
 end
 
-local function OpenDragonUIConfig()
+local function OpenDuckcraftUIConfig()
     local menuHost = GetMenuHostFrame()
     if menuHost then
         HideUIPanel(menuHost)
@@ -230,20 +230,20 @@ local function OpenDragonUIConfig()
     end
 
     -- ToggleOptionsUI not available yet; fall back to slash command.
-    if SlashCmdList and SlashCmdList["DRAGONUI"] then
-        SlashCmdList["DRAGONUI"]("config")
+    if SlashCmdList and SlashCmdList["DUCKCRAFTUI"] then
+        SlashCmdList["DUCKCRAFTUI"]("config")
         return
     end
 
-    print("|cFFFF0000[DragonUI]|r " .. L["Unable to open configuration"])
+    print("|cFFFF0000[DuckcraftUI]|r " .. L["Unable to open configuration"])
 end
 
 -- ============================================================================
 -- BUTTON CREATION
 -- ============================================================================
 
-CreateDragonUIButton = function()
-    if dragonUIButton or buttonAdded then return true end
+CreateDuckcraftUIButton = function()
+    if duckcraftUIButton or buttonAdded then return true end
     local menuHost = GetMenuHostFrame()
     if not menuHost then return false end
 
@@ -256,8 +256,8 @@ CreateDragonUIButton = function()
     local FONT_SIZE = 12
 
     -- GameMenuButtonTemplate sets the correct hit rect and default sizing.
-    dragonUIButton = CreateFrame("Button", "DragonUIGameMenuButton", menuHost, "GameMenuButtonTemplate")
-    dragonUIButton:SetWidth(144)
+    duckcraftUIButton = CreateFrame("Button", "DuckcraftUIGameMenuButton", menuHost, "GameMenuButtonTemplate")
+    duckcraftUIButton:SetWidth(144)
 
     local useCustom = TEX_CUSTOM_NORMAL ~= nil
 
@@ -265,14 +265,14 @@ CreateDragonUIButton = function()
     local function hideTemplateTexture(tex)
         if tex then tex:SetAlpha(0) end
     end
-    hideTemplateTexture(dragonUIButton:GetNormalTexture())
-    hideTemplateTexture(dragonUIButton:GetHighlightTexture())
-    hideTemplateTexture(dragonUIButton:GetPushedTexture())
+    hideTemplateTexture(duckcraftUIButton:GetNormalTexture())
+    hideTemplateTexture(duckcraftUIButton:GetHighlightTexture())
+    hideTemplateTexture(duckcraftUIButton:GetPushedTexture())
 
     -- Background layer: 1.5px inset on each edge to leave a thin border gap.
-    local bgTex = dragonUIButton:CreateTexture(nil, "BACKGROUND")
-    bgTex:SetPoint("TOPLEFT",     dragonUIButton, "TOPLEFT",     0,  1.5)
-    bgTex:SetPoint("BOTTOMRIGHT", dragonUIButton, "BOTTOMRIGHT", 0, -1.5)
+    local bgTex = duckcraftUIButton:CreateTexture(nil, "BACKGROUND")
+    bgTex:SetPoint("TOPLEFT",     duckcraftUIButton, "TOPLEFT",     0,  1.5)
+    bgTex:SetPoint("BOTTOMRIGHT", duckcraftUIButton, "BOTTOMRIGHT", 0, -1.5)
 
     if useCustom then
         bgTex:SetTexture(TEX_CUSTOM_NORMAL)
@@ -284,12 +284,12 @@ CreateDragonUIButton = function()
         bgTex:SetBlendMode("ADD")
         bgTex:SetVertexColor(0.05, 0.22, 0.60, 1.0)
     end
-    dragonUIButton._bgTex = bgTex
+    duckcraftUIButton._bgTex = bgTex
 
     -- Hover overlay: additive layer that fades in on mouse-enter.
-    local hovTex = dragonUIButton:CreateTexture(nil, "ARTWORK")
-    hovTex:SetPoint("TOPLEFT",     dragonUIButton, "TOPLEFT",     0,  1.5)
-    hovTex:SetPoint("BOTTOMRIGHT", dragonUIButton, "BOTTOMRIGHT", 0, -1.5)
+    local hovTex = duckcraftUIButton:CreateTexture(nil, "ARTWORK")
+    hovTex:SetPoint("TOPLEFT",     duckcraftUIButton, "TOPLEFT",     0,  1.5)
+    hovTex:SetPoint("BOTTOMRIGHT", duckcraftUIButton, "BOTTOMRIGHT", 0, -1.5)
     if useCustom then
         hovTex:SetTexture(TEX_CUSTOM_NORMAL)
         hovTex:SetTexCoord(0, 1, 0, 1)
@@ -299,18 +299,18 @@ CreateDragonUIButton = function()
         hovTex:SetBlendMode("ADD")
     end
     hovTex:SetVertexColor(0.30, 0.50, 1.00, 0.0)  -- starts transparent
-    dragonUIButton._hovTex = hovTex
+    duckcraftUIButton._hovTex = hovTex
 
     -- Label
-    local label = dragonUIButton:GetFontString()
+    local label = duckcraftUIButton:GetFontString()
     if label then
         label:SetFont(FONT, FONT_SIZE, "OUTLINE")
         label:SetTextColor(1.0, 1.0, 1.0, 1.0)
         label:SetShadowColor(0.0, 0.10, 0.45, 1.0)
         label:SetShadowOffset(1, -1)
         label:ClearAllPoints()
-        label:SetPoint("CENTER", dragonUIButton, "CENTER", 0, 1)
-        label:SetText(L["DragonUI"])
+        label:SetPoint("CENTER", duckcraftUIButton, "CENTER", 0, 1)
+        label:SetText(L["DuckcraftUI"])
     end
 
     -- ============================================================================
@@ -329,7 +329,7 @@ CreateDragonUIButton = function()
     local hoverTarget   = 0
     local ANIM_SPEED    = 5  -- progress units per second (0→1 in ~0.2s)
 
-    dragonUIButton:SetScript("OnUpdate", function(self, elapsed)
+    duckcraftUIButton:SetScript("OnUpdate", function(self, elapsed)
         if hoverProgress == hoverTarget then return end
         local step = ANIM_SPEED * elapsed
         if hoverTarget > hoverProgress then
@@ -363,14 +363,14 @@ CreateDragonUIButton = function()
         end
     end)
 
-    dragonUIButton:SetScript("OnEnter", function(self) hoverTarget = 1 end)
-    dragonUIButton:SetScript("OnLeave", function(self) hoverTarget = 0 end)
+    duckcraftUIButton:SetScript("OnEnter", function(self) hoverTarget = 1 end)
+    duckcraftUIButton:SetScript("OnLeave", function(self) hoverTarget = 0 end)
 
-    dragonUIButton:SetScript("OnClick", function(self, button)
-        if button == "LeftButton" then OpenDragonUIConfig() end
+    duckcraftUIButton:SetScript("OnClick", function(self, button)
+        if button == "LeftButton" then OpenDuckcraftUIConfig() end
     end)
 
-    PositionDragonUIButton()
+    PositionDuckcraftUIButton()
     buttonAdded = true
     return true
 end
@@ -382,13 +382,13 @@ local function InstallGameMenuHook()
 
     -- Hook Show instead of overriding it to avoid UI taint on the secure frame.
     hooksecurefunc(gameMenuFrame, "Show", function(self)
-        EnsureDragonUIButton()
+        EnsureDuckcraftUIButton()
         QueueEnsureAfterShow()
     end)
 
     if not onShowHookInstalled then
         gameMenuFrame:HookScript("OnShow", function(self)
-            EnsureDragonUIButton()
+            EnsureDuckcraftUIButton()
             QueueEnsureAfterShow()
         end)
         onShowHookInstalled = true
@@ -398,7 +398,7 @@ local function InstallGameMenuHook()
     -- Hook the update routine so our button is re-shown/repositioned afterwards.
     if not updateHookInstalled and _G.GameMenuFrame_UpdateVisibleButtons then
         hooksecurefunc("GameMenuFrame_UpdateVisibleButtons", function()
-            EnsureDragonUIButton()
+            EnsureDuckcraftUIButton()
         end)
         updateHookInstalled = true
     end
@@ -411,7 +411,7 @@ local function InstallGameMenuHook()
 
     if IsAscensionMenuEnvironment() and (not ascensionHookInstalled) and _G.EscapeMenu and _G.EscapeMenu.HookScript then
         _G.EscapeMenu:HookScript("OnShow", function(self)
-            EnsureDragonUIButton()
+            EnsureDuckcraftUIButton()
             QueueEnsureAfterShow()
         end)
         ascensionHookInstalled = true
@@ -433,7 +433,7 @@ local function TryCreateButton()
     local function attempt()
         attempts = attempts + 1
         InstallGameMenuHook()
-        if CreateDragonUIButton() then
+        if CreateDuckcraftUIButton() then
             QueueEnsureAfterShow()
             return
         end
@@ -450,7 +450,7 @@ eventFrame:RegisterEvent("ADDON_LOADED")
 eventFrame:RegisterEvent("PLAYER_LOGIN")
 
 eventFrame:SetScript("OnEvent", function(self, event, arg1)
-    if event == "ADDON_LOADED" and arg1 == "DragonUI" then
+    if event == "ADDON_LOADED" and arg1 == "DuckcraftUI" then
         InstallGameMenuHook()
         TryCreateButton()
 

@@ -1,12 +1,12 @@
 --[[
 ================================================================================
-DragonUI Options Panel - Castbars Tab
+DuckcraftUI Options Panel - Castbars Tab
 ================================================================================
 Player, target, and focus castbar options with sub-tab navigation.
 ================================================================================
 ]]
 
-local addon = DragonUI
+local addon = DuckcraftUI
 if not addon then return end
 
 local L = addon.L
@@ -94,7 +94,7 @@ local function AddCastbarControls(parent, dbPrefix, refreshFunc, opts)
         values = textModeValues,
         callback = function()
             refreshFunc()
-            StaticPopup_Show("DRAGONUI_RELOAD_UI")
+            StaticPopup_Show("DUCKCRAFTUI_RELOAD_UI")
         end,
     })
 
@@ -164,7 +164,7 @@ local function BuildPlayerCastbar(scroll)
             if addon.ResetCastbarPosition then
                 addon.ResetCastbarPosition()
             end
-            print("|cFF00FF00[DragonUI]|r " .. LO["Player castbar position reset."])
+            print("|cFF00FF00[DuckcraftUI]|r " .. LO["Player castbar position reset."])
         end,
     })
 

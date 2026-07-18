@@ -1,5 +1,5 @@
 --[[
-  DragonUI - Target-Style Unit Frame Factory (target_style.lua)
+  DuckcraftUI - Target-Style Unit Frame Factory (target_style.lua)
 
   Closure factory for target-style unit frames (Target, Focus).
   Loaded after uf_core.lua, before target.lua and focus.lua.
@@ -52,7 +52,7 @@ function UF.TargetStyle.Create(opts)
 
     -- Name background color variants sourced from UIUnitFrame2x_PTR.blp.
     -- Coords extracted from the local PTR atlas (1024x512) and mapped by color.
-    local NAME_BG_PTR_TEXTURE = "Interface\\AddOns\\DragonUI\\Textures\\UIUnitFrame2x_PTR"
+    local NAME_BG_PTR_TEXTURE = "Interface\\AddOns\\DuckcraftUI\\Textures\\UIUnitFrame2x_PTR"
     local NAME_BG_WIDTH = 135
     local NAME_BG_HEIGHT = 14
     local NAME_BG_OFFSET_X = -0.5
@@ -218,12 +218,12 @@ function UF.TargetStyle.Create(opts)
 
     local function InstallBarFadeGuards()
         for _, bar in ipairs(FADE_BARS) do
-            if bar and not bar.DragonUI_FadeGuard then
+            if bar and not bar.DuckcraftUI_FadeGuard then
                 -- Capture current methods (already wrapped by the
                 -- hooksecurefunc calls in SetupBarHooks, so install AFTER them).
-                bar.DragonUI_RealHide      = bar.Hide
-                bar.DragonUI_RealSetValue  = bar.SetValue
-                bar.DragonUI_RealSetMinMax = bar.SetMinMaxValues
+                bar.DuckcraftUI_RealHide      = bar.Hide
+                bar.DuckcraftUI_RealSetValue  = bar.SetValue
+                bar.DuckcraftUI_RealSetMinMax = bar.SetMinMaxValues
 
                 local function frozen()
                     return Module._fadingOut and not UnitExists(unitToken)
@@ -234,20 +234,20 @@ function UF.TargetStyle.Create(opts)
                         self._pendingHide = true   -- deferred to finishedFunc
                         return
                     end
-                    return bar.DragonUI_RealHide(self, ...)
+                    return bar.DuckcraftUI_RealHide(self, ...)
                 end
 
                 bar.SetValue = function(self, ...)
                     if frozen() then return end     -- keep last fill
-                    return bar.DragonUI_RealSetValue(self, ...)
+                    return bar.DuckcraftUI_RealSetValue(self, ...)
                 end
 
                 bar.SetMinMaxValues = function(self, ...)
                     if frozen() then return end     -- keep last range
-                    return bar.DragonUI_RealSetMinMax(self, ...)
+                    return bar.DuckcraftUI_RealSetMinMax(self, ...)
                 end
 
-                bar.DragonUI_FadeGuard = true
+                bar.DuckcraftUI_FadeGuard = true
             end
         end
     end
@@ -274,7 +274,7 @@ function UF.TargetStyle.Create(opts)
                 if UIFrameFadeRemoveFrame then UIFrameFadeRemoveFrame(bar) end
                 bar._pendingHide = nil
                 bar:SetAlpha(1)
-                if bar.DragonUI_RealHide then bar:Show() end
+                if bar.DuckcraftUI_RealHide then bar:Show() end
             end
         end
     end
@@ -561,7 +561,7 @@ function UF.TargetStyle.Create(opts)
 
     local function SetupBarHooks()
         -- Health bar hooks (once)
-        if not HealthBar.DragonUI_Setup then
+        if not HealthBar.DuckcraftUI_Setup then
             local ht = HealthBar:GetStatusBarTexture()
             if ht then ht:SetDrawLayer("ARTWORK", 1) end
 
@@ -602,11 +602,11 @@ function UF.TargetStyle.Create(opts)
                 end
             end)
 
-            HealthBar.DragonUI_Setup = true
+            HealthBar.DuckcraftUI_Setup = true
         end
 
         -- Power bar hooks (once)
-        if not ManaBar.DragonUI_Setup then
+        if not ManaBar.DuckcraftUI_Setup then
             local pt = ManaBar:GetStatusBarTexture()
             if pt then pt:SetDrawLayer("ARTWORK", 1) end
 
@@ -636,17 +636,17 @@ function UF.TargetStyle.Create(opts)
                     texture:SetTexCoord(0, cur / max, 0, 1)
                 end
             end)
-            ManaBar.DragonUI_Setup = true
+            ManaBar.DuckcraftUI_Setup = true
         end
 
         -- Portrait hook for class portrait
-        if not BlizzFrame.DragonUI_PortraitHook then
+        if not BlizzFrame.DuckcraftUI_PortraitHook then
             hooksecurefunc("UnitFramePortrait_Update", function(frame, unit)
                 if frame == BlizzFrame and unit == unitToken then
                     UpdateClassPortrait()
                 end
             end)
-            BlizzFrame.DragonUI_PortraitHook = true
+            BlizzFrame.DuckcraftUI_PortraitHook = true
         end
 
         -- Hook afterBarHooks callback if provided
@@ -654,7 +654,7 @@ function UF.TargetStyle.Create(opts)
             opts.afterBarHooks(Module, ManaBar, GetConfig, updateCache)
         end
         
-        -- Install fade guards last, so DragonUI_RealSetValue captures the
+        -- Install fade guards last, so DuckcraftUI_RealSetValue captures the
         -- hooksecurefunc-wrapped methods rather than the raw ones.
         InstallBarFadeGuards()
 
@@ -899,7 +899,7 @@ function UF.TargetStyle.Create(opts)
         -- ---- Create background texture ----
         if not frameElements.background then
             frameElements.background = BlizzFrame:CreateTexture(
-                "DragonUI_" .. namePrefix .. "BG", "BACKGROUND", nil, -7)
+                "DuckcraftUI_" .. namePrefix .. "BG", "BACKGROUND", nil, -7)
             frameElements.background:SetTexture(TEXTURES.BACKGROUND)
             frameElements.background:SetPoint(
                 "TOPLEFT", BlizzFrame, "TOPLEFT", 0, -8)
@@ -916,7 +916,7 @@ function UF.TargetStyle.Create(opts)
         end
         if not frameElements.border then
             frameElements.border = frameElements.borderFrame:CreateTexture(
-                "DragonUI_" .. namePrefix .. "Border", "OVERLAY", nil, 5)
+                "DuckcraftUI_" .. namePrefix .. "Border", "OVERLAY", nil, 5)
             frameElements.border:SetTexture(TEXTURES.BORDER)
             frameElements.border:SetPoint(
                 "TOPLEFT", frameElements.background, "TOPLEFT", 0, 0)
@@ -931,7 +931,7 @@ function UF.TargetStyle.Create(opts)
         end
         if not frameElements.elite then
             frameElements.elite = frameElements.eliteFrame:CreateTexture(
-                "DragonUI_" .. namePrefix .. "Elite", "ARTWORK", nil, 1)
+                "DuckcraftUI_" .. namePrefix .. "Elite", "ARTWORK", nil, 1)
             frameElements.elite:SetTexture(TEXTURES.BOSS)
             frameElements.elite:Hide()
         end
@@ -956,7 +956,7 @@ function UF.TargetStyle.Create(opts)
         -- ---- Create threat numeric indicator ----
         if not frameElements.threatNumeric then
             local numeric = CreateFrame("Frame",
-                "DragonUI" .. namePrefix .. "NumericalThreat", BlizzFrame)
+                "DuckcraftUI" .. namePrefix .. "NumericalThreat", BlizzFrame)
             numeric:SetFrameStrata("HIGH")
             numeric:SetFrameLevel(BlizzFrame:GetFrameLevel() + 10)
             numeric:SetSize(71, 13)
@@ -1043,13 +1043,13 @@ function UF.TargetStyle.Create(opts)
 
         -- Hook Blizzard classification updates so decoration refreshes
         -- whenever the client receives updated unit data
-        if not BlizzFrame.DragonUI_ClassificationHook then
+        if not BlizzFrame.DuckcraftUI_ClassificationHook then
             hooksecurefunc("TargetFrame_CheckClassification", function(self, forceNormal)
                 if self == BlizzFrame then
                     UpdateClassification()
                 end
             end)
-            BlizzFrame.DragonUI_ClassificationHook = true
+            BlizzFrame.DuckcraftUI_ClassificationHook = true
         end
 
         -- ---- Apply config (scale + position) ----
@@ -1274,7 +1274,7 @@ function UF.TargetStyle.Create(opts)
     local function OnEvent(self, event, ...)
         if event == "ADDON_LOADED" then
             local name = ...
-            if name == "DragonUI" and not Module.initialized then
+            if name == "DuckcraftUI" and not Module.initialized then
                 Module.initialized = true
             end
 

@@ -1,12 +1,12 @@
 --[[
 ================================================================================
-DragonUI Options Panel - Additional Bars Tab
+DuckcraftUI Options Panel - Additional Bars Tab
 ================================================================================
 Stance Bar, Pet Bar, Vehicle Bar, Totem Bar settings.
 ================================================================================
 ]]
 
-local addon = DragonUI
+local addon = DuckcraftUI
 if not addon then return end
 
 local L = addon.L

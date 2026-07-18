@@ -1,7 +1,7 @@
 local addon = select(2, ...)
 
 -- ============================================================================
--- ITEM QUALITY BORDERS MODULE FOR DRAGONUI
+-- ITEM QUALITY BORDERS MODULE FOR DUCKCRAFTUI
 -- Adds quality-colored glow borders to item slots across all inventory frames:
 --   Character Panel, Inspect Frame, Bags, Bank, Merchant, Guild Bank
 --
@@ -59,8 +59,8 @@ local QUALITY_COLORS = {
 -- Create or get the quality border overlay for any item frame
 local function GetOrCreateOverlay(frame)
     if not frame then return nil end
-    if frame.__DragonUI_QualityOverlay then
-        return frame.__DragonUI_QualityOverlay
+    if frame.__DuckcraftUI_QualityOverlay then
+        return frame.__DuckcraftUI_QualityOverlay
     end
 
     -- Use Blizzard's glow border texture in ADD blend mode
@@ -77,7 +77,7 @@ local function GetOrCreateOverlay(frame)
     overlay:SetHeight(h * 1.7)
     overlay:Hide()
 
-    frame.__DragonUI_QualityOverlay = overlay
+    frame.__DuckcraftUI_QualityOverlay = overlay
     ItemQualityModule.overlays[frame] = overlay
     return overlay
 end
@@ -335,7 +335,7 @@ local function DebugBankSlots()
             local quality = GetQualityFromLink(link)
             if link then
                 found = found + 1
-                local overlay = button.__DragonUI_QualityOverlay
+                local overlay = button.__DuckcraftUI_QualityOverlay
                 addon:Print(string.format("Slot %d: link=%s quality=%s overlay=%s shown=%s",
                     i,
                     link and "YES" or "NO",
@@ -596,7 +596,7 @@ eventFrame:SetScript("OnEvent", function(self, event, arg1)
         if not IsModuleEnabled() then return end
         InstallInspectHook()
 
-    elseif event == "ADDON_LOADED" and arg1 == "DragonUI" then
+    elseif event == "ADDON_LOADED" and arg1 == "DuckcraftUI" then
         if not IsModuleEnabled() then return end
 
         -- Register profile callbacks

@@ -1,12 +1,12 @@
 --[[
 ================================================================================
-DragonUI Options Panel - Auras Tab
+DuckcraftUI Options Panel - Auras Tab
 ================================================================================
 Weapon enchant separation options.
 ================================================================================
 ]]
 
-local addon = DragonUI
+local addon = DuckcraftUI
 if not addon then return end
 
 local L = addon.L
@@ -68,7 +68,7 @@ local function BuildAurasTab(scroll)
             if addon.BuffFrameModule then
                 addon.BuffFrameModule:UpdatePosition()
             end
-            print("|cFF00FF00[DragonUI]|r " .. LO["Buff frame position reset."])
+            print("|cFF00FF00[DuckcraftUI]|r " .. LO["Buff frame position reset."])
         end,
     })
 
@@ -86,7 +86,7 @@ local function BuildAurasTab(scroll)
             if addon.BuffFrameModule then
                 addon.BuffFrameModule:UpdateWeaponEnchantPosition()
             end
-            print("|cFF00FF00[DragonUI]|r " .. LO["Weapon enchant position reset."])
+            print("|cFF00FF00[DuckcraftUI]|r " .. LO["Weapon enchant position reset."])
         end,
     })
 end

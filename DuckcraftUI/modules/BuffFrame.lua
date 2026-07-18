@@ -1,7 +1,7 @@
 -- ============================================================================
--- DragonUI - Buff Frame Module
+-- DuckcraftUI - Buff Frame Module
 -- Based on RetailUI by Dmitriy (MIT License)
--- Adapted for DragonUI with Dragonflight-inspired positioning control.
+-- Adapted for DuckcraftUI with Dragonflight-inspired positioning control.
 -- ============================================================================
 
 local addon = select(2, ...);
@@ -19,8 +19,8 @@ end
 -- Local variables
 local buffFrame = nil
 local toggleButton = nil
-local dragonUIBuffFrame = nil
-local dragonUIWeaponBuffFrame = nil
+local duckcraftUIBuffFrame = nil
+local duckcraftUIWeaponBuffFrame = nil
 local buffsHiddenByToggle = false
 local weaponEnchantsAreSeparated = false
 
@@ -149,9 +149,9 @@ end
 -- Show/hide toggle button based on condition
 local function ShowToggleButtonIf(condition)
     if condition then
-        dragonUIBuffFrame.toggleButton:Show()
+        duckcraftUIBuffFrame.toggleButton:Show()
     else
-        dragonUIBuffFrame.toggleButton:Hide()
+        duckcraftUIBuffFrame.toggleButton:Hide()
     end
 end
 
@@ -172,12 +172,12 @@ end
 -- We permanently override BuffFrame.SetPoint and ClearAllPoints so that
 -- NO Blizzard code (BuffFrame_Update, UIParent_ManageFramePositions, etc.)
 -- can move BuffFrame. Every SetPoint call on BuffFrame gets redirected to
--- anchor it to our dragonUIBuffFrame. We only touch dragonUIBuffFrame position.
+-- anchor it to our duckcraftUIBuffFrame. We only touch duckcraftUIBuffFrame position.
 -- ============================================================================
 
--- Update the position of dragonUIBuffFrame (BuffFrame follows via override)
+-- Update the position of duckcraftUIBuffFrame (BuffFrame follows via override)
 function BuffFrameModule:UpdatePosition()
-    if not dragonUIBuffFrame then return end
+    if not duckcraftUIBuffFrame then return end
     if not addon.db or not addon.db.profile or not addon.db.profile.widgets or not addon.db.profile.widgets.buffs then
         return
     end
@@ -189,12 +189,12 @@ function BuffFrameModule:UpdatePosition()
         local ticketOpen = (TicketStatusFrame and TicketStatusFrame:IsShown())
                         or (GMChatStatusFrame and GMChatStatusFrame:IsShown())
         local posY = ticketOpen and BUFF_TICKET_POSY or BUFF_DEFAULT_POSY
-        dragonUIBuffFrame:ClearAllPoints()
-        dragonUIBuffFrame:SetPoint("TOPRIGHT", UIParent, "TOPRIGHT", BUFF_DEFAULT_POSX, posY)
+        duckcraftUIBuffFrame:ClearAllPoints()
+        duckcraftUIBuffFrame:SetPoint("TOPRIGHT", UIParent, "TOPRIGHT", BUFF_DEFAULT_POSX, posY)
     else
         -- Custom position (user-placed via editor): use saved coordinates
-        dragonUIBuffFrame:ClearAllPoints()
-        dragonUIBuffFrame:SetPoint(
+        duckcraftUIBuffFrame:ClearAllPoints()
+        duckcraftUIBuffFrame:SetPoint(
             widgetOptions.anchor, UIParent, widgetOptions.anchor,
             widgetOptions.posX, widgetOptions.posY)
     end
@@ -223,14 +223,14 @@ local function GetBuffVisibilityConfig()
 end
 
 local function IsCursorOverBuffFrame()
-    if not dragonUIBuffFrame then
+    if not duckcraftUIBuffFrame then
         return false
     end
 
-    local left = dragonUIBuffFrame:GetLeft()
-    local right = dragonUIBuffFrame:GetRight()
-    local bottom = dragonUIBuffFrame:GetBottom()
-    local top = dragonUIBuffFrame:GetTop()
+    local left = duckcraftUIBuffFrame:GetLeft()
+    local right = duckcraftUIBuffFrame:GetRight()
+    local bottom = duckcraftUIBuffFrame:GetBottom()
+    local top = duckcraftUIBuffFrame:GetTop()
 
     if not left or not right or not bottom or not top then
         return false
@@ -317,10 +317,10 @@ local function GetBuffFadeDuration()
 end
 
 local function ApplyBuffFrameAlpha(alpha)
-    if dragonUIBuffFrame then
+    if duckcraftUIBuffFrame then
         -- Keep the editor/mover frame available for hover detection.
-        dragonUIBuffFrame:Show()
-        dragonUIBuffFrame:SetAlpha(1)
+        duckcraftUIBuffFrame:Show()
+        duckcraftUIBuffFrame:SetAlpha(1)
     end
 
     if BuffFrame then
@@ -350,8 +350,8 @@ local function ApplyBuffFrameAlpha(alpha)
         TemporaryEnchantFrame:SetAlpha(alpha)
     end
 
-    if dragonUIWeaponBuffFrame then
-        dragonUIWeaponBuffFrame:SetAlpha(alpha)
+    if duckcraftUIWeaponBuffFrame then
+        duckcraftUIWeaponBuffFrame:SetAlpha(alpha)
     end
 
     if toggleButton then
@@ -416,7 +416,7 @@ local function RefreshBuffVisibilityInternal()
         return
     end
 
-    if not dragonUIBuffFrame or not BuffFrame then
+    if not duckcraftUIBuffFrame or not BuffFrame then
         return
     end
 
@@ -551,19 +551,19 @@ end)
 
 -- Update the weapon enchant frame position from saved profile data
 function BuffFrameModule:UpdateWeaponEnchantPosition()
-    if not dragonUIWeaponBuffFrame then return end
+    if not duckcraftUIWeaponBuffFrame then return end
     if not addon.db or not addon.db.profile or not addon.db.profile.widgets
        or not addon.db.profile.widgets.weapon_enchants then return end
 
     local wOpts = addon.db.profile.widgets.weapon_enchants
 
     if IsWeaponEnchantAtDefaultPosition() then
-        dragonUIWeaponBuffFrame:ClearAllPoints()
-        dragonUIWeaponBuffFrame:SetPoint(WEAPON_DEFAULT_ANCHOR, UIParent, "TOPRIGHT",
+        duckcraftUIWeaponBuffFrame:ClearAllPoints()
+        duckcraftUIWeaponBuffFrame:SetPoint(WEAPON_DEFAULT_ANCHOR, UIParent, "TOPRIGHT",
             WEAPON_DEFAULT_POSX, WEAPON_DEFAULT_POSY)
     else
-        dragonUIWeaponBuffFrame:ClearAllPoints()
-        dragonUIWeaponBuffFrame:SetPoint(
+        duckcraftUIWeaponBuffFrame:ClearAllPoints()
+        duckcraftUIWeaponBuffFrame:SetPoint(
             wOpts.anchor, UIParent, wOpts.anchor,
             wOpts.posX, wOpts.posY)
     end
@@ -571,9 +571,9 @@ end
 
 -- Anchor TemporaryEnchantFrame to our weapon enchant frame
 local function AnchorWeaponEnchantsToFrame()
-    if not TemporaryEnchantFrame or not dragonUIWeaponBuffFrame then return end
+    if not TemporaryEnchantFrame or not duckcraftUIWeaponBuffFrame then return end
     TemporaryEnchantFrame:ClearAllPoints()
-    TemporaryEnchantFrame:SetPoint("TOPRIGHT", dragonUIWeaponBuffFrame, "TOPRIGHT", 0, 0)
+    TemporaryEnchantFrame:SetPoint("TOPRIGHT", duckcraftUIWeaponBuffFrame, "TOPRIGHT", 0, 0)
 end
 
 -- Restore TemporaryEnchantFrame to the normal buff chain
@@ -598,8 +598,8 @@ function BuffFrameModule:SetupWeaponEnchantSeparation()
         if weaponEnchantsAreSeparated then
             weaponEnchantsAreSeparated = false
             RestoreWeaponEnchantsToChain()
-            if dragonUIWeaponBuffFrame then
-                dragonUIWeaponBuffFrame:Hide()
+            if duckcraftUIWeaponBuffFrame then
+                duckcraftUIWeaponBuffFrame:Hide()
             end
         end
         return
@@ -608,13 +608,13 @@ function BuffFrameModule:SetupWeaponEnchantSeparation()
     weaponEnchantsAreSeparated = true
 
     -- Create the frame once
-    if not dragonUIWeaponBuffFrame then
+    if not duckcraftUIWeaponBuffFrame then
         -- Size matches roughly 3 temp enchant icons (30px each + spacing)
-        dragonUIWeaponBuffFrame = addon.CreateUIFrame(100, 34, "WeaponEnchants")
+        duckcraftUIWeaponBuffFrame = addon.CreateUIFrame(100, 34, "WeaponEnchants")
 
         addon:RegisterEditableFrame({
             name = "weapon_enchants",
-            frame = dragonUIWeaponBuffFrame,
+            frame = duckcraftUIWeaponBuffFrame,
             blizzardFrame = TemporaryEnchantFrame,
             configPath = {"widgets", "weapon_enchants"},
             onHide = function()
@@ -633,7 +633,7 @@ function BuffFrameModule:SetupWeaponEnchantSeparation()
         })
     end
 
-    dragonUIWeaponBuffFrame:Show()
+    duckcraftUIWeaponBuffFrame:Show()
     self:UpdateWeaponEnchantPosition()
     AnchorWeaponEnchantsToFrame()
 end
@@ -673,12 +673,12 @@ function BuffFrameModule:Enable()
     if not addon.db.profile.buffs.enabled then return end
     
     -- Create auxiliary frame for editor mode
-    dragonUIBuffFrame = addon.CreateUIFrame(BuffFrame:GetWidth(), BuffFrame:GetHeight(), "Auras")
+    duckcraftUIBuffFrame = addon.CreateUIFrame(BuffFrame:GetWidth(), BuffFrame:GetHeight(), "Auras")
     
     -- Register with editor system
     addon:RegisterEditableFrame({
         name = "buffs",
-        frame = dragonUIBuffFrame,
+        frame = duckcraftUIBuffFrame,
         blizzardFrame = BuffFrame,
         configPath = {"widgets", "buffs"},
         onHide = function()
@@ -704,7 +704,7 @@ function BuffFrameModule:Enable()
     -- PERMANENTLY OVERRIDE BuffFrame positioning methods.
     -- Every call to BuffFrame:SetPoint() from ANY code path (BuffFrame_Update,
     -- UIParent_ManageFramePositions, etc.) gets redirected to anchor BuffFrame
-    -- to our dragonUIBuffFrame. This is the ONLY reliable way to prevent
+    -- to our duckcraftUIBuffFrame. This is the ONLY reliable way to prevent
     -- Blizzard from moving the buff icons.
     buffFramePositionLocked = true
     
@@ -715,14 +715,14 @@ function BuffFrameModule:Enable()
     
     BuffFrame.SetPoint = function(self, ...)
         -- ALWAYS redirect: anchor BuffFrame to our controlled frame
-        if not buffFramePositionLocked or not dragonUIBuffFrame then
+        if not buffFramePositionLocked or not duckcraftUIBuffFrame then
             -- Module disabled or not ready: use original
             return original_BuffFrame_SetPoint(self, ...)
         end
         -- Redirect to our frame
         original_BuffFrame_ClearAllPoints(self)
-        original_BuffFrame_SetPoint(self, "TOPRIGHT", dragonUIBuffFrame, "TOPRIGHT", 0, 0)
-        -- DON'T call UpdatePosition() here - it would reset dragonUIBuffFrame
+        original_BuffFrame_SetPoint(self, "TOPRIGHT", duckcraftUIBuffFrame, "TOPRIGHT", 0, 0)
+        -- DON'T call UpdatePosition() here - it would reset duckcraftUIBuffFrame
         -- position during editor drag. UpdatePosition is called on events instead.
     end
     
@@ -730,28 +730,28 @@ function BuffFrameModule:Enable()
     -- Same pattern as BuffFrame above: ConsolidatedBuffs is the ROOT of the
     -- buff icon anchor chain (CB → TemporaryEnchantFrame → BuffButton1 → …).
     -- Without this lock, Blizzard re-anchors CB on ticket open/close, pulling
-    -- the entire buff chain to the wrong position even though dragonUIBuffFrame
+    -- the entire buff chain to the wrong position even though duckcraftUIBuffFrame
     -- (and the toggle button) stay put.
     ConsolidatedBuffs.ClearAllPoints = function(self)
-        if not buffFramePositionLocked or not dragonUIBuffFrame then
+        if not buffFramePositionLocked or not duckcraftUIBuffFrame then
             return original_CB_ClearAllPoints(self)
         end
         -- Noop when locked
     end
     
     ConsolidatedBuffs.SetPoint = function(self, ...)
-        if not buffFramePositionLocked or not dragonUIBuffFrame then
+        if not buffFramePositionLocked or not duckcraftUIBuffFrame then
             return original_CB_SetPoint(self, ...)
         end
         original_CB_ClearAllPoints(self)
-        original_CB_SetPoint(self, "TOPRIGHT", dragonUIBuffFrame, "TOPRIGHT", 0, 0)
+        original_CB_SetPoint(self, "TOPRIGHT", duckcraftUIBuffFrame, "TOPRIGHT", 0, 0)
     end
     
     -- Set initial position: anchor BuffFrame and ConsolidatedBuffs to our frame
     original_BuffFrame_ClearAllPoints(BuffFrame)
-    original_BuffFrame_SetPoint(BuffFrame, "TOPRIGHT", dragonUIBuffFrame, "TOPRIGHT", 0, 0)
+    original_BuffFrame_SetPoint(BuffFrame, "TOPRIGHT", duckcraftUIBuffFrame, "TOPRIGHT", 0, 0)
     original_CB_ClearAllPoints(ConsolidatedBuffs)
-    original_CB_SetPoint(ConsolidatedBuffs, "TOPRIGHT", dragonUIBuffFrame, "TOPRIGHT", 0, 0)
+    original_CB_SetPoint(ConsolidatedBuffs, "TOPRIGHT", duckcraftUIBuffFrame, "TOPRIGHT", 0, 0)
     BuffFrameModule:UpdatePosition()
     
     -- ========================================================================
@@ -789,9 +789,9 @@ function BuffFrameModule:Enable()
     -- ========================================================================
     local function RestoreConsolidatedBuffsAnchor()
         local cb = _G.ConsolidatedBuffs
-        if cb and dragonUIBuffFrame then
+        if cb and duckcraftUIBuffFrame then
             original_CB_ClearAllPoints(cb)
-            original_CB_SetPoint(cb, "TOPRIGHT", dragonUIBuffFrame, "TOPRIGHT", 0, 0)
+            original_CB_SetPoint(cb, "TOPRIGHT", duckcraftUIBuffFrame, "TOPRIGHT", 0, 0)
         end
         -- When weapon enchants are separated, TemporaryEnchantFrame is managed
         -- by the weapon enchant system — do NOT re-anchor it to ConsolidatedBuffs.
@@ -820,9 +820,9 @@ function BuffFrameModule:Enable()
             firstDebuff:ClearAllPoints()
             if anchor then
                 firstDebuff:SetPoint("TOPRIGHT", anchor, "BOTTOMRIGHT", 0, -60)
-            elseif dragonUIBuffFrame then
+            elseif duckcraftUIBuffFrame then
                 -- No buffs visible — anchor directly below the buff frame
-                firstDebuff:SetPoint("TOPRIGHT", dragonUIBuffFrame, "BOTTOMRIGHT", 0, -60)
+                firstDebuff:SetPoint("TOPRIGHT", duckcraftUIBuffFrame, "BOTTOMRIGHT", 0, -60)
             end
         end
     end
@@ -926,7 +926,7 @@ function BuffFrameModule:Enable()
     if not BuffFrameModule._hookedManagePositions then
         BuffFrameModule._hookedManagePositions = true
         hooksecurefunc("UIParent_ManageFramePositions", function()
-            if not dragonUIBuffFrame then return end
+            if not duckcraftUIBuffFrame then return end
             if not addon.db or not addon.db.profile or not addon.db.profile.buffs
                or not addon.db.profile.buffs.enabled then return end
             -- UpdatePosition() is safe at ANY position: at default it shifts
@@ -935,7 +935,7 @@ function BuffFrameModule:Enable()
             -- ALWAYS restore the anchor chain — Blizzard's code may have
             -- re-anchored ConsolidatedBuffs/TemporaryEnchantFrame away from
             -- our frame.  These helpers only fix the chain, they never move
-            -- dragonUIBuffFrame itself, so they're safe at custom position.
+            -- duckcraftUIBuffFrame itself, so they're safe at custom position.
             RestoreConsolidatedBuffsAnchor()
             FixDebuffPositions()
         end)
@@ -946,14 +946,14 @@ function BuffFrameModule:Enable()
         BuffFrameModule._hookedTicketFrame = true
         if TicketStatusFrame then
             hooksecurefunc(TicketStatusFrame, "Show", function()
-                if dragonUIBuffFrame and IsBuffFrameAtDefaultPosition() then
+                if duckcraftUIBuffFrame and IsBuffFrameAtDefaultPosition() then
                     BuffFrameModule:UpdatePosition()
                     RestoreConsolidatedBuffsAnchor()
                     FixDebuffPositions()
                 end
             end)
             hooksecurefunc(TicketStatusFrame, "Hide", function()
-                if dragonUIBuffFrame and IsBuffFrameAtDefaultPosition() then
+                if duckcraftUIBuffFrame and IsBuffFrameAtDefaultPosition() then
                     BuffFrameModule:UpdatePosition()
                     RestoreConsolidatedBuffsAnchor()
                     FixDebuffPositions()
@@ -962,14 +962,14 @@ function BuffFrameModule:Enable()
         end
         if GMChatStatusFrame then
             hooksecurefunc(GMChatStatusFrame, "Show", function()
-                if dragonUIBuffFrame and IsBuffFrameAtDefaultPosition() then
+                if duckcraftUIBuffFrame and IsBuffFrameAtDefaultPosition() then
                     BuffFrameModule:UpdatePosition()
                     RestoreConsolidatedBuffsAnchor()
                     FixDebuffPositions()
                 end
             end)
             hooksecurefunc(GMChatStatusFrame, "Hide", function()
-                if dragonUIBuffFrame and IsBuffFrameAtDefaultPosition() then
+                if duckcraftUIBuffFrame and IsBuffFrameAtDefaultPosition() then
                     BuffFrameModule:UpdatePosition()
                     RestoreConsolidatedBuffsAnchor()
                     FixDebuffPositions()
@@ -988,7 +988,7 @@ function BuffFrameModule:Enable()
         
         buffFrame:SetScript("OnEvent", function(self, event, unit)
             if event == "PLAYER_ENTERING_WORLD" then
-                ReplaceBlizzardFrame(dragonUIBuffFrame)
+                ReplaceBlizzardFrame(duckcraftUIBuffFrame)
                 ShowToggleButtonIf(GetUnitBuffCount("player", 16) > 0)
                 BuffFrameModule:UpdatePosition()
                 
@@ -1090,8 +1090,8 @@ function BuffFrameModule:Disable()
         weaponEnchantsAreSeparated = false
         RestoreWeaponEnchantsToChain()
     end
-    if dragonUIWeaponBuffFrame then
-        dragonUIWeaponBuffFrame:Hide()
+    if duckcraftUIWeaponBuffFrame then
+        duckcraftUIWeaponBuffFrame:Hide()
         -- Don't nil it — may be re-enabled without reload
     end
     
@@ -1106,9 +1106,9 @@ function BuffFrameModule:Disable()
         toggleButton = nil
     end
     
-    if dragonUIBuffFrame then
-        dragonUIBuffFrame:Hide()
-        dragonUIBuffFrame = nil
+    if duckcraftUIBuffFrame then
+        duckcraftUIBuffFrame:Hide()
+        duckcraftUIBuffFrame = nil
     end
 end
 
@@ -1116,7 +1116,7 @@ end
 local initFrame = CreateFrame("Frame")
 initFrame:RegisterEvent("ADDON_LOADED")
 initFrame:SetScript("OnEvent", function(self, event, addonName)
-    if addonName == "DragonUI" then
+    if addonName == "DuckcraftUI" then
         if addon.db and addon.db.profile and addon.db.profile.buffs and addon.db.profile.buffs.enabled then
             BuffFrameModule:Enable()
         end

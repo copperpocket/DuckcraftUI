@@ -4,57 +4,57 @@
 
   <!-- ====================================================================
        UnitFrame Layers XML Templates
-       Ported from UnitFrameLayers addon for DragonUI integration.
+       Ported from UnitFrameLayers addon for DuckcraftUI integration.
        Provides heal prediction, absorb shield, and animated loss templates.
        ==================================================================== -->
 
   <!-- Texture templates (virtual) -->
-  <Texture name="DragonUI_MyHealPredictionBarTemplate" virtual="true" file="Interface\TargetingFrame\UI-StatusBar">
+  <Texture name="DuckcraftUI_MyHealPredictionBarTemplate" virtual="true" file="Interface\TargetingFrame\UI-StatusBar">
     <Color r="0.0" g="0.827" b="0.765"/>
   </Texture>
-  <Texture name="DragonUI_MyManaCostPredictionBarTemplate" virtual="true" file="Interface\TargetingFrame\UI-StatusBar">
+  <Texture name="DuckcraftUI_MyManaCostPredictionBarTemplate" virtual="true" file="Interface\TargetingFrame\UI-StatusBar">
     <Color r="0.0" g="0.447" b="1.0"/>
   </Texture>
-  <Texture name="DragonUI_OtherHealPredictionBarTemplate" virtual="true" file="Interface\TargetingFrame\UI-StatusBar">
+  <Texture name="DuckcraftUI_OtherHealPredictionBarTemplate" virtual="true" file="Interface\TargetingFrame\UI-StatusBar">
     <Color r="0.0" g="0.631" b="0.557"/>
   </Texture>
-  <Texture name="DragonUI_TotalAbsorbBarTemplate" virtual="true" file="Interface\AddOns\DragonUI\Textures\UnitFrameLayers\Shield-Fill"/>
-  <Texture name="DragonUI_HealAbsorbBarTemplate" virtual="true"/>
-  <Texture name="DragonUI_HealAbsorbBarLeftShadowTemplate" virtual="true" file="Interface\AddOns\DragonUI\Textures\UnitFrameLayers\Absorb-Edge"/>
-  <Texture name="DragonUI_HealAbsorbBarRightShadowTemplate" virtual="true" file="Interface\AddOns\DragonUI\Textures\UnitFrameLayers\Absorb-Edge">
+  <Texture name="DuckcraftUI_TotalAbsorbBarTemplate" virtual="true" file="Interface\AddOns\DuckcraftUI\Textures\UnitFrameLayers\Shield-Fill"/>
+  <Texture name="DuckcraftUI_HealAbsorbBarTemplate" virtual="true"/>
+  <Texture name="DuckcraftUI_HealAbsorbBarLeftShadowTemplate" virtual="true" file="Interface\AddOns\DuckcraftUI\Textures\UnitFrameLayers\Absorb-Edge"/>
+  <Texture name="DuckcraftUI_HealAbsorbBarRightShadowTemplate" virtual="true" file="Interface\AddOns\DuckcraftUI\Textures\UnitFrameLayers\Absorb-Edge">
     <TexCoords left="1" right="0" top="0" bottom="1"/>
   </Texture>
 
-  <Texture name="DragonUI_TotalAbsorbBarOverlayTemplate" virtual="true" file="Interface\AddOns\DragonUI\Textures\UnitFrameLayers\Shield-Overlay" vertTile="true" horizTile="true"/>
-  <Texture name="DragonUI_OverAbsorbGlowTemplate" virtual="true" file="Interface\AddOns\DragonUI\Textures\UnitFrameLayers\Shield-Overshield" alphaMode="ADD">
+  <Texture name="DuckcraftUI_TotalAbsorbBarOverlayTemplate" virtual="true" file="Interface\AddOns\DuckcraftUI\Textures\UnitFrameLayers\Shield-Overlay" vertTile="true" horizTile="true"/>
+  <Texture name="DuckcraftUI_OverAbsorbGlowTemplate" virtual="true" file="Interface\AddOns\DuckcraftUI\Textures\UnitFrameLayers\Shield-Overshield" alphaMode="ADD">
     <Size x="16" y="0"/>
   </Texture>
-  <Texture name="DragonUI_OverHealAbsorbGlowTemplate" virtual="true" file="Interface\AddOns\DragonUI\Textures\UnitFrameLayers\Absorb-Overabsorb" alphaMode="ADD">
+  <Texture name="DuckcraftUI_OverHealAbsorbGlowTemplate" virtual="true" file="Interface\AddOns\DuckcraftUI\Textures\UnitFrameLayers\Absorb-Overabsorb" alphaMode="ADD">
     <Size x="16" y="0"/>
   </Texture>
 
   <!-- Main heal prediction container template -->
-  <Frame name="DragonUI_StatusBarHealPredictionTemplate" frameLevel="1" setAllPoints="true" virtual="true">
+  <Frame name="DuckcraftUI_StatusBarHealPredictionTemplate" frameLevel="1" setAllPoints="true" virtual="true">
     <Layers>
       <Layer level="BORDER">
-        <Texture name="$parentOverHealAbsorbGlow" inherits="DragonUI_OverHealAbsorbGlowTemplate"/>
-        <Texture name="$parentHealAbsorbBar" inherits="DragonUI_HealAbsorbBarTemplate"/>
-        <Texture name="$parentFrameMyHealPredictionBar" inherits="DragonUI_MyHealPredictionBarTemplate"/>
-        <Texture name="$parentFrameOtherHealPredictionBar" inherits="DragonUI_OtherHealPredictionBarTemplate"/>
-        <Texture name="$parentFrameManaCostPredictionBar" inherits="DragonUI_MyManaCostPredictionBarTemplate"/>
+        <Texture name="$parentOverHealAbsorbGlow" inherits="DuckcraftUI_OverHealAbsorbGlowTemplate"/>
+        <Texture name="$parentHealAbsorbBar" inherits="DuckcraftUI_HealAbsorbBarTemplate"/>
+        <Texture name="$parentFrameMyHealPredictionBar" inherits="DuckcraftUI_MyHealPredictionBarTemplate"/>
+        <Texture name="$parentFrameOtherHealPredictionBar" inherits="DuckcraftUI_OtherHealPredictionBarTemplate"/>
+        <Texture name="$parentFrameManaCostPredictionBar" inherits="DuckcraftUI_MyManaCostPredictionBarTemplate"/>
       </Layer>
       <Layer level="ARTWORK">
-        <Texture name="$parentTotalAbsorbBar" inherits="DragonUI_TotalAbsorbBarTemplate"/>
-        <Texture name="$parentHealAbsorbBarRightShadow" inherits="DragonUI_HealAbsorbBarRightShadowTemplate"/>
-        <Texture name="$parentHealAbsorbBarLeftShadow" inherits="DragonUI_HealAbsorbBarLeftShadowTemplate"/>
-        <Texture name="$parentTotalAbsorbBarOverlay" inherits="DragonUI_TotalAbsorbBarOverlayTemplate"/>
+        <Texture name="$parentTotalAbsorbBar" inherits="DuckcraftUI_TotalAbsorbBarTemplate"/>
+        <Texture name="$parentHealAbsorbBarRightShadow" inherits="DuckcraftUI_HealAbsorbBarRightShadowTemplate"/>
+        <Texture name="$parentHealAbsorbBarLeftShadow" inherits="DuckcraftUI_HealAbsorbBarLeftShadowTemplate"/>
+        <Texture name="$parentTotalAbsorbBarOverlay" inherits="DuckcraftUI_TotalAbsorbBarOverlayTemplate"/>
       </Layer>
     </Layers>
     <Frames setAllPoints="true">
       <Frame name="$parentFrameOverAbsorb" frameLevel="3">
         <Layers>
           <Layer level="OVERLAY">
-            <Texture name="$parentGlow" inherits="DragonUI_OverAbsorbGlowTemplate"/>
+            <Texture name="$parentGlow" inherits="DuckcraftUI_OverAbsorbGlowTemplate"/>
           </Layer>
         </Layers>
       </Frame>
@@ -62,18 +62,18 @@
   </Frame>
 
   <!-- Animated health loss bar template (player only) -->
-  <StatusBar name="DragonUI_PlayerFrameHealthBarAnimatedLossTemplate" hidden="true" virtual="true">
+  <StatusBar name="DuckcraftUI_PlayerFrameHealthBarAnimatedLossTemplate" hidden="true" virtual="true">
     <BarTexture file="Interface\TargetingFrame\UI-StatusBar"/>
     <Scripts>
       <OnLoad>
-        DragonUI_Mixin(self, DragonUI_AnimatedHealthLossMixin);
+        DuckcraftUI_Mixin(self, DuckcraftUI_AnimatedHealthLossMixin);
         self:OnLoad();
       </OnLoad>
     </Scripts>
   </StatusBar>
 
   <!-- Builder/Spender feedback frame template -->
-  <Frame name="DragonUI_BuilderSpenderFrame" virtual="true">
+  <Frame name="DuckcraftUI_BuilderSpenderFrame" virtual="true">
     <Layers>
       <Layer level="ARTWORK">
         <Texture parentKey="BarTexture" file="Interface\TargetingFrame\UI-StatusBar" hidden="true"/>
@@ -87,18 +87,18 @@
     </Layers>
     <Scripts>
       <OnLoad>
-        DragonUI_Mixin(self, DragonUI_BuilderSpender);
+        DuckcraftUI_Mixin(self, DuckcraftUI_BuilderSpender);
         self:OnLoad();
       </OnLoad>
     </Scripts>
   </Frame>
 
   <!-- Full resource pulse frame template -->
-  <Frame name="DragonUI_FullResourcePulseFrame" virtual="true">
+  <Frame name="DuckcraftUI_FullResourcePulseFrame" virtual="true">
     <Size x="119" y="12"/>
     <Scripts>
       <OnLoad>
-        DragonUI_Mixin(self, DragonUI_FullResourcePulse);
+        DuckcraftUI_Mixin(self, DuckcraftUI_FullResourcePulse);
       </OnLoad>
     </Scripts>
     <Frames>
@@ -109,7 +109,7 @@
         </Anchors>
         <Layers>
           <Layer level="OVERLAY">
-            <Texture file="Interface\AddOns\DragonUI\Textures\UnitFrameLayers\PlayerFrameFX" parentKey="BigSpikeGlow" alpha="0" alphaMode="BLEND">
+            <Texture file="Interface\AddOns\DuckcraftUI\Textures\UnitFrameLayers\PlayerFrameFX" parentKey="BigSpikeGlow" alpha="0" alphaMode="BLEND">
               <Size x="27" y="34"/>
               <TexCoords left="0.0078125" right="0.21875" top="0.015625" bottom="0.546875"/>
               <Anchors>
@@ -134,7 +134,7 @@
                 </AnimationGroup>
               </Animations>
             </Texture>
-            <Texture file="Interface\AddOns\DragonUI\Textures\UnitFrameLayers\PlayerFrameFX" parentKey="AlertSpikeStay" alpha="0" alphaMode="BLEND">
+            <Texture file="Interface\AddOns\DuckcraftUI\Textures\UnitFrameLayers\PlayerFrameFX" parentKey="AlertSpikeStay" alpha="0" alphaMode="BLEND">
               <Size x="34" y="18"/>
               <TexCoords left="0.578125" right="0.84375" top="0.015625" bottom="0.296875"/>
               <Anchors>
@@ -175,7 +175,7 @@
         </Anchors>
         <Layers>
           <Layer level="OVERLAY">
-            <Texture file="Interface\AddOns\DragonUI\Textures\UnitFrameLayers\PlayerFrameFX" parentKey="PulseGlow" alpha="0" alphaMode="ADD">
+            <Texture file="Interface\AddOns\DuckcraftUI\Textures\UnitFrameLayers\PlayerFrameFX" parentKey="PulseGlow" alpha="0" alphaMode="ADD">
               <TexCoords left="0.0078125" right="0.9375" top="0.546875" bottom="1.0"/>
               <Anchors>
                 <Anchor point="TOPRIGHT"/>
@@ -209,7 +209,7 @@
   </Frame>
 
   <!-- Full power frame (anchored version) -->
-  <Frame name="DragonUI_FullPowerFrameTemplate" inherits="DragonUI_FullResourcePulseFrame" virtual="true">
+  <Frame name="DuckcraftUI_FullPowerFrameTemplate" inherits="DuckcraftUI_FullResourcePulseFrame" virtual="true">
     <Size x="119" y="12"/>
     <Anchors>
       <Anchor point="TOPRIGHT"/>

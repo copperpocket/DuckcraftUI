@@ -1,12 +1,12 @@
 --[[
 ================================================================================
-DragonUI Options Panel - Enhancements Tab
+DuckcraftUI Options Panel - Enhancements Tab
 ================================================================================
 Dark Mode, Range Indicator, Item Quality Borders, Enhanced Tooltips.
 ================================================================================
 ]]
 
-local addon = DragonUI
+local addon = DuckcraftUI
 if not addon then return end
 
 local L = addon.L
@@ -25,13 +25,13 @@ end
 local function GetModuleField(moduleName, field)
     local m = addon.db.profile.modules--[[
 ================================================================================
-DragonUI Options Panel - Enhancements Tab
+DuckcraftUI Options Panel - Enhancements Tab
 ================================================================================
 Dark Mode, Range Indicator, Item Quality Borders, Enhanced Tooltips.
 ================================================================================
 ]]
 
-local addon = DragonUI
+local addon = DuckcraftUI
 if not addon then return end
 
 local L = addon.L

@@ -22,7 +22,7 @@ A modern, Dragonflight-inspired user interface overhaul built specifically for t
 In-game options for fading, visibility, and other UI tweaks can be found in the standard Interface Options menu under the AddOns tab, provided by the `DuckcraftUI_Options` module.
 
 ## Credits
-This project is a customized version of [DragonUI by NeticSoul](https://github.com/NeticSoul/DragonUI). Thank you to original developer for creating the foundation that makes this modern interface possible on the 3.3.5a client.
+This project is a customized version of [DuckcraftUI by NeticSoul](https://github.com/NeticSoul/DuckcraftUI). Thank you to original developer for creating the foundation that makes this modern interface possible on the 3.3.5a client.
 
 ---
 *Developed for AzerothCore (3.3.5a)*

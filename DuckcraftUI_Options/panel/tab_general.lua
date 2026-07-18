@@ -1,12 +1,12 @@
 --[[
 ================================================================================
-DragonUI Options Panel - General Tab
+DuckcraftUI Options Panel - General Tab
 ================================================================================
 Editor Mode, KeyBind Mode, and general settings.
 ================================================================================
 ]]
 
-local addon = DragonUI
+local addon = DuckcraftUI
 if not addon then return end
 
 local AceGUI = LibStub("AceGUI-3.0")
@@ -67,7 +67,7 @@ local importExportFrame
 local function GetImportExportFrame()
     if importExportFrame then return importExportFrame end
 
-    local f = CreateFrame("Frame", "DragonUI_ImportExportFrame", UIParent)
+    local f = CreateFrame("Frame", "DuckcraftUI_ImportExportFrame", UIParent)
     f:SetSize(500, 350)
     f:SetPoint("CENTER")
     f:SetFrameStrata("FULLSCREEN_DIALOG")
@@ -83,18 +83,18 @@ local function GetImportExportFrame()
         insets = { left = 11, right = 11, top = 12, bottom = 10 },
     })
     f:Hide()
-    tinsert(UISpecialFrames, "DragonUI_ImportExportFrame")
+    tinsert(UISpecialFrames, "DuckcraftUI_ImportExportFrame")
 
     -- Title
     f.title = f:CreateFontString(nil, "OVERLAY", "GameFontNormalLarge")
     f.title:SetPoint("TOP", 0, -16)
 
     -- Scrollframe + EditBox
-    local sf = CreateFrame("ScrollFrame", "DragonUI_IEScrollFrame", f, "UIPanelScrollFrameTemplate")
+    local sf = CreateFrame("ScrollFrame", "DuckcraftUI_IEScrollFrame", f, "UIPanelScrollFrameTemplate")
     sf:SetPoint("TOPLEFT", 20, -45)
     sf:SetPoint("BOTTOMRIGHT", -40, 50)
 
-    local eb = CreateFrame("EditBox", "DragonUI_IEEditBox", sf)
+    local eb = CreateFrame("EditBox", "DuckcraftUI_IEEditBox", sf)
     eb:SetMultiLine(true)
     eb:SetAutoFocus(false)
     eb:SetFontObject(ChatFontNormal)
@@ -156,14 +156,14 @@ local function ShowImportFrame()
         if not data then
             local msg = LO["Invalid preset string."] or "Invalid preset string."
             if errType == "header" then
-                msg = LO["Not a valid DragonUI preset string."] or "Not a valid DragonUI preset string."
+                msg = LO["Not a valid DuckcraftUI preset string."] or "Not a valid DuckcraftUI preset string."
             end
-            print("|cFFFF4444[DragonUI]|r " .. msg)
+            print("|cFFFF4444[DuckcraftUI]|r " .. msg)
             return
         end
         f:Hide()
         -- Ask for a name
-        local dialog = StaticPopup_Show("DRAGONUI_PRESET_IMPORT_NAME")
+        local dialog = StaticPopup_Show("DUCKCRAFTUI_PRESET_IMPORT_NAME")
         if dialog then
             dialog.data = data
         end
@@ -227,7 +227,7 @@ end
 -- STATIC POPUP: NAME INPUT
 -- ============================================================================
 
-StaticPopupDialogs["DRAGONUI_PRESET_NAME"] = {
+StaticPopupDialogs["DUCKCRAFTUI_PRESET_NAME"] = {
     text = LO["Enter a name for this preset:"],
     button1 = LO["Save"],
     button2 = LO["Cancel"],
@@ -253,7 +253,7 @@ StaticPopupDialogs["DRAGONUI_PRESET_NAME"] = {
             data = SnapshotProfile(),
             date = date("%Y-%m-%d %H:%M"),
         }
-        print("|cFF00FF00[DragonUI]|r " .. (LO["Preset saved: "] or "Preset saved: ") .. name)
+        print("|cFF00FF00[DuckcraftUI]|r " .. (LO["Preset saved: "] or "Preset saved: ") .. name)
         -- Refresh the General tab to show the new preset
         if Panel.currentTab == "general" then
             Panel:SelectTab("general")
@@ -261,7 +261,7 @@ StaticPopupDialogs["DRAGONUI_PRESET_NAME"] = {
     end,
     EditBoxOnEnterPressed = function(self)
         local parent = self:GetParent()
-        StaticPopupDialogs["DRAGONUI_PRESET_NAME"].OnAccept(parent)
+        StaticPopupDialogs["DUCKCRAFTUI_PRESET_NAME"].OnAccept(parent)
         parent:Hide()
     end,
     EditBoxOnEscapePressed = function(self)
@@ -273,7 +273,7 @@ StaticPopupDialogs["DRAGONUI_PRESET_NAME"] = {
     preferredIndex = 3,
 }
 
-StaticPopupDialogs["DRAGONUI_PRESET_LOAD"] = {
+StaticPopupDialogs["DUCKCRAFTUI_PRESET_LOAD"] = {
     text = LO["Load preset '%s'? This will overwrite your current layout settings."],
     button1 = LO["Load"],
     button2 = LO["Cancel"],
@@ -282,7 +282,7 @@ StaticPopupDialogs["DRAGONUI_PRESET_LOAD"] = {
         local presets = GetPresets()
         if presets[name] and presets[name].data then
             RestoreSnapshot(presets[name].data)
-            print("|cFF00FF00[DragonUI]|r " .. (LO["Preset loaded: "] or "Preset loaded: ") .. name)
+            print("|cFF00FF00[DuckcraftUI]|r " .. (LO["Preset loaded: "] or "Preset loaded: ") .. name)
             ReloadUI()
         end
     end,
@@ -292,7 +292,7 @@ StaticPopupDialogs["DRAGONUI_PRESET_LOAD"] = {
     preferredIndex = 3,
 }
 
-StaticPopupDialogs["DRAGONUI_PRESET_DELETE"] = {
+StaticPopupDialogs["DUCKCRAFTUI_PRESET_DELETE"] = {
     text = LO["Delete preset '%s'? This cannot be undone."],
     button1 = LO["Delete"],
     button2 = LO["Cancel"],
@@ -301,7 +301,7 @@ StaticPopupDialogs["DRAGONUI_PRESET_DELETE"] = {
         local presets = GetPresets()
         if presets[name] then
             presets[name] = nil
-            print("|cFF00FF00[DragonUI]|r " .. (LO["Preset deleted: "] or "Preset deleted: ") .. name)
+            print("|cFF00FF00[DuckcraftUI]|r " .. (LO["Preset deleted: "] or "Preset deleted: ") .. name)
             if Panel.currentTab == "general" then
                 Panel:SelectTab("general")
             end
@@ -317,7 +317,7 @@ StaticPopupDialogs["DRAGONUI_PRESET_DELETE"] = {
 -- STATIC POPUP: IMPORT NAME INPUT
 -- ============================================================================
 
-StaticPopupDialogs["DRAGONUI_PRESET_IMPORT_NAME"] = {
+StaticPopupDialogs["DUCKCRAFTUI_PRESET_IMPORT_NAME"] = {
     text = LO["Enter a name for the imported preset:"],
     button1 = LO["Save"],
     button2 = LO["Cancel"],
@@ -344,14 +344,14 @@ StaticPopupDialogs["DRAGONUI_PRESET_IMPORT_NAME"] = {
             data = addon.DeepCopy(importedData),
             date = date("%Y-%m-%d %H:%M"),
         }
-        print("|cFF00FF00[DragonUI]|r " .. (LO["Preset imported: "] or "Preset imported: ") .. name)
+        print("|cFF00FF00[DuckcraftUI]|r " .. (LO["Preset imported: "] or "Preset imported: ") .. name)
         if Panel.currentTab == "general" then
             Panel:SelectTab("general")
         end
     end,
     EditBoxOnEnterPressed = function(self)
         local parent = self:GetParent()
-        StaticPopupDialogs["DRAGONUI_PRESET_IMPORT_NAME"].OnAccept(parent)
+        StaticPopupDialogs["DUCKCRAFTUI_PRESET_IMPORT_NAME"].OnAccept(parent)
         parent:Hide()
     end,
     EditBoxOnEscapePressed = function(self)
@@ -373,17 +373,17 @@ local function BuildGeneralTab(scroll)
     -- ====================================================================
     local about = C:AddSection(scroll, LO["About"])
 
-    C:AddLabel(about, "|cff1784d1" .. LO["DragonUI"] .. " v2.5|r")
+    C:AddLabel(about, "|cff1784d1" .. LO["DuckcraftUI"] .. " v2.5|r")
     C:AddDescription(about, LO["Bringing the retail WoW look to 3.3.5a, inspired by Dragonflight UI."])
     C:AddSpacer(about)
     C:AddDescription(about, LO["Created and maintained by Neticsoul, with community contributions."])
     C:AddSpacer(about)
     C:AddDescription(about, LO["Use the tabs on the left to configure modules, action bars, unit frames, minimap, and more."])
     C:AddSpacer(about)
-    C:AddDescription(about, LO["Commands: /dragonui, /dui, /pi — /dragonui edit (editor) — /dragonui help"])
+    C:AddDescription(about, LO["Commands: /duckcraftui, /dui, /pi — /duckcraftui edit (editor) — /duckcraftui help"])
     C:AddSpacer(about)
     C:AddDescription(about, LO["GitHub (select and Ctrl+C to copy):"])
-    C:AddCopyableText(about, "https://github.com/NeticSoul/DragonUI")
+    C:AddCopyableText(about, "https://github.com/NeticSoul/DuckcraftUI")
 
     C:AddSpacer(scroll)
 
@@ -489,7 +489,7 @@ local function BuildGeneralTab(scroll)
             hlTex:SetVertexColor(0.09, 0.52, 0.82, 0)
 
             btn:SetCallback("OnClick", function()
-                local dialog = StaticPopup_Show("DRAGONUI_PRESET_LOAD", name)
+                local dialog = StaticPopup_Show("DUCKCRAFTUI_PRESET_LOAD", name)
                 if dialog then dialog.data = name end
             end)
             btn:SetCallback("OnEnter", function()
@@ -515,7 +515,7 @@ local function BuildGeneralTab(scroll)
         desc = LO["Save your current UI layout as a new preset."],
         callback = function()
             local defaultName = UniquePresetName(LO["Preset"] or "Preset")
-            local dialog = StaticPopup_Show("DRAGONUI_PRESET_NAME")
+            local dialog = StaticPopup_Show("DUCKCRAFTUI_PRESET_NAME")
             if dialog then dialog.data = defaultName end
         end,
     })
@@ -534,7 +534,7 @@ local function BuildGeneralTab(scroll)
             width = 180,
             setFunc = function(value)
                 if value then
-                    local dialog = StaticPopup_Show("DRAGONUI_PRESET_LOAD", value)
+                    local dialog = StaticPopup_Show("DUCKCRAFTUI_PRESET_LOAD", value)
                     if dialog then dialog.data = value end
                 end
             end,
@@ -546,7 +546,7 @@ local function BuildGeneralTab(scroll)
             width = 180,
             setFunc = function(value)
                 if value then
-                    local dialog = StaticPopup_Show("DRAGONUI_PRESET_DELETE", value)
+                    local dialog = StaticPopup_Show("DUCKCRAFTUI_PRESET_DELETE", value)
                     if dialog then dialog.data = value end
                 end
             end,
@@ -563,7 +563,7 @@ local function BuildGeneralTab(scroll)
                         data = addon.DeepCopy(presetData[value].data),
                         date = date("%Y-%m-%d %H:%M"),
                     }
-                    print("|cFF00FF00[DragonUI]|r " .. (LO["Preset duplicated: "] or "Preset duplicated: ") .. newName)
+                    print("|cFF00FF00[DuckcraftUI]|r " .. (LO["Preset duplicated: "] or "Preset duplicated: ") .. newName)
                     Panel:SelectTab("general")
                 end
             end,
@@ -579,7 +579,7 @@ local function BuildGeneralTab(scroll)
                     if exportStr then
                         ShowExportFrame(value, exportStr)
                     else
-                        print("|cFFFF4444[DragonUI]|r " .. (LO["Failed to export preset."] or "Failed to export preset."))
+                        print("|cFFFF4444[DuckcraftUI]|r " .. (LO["Failed to export preset."] or "Failed to export preset."))
                     end
                 end
             end,

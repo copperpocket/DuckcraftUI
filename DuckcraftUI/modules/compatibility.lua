@@ -4,7 +4,7 @@ addon.compatibility = compatibility
 local L = addon.L
 
 --[[
-* DragonUI Compatibility Manager
+* DuckcraftUI Compatibility Manager
 * 
 * Modular system to detect specific addons and apply custom behaviors.
 * Each addon can have its own detection and behavior logic.
@@ -80,7 +80,7 @@ end
 -- ============================================================================
 
 local InterfaceSettingsFixer = {
-    popupName = "DRAGONUI_INTERFACE_SETTINGS_FIXER",
+    popupName = "DUCKCRAFTUI_INTERFACE_SETTINGS_FIXER",
     initialized = false,
     scanPending = false,
     popupVisible = false,
@@ -263,11 +263,11 @@ local function ShowInterfaceSettingsFixerPopup(issues)
     end
 
     local issueLines = BuildInterfaceSettingsIssueLines(issues)
-    local popupText = "|cFF00CCFFDragonUI|r\n\n" ..
-        (L["Some interface settings are not configured optimally for DragonUI."] or "Some interface settings are not configured optimally for DragonUI.") ..
+    local popupText = "|cFF00CCFFDuckcraftUI|r\n\n" ..
+        (L["Some interface settings are not configured optimally for DuckcraftUI."] or "Some interface settings are not configured optimally for DuckcraftUI.") ..
         "\n\n" ..
-        (L["This includes settings that conflict with DragonUI and settings recommended for the best visual experience."] or
-        "This includes settings that conflict with DragonUI and settings recommended for the best visual experience.") ..
+        (L["This includes settings that conflict with DuckcraftUI and settings recommended for the best visual experience."] or
+        "This includes settings that conflict with DuckcraftUI and settings recommended for the best visual experience.") ..
         "\n\n" ..
         (L["Affected settings:"] or "Affected settings:") .. "\n" ..
         issueLines ..
@@ -330,11 +330,11 @@ local behaviors = {}
 
 -- Behavior: Show conflict warning with disable option
 behaviors.ConflictWarning = function(addonName, addonInfo)
-    local popupName = "DRAGONUI_CONFLICT_" .. string.upper(addonName)
+    local popupName = "DUCKCRAFTUI_CONFLICT_" .. string.upper(addonName)
     
     StaticPopupDialogs[popupName] = {
-        text = "|cFFFF0000" .. L["DragonUI Conflict Warning"] .. "|r\n\n" ..
-            string.format(L["The addon |cFFFFFF00%s|r conflicts with DragonUI."], addonInfo.name) .. "\n\n" ..
+        text = "|cFFFF0000" .. L["DuckcraftUI Conflict Warning"] .. "|r\n\n" ..
+            string.format(L["The addon |cFFFFFF00%s|r conflicts with DuckcraftUI."], addonInfo.name) .. "\n\n" ..
             "|cFFFF9999" .. L["Reason:"] .. "|r " .. addonInfo.reason .. "\n\n" ..
             L["Disable the conflicting addon now?"],
         button1 = L["Disable"],
@@ -355,16 +355,16 @@ end
 
 -- Behavior: UnitFrameLayers overlap resolution
 behaviors.UnitFrameLayersCompatibility = function(addonName, addonInfo)
-    local popupName = "DRAGONUI_UNITFRAMELAYERS_DETECTED"
+    local popupName = "DUCKCRAFTUI_UNITFRAMELAYERS_DETECTED"
 
     StaticPopupDialogs[popupName] = {
-        text = "|cFFFF0000" .. L["DragonUI Conflict Warning"] .. "|r\n\n" ..
-            "|cFFFFFF00" .. L["DragonUI - UnitFrameLayers Detected"] .. "|r\n\n" ..
-            L["DragonUI already includes Unit Frame Layers functionality (heal prediction, absorb shields, and animated health loss)."] .. "\n\n" ..
+        text = "|cFFFF0000" .. L["DuckcraftUI Conflict Warning"] .. "|r\n\n" ..
+            "|cFFFFFF00" .. L["DuckcraftUI - UnitFrameLayers Detected"] .. "|r\n\n" ..
+            L["DuckcraftUI already includes Unit Frame Layers functionality (heal prediction, absorb shields, and animated health loss)."] .. "\n\n" ..
             L["Choose how to resolve this overlap:"] .. "\n" ..
-            "- " .. L["Use DragonUI: disable external UnitFrameLayers and enable DragonUI layers."] .. "\n" ..
-            "- " .. L["Disable Both: disable external UnitFrameLayers and keep DragonUI layers disabled."],
-        button1 = L["Use DragonUI"],
+            "- " .. L["Use DuckcraftUI: disable external UnitFrameLayers and enable DuckcraftUI layers."] .. "\n" ..
+            "- " .. L["Disable Both: disable external UnitFrameLayers and keep DuckcraftUI layers disabled."],
+        button1 = L["Use DuckcraftUI"],
         button2 = L["Disable Both"],
         OnAccept = function()
             DisableAddOn(addonName)
@@ -429,7 +429,7 @@ behaviors.CompactRaidFrameFix = function(addonName, addonInfo)
                 _G.PartyMemberFrame_UpdateParty()
             end
             
-            -- Apply DragonUI refresh if available
+            -- Apply DuckcraftUI refresh if available
             if addon and addon.RefreshPartyFrames then
                 addon.RefreshPartyFrames()
             end
@@ -438,8 +438,8 @@ behaviors.CompactRaidFrameFix = function(addonName, addonInfo)
     
     -- Show reload dialog for party frame creation issues
     local function ShowPartyReloadDialog()
-        StaticPopupDialogs["DRAGONUI_PARTY_RELOAD"] = {
-            text = "|cFFFFFF00" .. L["DragonUI - Party Frame Issue"] .. "|r\n\n" ..
+        StaticPopupDialogs["DUCKCRAFTUI_PARTY_RELOAD"] = {
+            text = "|cFFFFFF00" .. L["DuckcraftUI - Party Frame Issue"] .. "|r\n\n" ..
                    L["You joined a party while in combat. Due to CompactRaidFrame taint issues, party frames may not display correctly."] ..
                    "\n\n|cFFFF9999" .. L["Reload the UI to fix party frame display?"] .. "|r",
             button1 = L["Reload UI"],
@@ -454,7 +454,7 @@ behaviors.CompactRaidFrameFix = function(addonName, addonInfo)
             preferredIndex = 3
         }
         
-        StaticPopup_Show("DRAGONUI_PARTY_RELOAD")
+        StaticPopup_Show("DUCKCRAFTUI_PARTY_RELOAD")
     end
     
 
@@ -547,7 +547,7 @@ end
 -- ============================================================================
 
 -- Behavior: SexyMap compatibility with 3-option popup
--- Detects SexyMap and offers:  Use SexyMap only / Use DragonUI only / Hybrid mode
+-- Detects SexyMap and offers:  Use SexyMap only / Use DuckcraftUI only / Hybrid mode
 behaviors.SexyMapCompatibility = function(addonName, addonInfo)
     -- Check if user has already made a choice (stored in DB)
     local minimapConfig = addon.db and addon.db.profile and addon.db.profile.modules
@@ -573,14 +573,14 @@ end
 
 -- Internal: Show the SexyMap compatibility popup with 3 options
 behaviors._ShowSexyMapPopup = function()
-    local popupName = "DRAGONUI_SEXYMAP_COMPAT"
+    local popupName = "DUCKCRAFTUI_SEXYMAP_COMPAT"
 
     StaticPopupDialogs[popupName] = {
-        text = "|cFF00CCFF" .. L["DragonUI - SexyMap Detected"] .. "|r\n\n" ..
+        text = "|cFF00CCFF" .. L["DuckcraftUI - SexyMap Detected"] .. "|r\n\n" ..
             L["Which minimap do you want to use?"] .. "\n\n" ..
-            "|cFFFFFF00" .. L["Hybrid"] .. " (" .. L["Recommended"] .. "):|r " .. L["SexyMap visuals with DragonUI editor and positioning."],
+            "|cFFFFFF00" .. L["Hybrid"] .. " (" .. L["Recommended"] .. "):|r " .. L["SexyMap visuals with DuckcraftUI editor and positioning."],
         button1 = L["SexyMap"],
-        button2 = L["DragonUI"],
+        button2 = L["DuckcraftUI"],
         button3 = L["Hybrid"],
         OnAccept = function()
             -- Button1: Use SexyMap Only
@@ -592,8 +592,8 @@ behaviors._ShowSexyMapPopup = function()
             ReloadUI()
         end,
         OnCancel = function()
-            -- Button2: Use DragonUI Only
-            behaviors._SaveSexyMapMode("dragonui")
+            -- Button2: Use DuckcraftUI Only
+            behaviors._SaveSexyMapMode("duckcraftui")
             DisableAddOn("SexyMap")
             ReloadUI()
         end,
@@ -625,7 +625,7 @@ behaviors._SaveSexyMapMode = function(mode)
 end
 
 -- Internal: Exempt MiniMapLFGFrame (Dungeon Eye) from SexyMap's hover-fade.
--- DragonUI's micromenu reparents MiniMapLFGFrame out of MinimapCluster into
+-- DuckcraftUI's micromenu reparents MiniMapLFGFrame out of MinimapCluster into
 -- its own moveable wrapper.  SexyMap's Buttons module registers it as a hover
 -- button (fades to alpha 0 when mouse is not over the minimap), but since the
 -- frame is no longer a child of MinimapCluster the mouse-over detection never
@@ -634,8 +634,8 @@ end
 behaviors._ExemptLFGFromSexyMapFade = function()
     if not MiniMapLFGFrame then return end
     -- Already applied?
-    if MiniMapLFGFrame._DragonUI_SexyMapFadeExempt then return end
-    MiniMapLFGFrame._DragonUI_SexyMapFadeExempt = true
+    if MiniMapLFGFrame._DuckcraftUI_SexyMapFadeExempt then return end
+    MiniMapLFGFrame._DuckcraftUI_SexyMapFadeExempt = true
 
     local sexyMapObj = _G["SexyMap"]
     -- Unregister from SexyMap's hover system
@@ -648,7 +648,7 @@ behaviors._ExemptLFGFromSexyMapFade = function()
     -- Safety net: hook SetAlpha to prevent SexyMap from fading it
     local origLFGSetAlpha = MiniMapLFGFrame.SetAlpha
     MiniMapLFGFrame.SetAlpha = function(self, alpha)
-        -- If DragonUI has reparented the LFG frame out of the minimap
+        -- If DuckcraftUI has reparented the LFG frame out of the minimap
         -- hierarchy, block external fade attempts
         local parent = self:GetParent()
         if parent and parent ~= Minimap and parent ~= MinimapCluster
@@ -664,22 +664,22 @@ end
 behaviors._ApplySexyMapMode = function(mode)
     if mode == "sexymap" then
         -- ================================================================
-        -- USE SEXYMAP ONLY: DragonUI minimap module skips initialization
+        -- USE SEXYMAP ONLY: DuckcraftUI minimap module skips initialization
         -- when sexymap_mode == "sexymap" is in DB (checked in Initialize/Apply).
         -- Also disable addon button skin to avoid conflicts.
         -- Ensure SexyMap is enabled at addon level (may have been disabled
-        -- by a previous "dragonui" mode switch).
+        -- by a previous "duckcraftui" mode switch).
         -- ================================================================
         EnableAddOn("SexyMap")
         if addon.db and addon.db.profile and addon.db.profile.minimap then
             addon.db.profile.minimap.addon_button_skin = false
         end
-        -- Exempt LFG icon from SexyMap fade (DragonUI micromenu reparents it)
+        -- Exempt LFG icon from SexyMap fade (DuckcraftUI micromenu reparents it)
         DelayedCall(behaviors._ExemptLFGFromSexyMapFade, 2.0)
 
-    elseif mode == "dragonui" then
+    elseif mode == "duckcraftui" then
         -- ================================================================
-        -- USE DRAGONUI ONLY: Disable SexyMap addon so it won't load
+        -- USE DUCKCRAFTUI ONLY: Disable SexyMap addon so it won't load
         -- on next reload. Also disable if currently loaded.
         -- ================================================================
         DisableAddOn("SexyMap")
@@ -690,7 +690,7 @@ behaviors._ApplySexyMapMode = function(mode)
         -- The minimap module reads sexymap_mode from DB during init
         -- and adjusts its ReplaceBlizzardFrame/RemoveBlizzardFrames logic.
         -- Ensure SexyMap is enabled at addon level (may have been disabled
-        -- by a previous "dragonui" mode switch).
+        -- by a previous "duckcraftui" mode switch).
         -- ================================================================
         EnableAddOn("SexyMap")
         if addon.MinimapModule then
@@ -720,13 +720,13 @@ behaviors._WaitAndAdjustHybrid = function()
     end
 end
 
--- Internal: Adjust DragonUI minimap for hybrid coexistence with SexyMap
+-- Internal: Adjust DuckcraftUI minimap for hybrid coexistence with SexyMap
 -- In hybrid mode:
 --   SexyMap controls: borders, shapes/mask, fading, button orbit/visibility
---   DragonUI controls: positioning (editor mode), tracking icons, calendar,
+--   DuckcraftUI controls: positioning (editor mode), tracking icons, calendar,
 --                      instance difficulty, POI textures, blip textures
 behaviors._AdjustForHybridMode = function()
-    -- 1. Hide DragonUI's custom border top (SexyMap hides the default and uses its own)
+    -- 1. Hide DuckcraftUI's custom border top (SexyMap hides the default and uses its own)
     if MinimapBorderTop then
         MinimapBorderTop:Hide()
     end
@@ -741,7 +741,7 @@ behaviors._AdjustForHybridMode = function()
         addon.MinimapModule._allowExternalBorderControl = true
     end
 
-    -- 4. Hide DragonUI's custom border frame and circle texture (conflicts with SexyMap borders)
+    -- 4. Hide DuckcraftUI's custom border frame and circle texture (conflicts with SexyMap borders)
     if addon.MinimapModule and addon.MinimapModule.borderFrame then
         addon.MinimapModule.borderFrame:Hide()
         addon.MinimapModule._borderHiddenForHybrid = true
@@ -751,7 +751,7 @@ behaviors._AdjustForHybridMode = function()
     end
 
     -- 5. Fix zone text: Let SexyMap's ZoneText module handle styling/position
-    --    but preserve DragonUI's click-to-open-map functionality
+    --    but preserve DuckcraftUI's click-to-open-map functionality
     if MinimapZoneTextButton then
         local sexyMapObj = _G["SexyMap"]
         local sexyMapZoneText = sexyMapObj and sexyMapObj.GetModule and sexyMapObj:GetModule("ZoneText", true)
@@ -770,7 +770,7 @@ behaviors._AdjustForHybridMode = function()
         end
     end
 
-    -- 6. Lock SexyMap's built-in drag so DragonUI editor handles positioning
+    -- 6. Lock SexyMap's built-in drag so DuckcraftUI editor handles positioning
     local sexyMapObj = _G["SexyMap"]
     if sexyMapObj then
         local sexyMapGeneral = sexyMapObj.GetModule and sexyMapObj:GetModule("General", true)
@@ -788,7 +788,7 @@ behaviors._AdjustForHybridMode = function()
     -- 7. Let SexyMap's Borders, Fader, and Buttons modules work freely
     --    (no interference needed — they operate on Minimap children)
 
-    -- 8. Restore SexyMap's mask if it was overridden by DragonUI
+    -- 8. Restore SexyMap's mask if it was overridden by DuckcraftUI
     if sexyMapObj then
         local sexyMapShapes = sexyMapObj.GetModule and sexyMapObj:GetModule("Shapes", true)
         if sexyMapShapes and sexyMapShapes.Apply then
@@ -797,7 +797,7 @@ behaviors._AdjustForHybridMode = function()
         end
     end
 
-    -- 9. Disable DragonUI's addon button skin (conflicts with SexyMap button management)
+    -- 9. Disable DuckcraftUI's addon button skin (conflicts with SexyMap button management)
     if addon.db and addon.db.profile and addon.db.profile.minimap then
         addon.db.profile.minimap.addon_button_skin = false
     end
@@ -849,26 +849,26 @@ end
 ADDON_REGISTRY = {
     ["unitframelayers"] = {
         name = "UnitFrameLayers",
-        reason = L["Conflicts with DragonUI's custom unit frame textures and power bar system."],
+        reason = L["Conflicts with DuckcraftUI's custom unit frame textures and power bar system."],
         behavior = behaviors.UnitFrameLayersCompatibility,
         checkOnce = true
     },
     ["compactraidframe"] = {
         name = "CompactRaidFrame",
-        reason = L["Known taint issues when manipulating party frames during combat. DragonUI provides automatic fixes."],
+        reason = L["Known taint issues when manipulating party frames during combat. DuckcraftUI provides automatic fixes."],
         behavior = behaviors.CompactRaidFrameFix,
         checkOnce = true,
         listenToRaidEvents = true -- Enable raid event monitoring
     },
     ["carbonite"] = {
         name = "Carbonite",
-        reason = L["Resets minimap mask and blip textures. DragonUI re-applies its custom textures automatically."],
+        reason = L["Resets minimap mask and blip textures. DuckcraftUI re-applies its custom textures automatically."],
         behavior = behaviors.CarboniteMinimapFix,
         checkOnce = true
     },
     ["sexymap"] = {
         name = "SexyMap",
-        reason = L["SexyMap modifies the minimap borders, shape, and zone text which conflicts with DragonUI's minimap module."],
+        reason = L["SexyMap modifies the minimap borders, shape, and zone text which conflicts with DuckcraftUI's minimap module."],
         behavior = behaviors.SexyMapCompatibility,
         checkOnce = true
     },
@@ -930,7 +930,7 @@ local function HideD3D9ExGryphons()
 end
 
 local function CreateD3D9ExWarningFrame()
-    local frame = CreateFrame("Frame", "DragonUI_D3D9ExWarning", UIParent)
+    local frame = CreateFrame("Frame", "DuckcraftUI_D3D9ExWarning", UIParent)
     frame:SetSize(580, 232)
     frame:SetPoint("TOP", UIParent, "TOP", 0, -120)
     frame:SetFrameStrata("DIALOG")
@@ -967,7 +967,7 @@ local function CreateD3D9ExWarningFrame()
     title:SetPoint("RIGHT", frame, "RIGHT", -40, 0)
     title:SetJustifyH("LEFT")
     title:SetTextColor(1, 0.82, 0.12)
-    title:SetText(L["DragonUI - D3D9Ex Warning"])
+    title:SetText(L["DuckcraftUI - D3D9Ex Warning"])
 
     local message = frame:CreateFontString(nil, "OVERLAY", "GameFontHighlight")
     message:SetPoint("TOPLEFT", frame, "TOPLEFT", 20, -52)
@@ -975,9 +975,9 @@ local function CreateD3D9ExWarningFrame()
     message:SetJustifyH("LEFT")
     message:SetJustifyV("TOP")
     message:SetText(
-        L["DragonUI detected that your client is using D3D9Ex."] .. "\n" ..
-        L["DragonUI's action bar system is not compatible with D3D9Ex."] .. "\n" ..
-        L["Some DragonUI action bar textures will be missing while this mode is active."]
+        L["DuckcraftUI detected that your client is using D3D9Ex."] .. "\n" ..
+        L["DuckcraftUI's action bar system is not compatible with D3D9Ex."] .. "\n" ..
+        L["Some DuckcraftUI action bar textures will be missing while this mode is active."]
     )
 
     local configHeader = frame:CreateFontString(nil, "OVERLAY", "GameFontNormal")
@@ -1059,7 +1059,7 @@ local function RegisterEventsForAddon(addonName, addonInfo)
         return
     end
     
-    local eventFrame = CreateFrame("Frame", "DragonUI_Events_" .. addonName)
+    local eventFrame = CreateFrame("Frame", "DuckcraftUI_Events_" .. addonName)
     eventFrame:RegisterEvent("RAID_ROSTER_UPDATE")
     eventFrame:RegisterEvent("PARTY_CONVERTED_TO_RAID")
     eventFrame:RegisterEvent("PARTY_MEMBERS_CHANGED")
@@ -1148,7 +1148,7 @@ local function InitializeEvents()
                 addonLoadCache[string.lower(loadedAddonName)] = true
             end
 
-            if loadedAddonName == "DragonUI" then
+            if loadedAddonName == "DuckcraftUI" then
                 -- Auto-reset SexyMap mode ONLY if SexyMap is completely uninstalled
                 -- (not in the addon list at all). If it's just disabled, the user's
                 -- chosen mode should persist so it applies when they re-enable it.
@@ -1213,29 +1213,29 @@ end
 -- ============================================================================
 
 local function InitializeCommands()
-    SLASH_DRAGONUI_COMPAT1 = "/duicomp"
+    SLASH_DUCKCRAFTUI_COMPAT1 = "/duicomp"
     
-    SlashCmdList["DRAGONUI_COMPAT"] = function(msg)
+    SlashCmdList["DUCKCRAFTUI_COMPAT"] = function(msg)
         local cmd = msg and msg:lower():trim() or ""
         
         if cmd == "sexymap reset" then
             -- Reset SexyMap mode choice — will re-prompt on next login
             compatibility:ResetSexyMapMode()
-            print("|cFF00CCFFDragonUI:|r " .. L["SexyMap compatibility mode has been reset. Reload UI to choose again."])
+            print("|cFF00CCFFDuckcraftUI:|r " .. L["SexyMap compatibility mode has been reset. Reload UI to choose again."])
             return
         elseif cmd == "sexymap" then
             -- Show current SexyMap mode
             local mode = compatibility:GetSexyMapMode()
             if mode then
-                print("|cFF00CCFFDragonUI:|r " .. string.format(L["Current SexyMap mode: |cFFFFFF00%s|r"], mode))
+                print("|cFF00CCFFDuckcraftUI:|r " .. string.format(L["Current SexyMap mode: |cFFFFFF00%s|r"], mode))
             else
-                print("|cFF00CCFFDragonUI:|r " .. L["No SexyMap mode selected (SexyMap not detected or not yet chosen)."])
+                print("|cFF00CCFFDuckcraftUI:|r " .. L["No SexyMap mode selected (SexyMap not detected or not yet chosen)."])
             end
             return
         end
         
         -- Default: list loaded addons
-        print("|cFF00CCFF" .. L["DragonUI Compatibility:"] .. "|r")
+        print("|cFF00CCFF" .. L["DuckcraftUI Compatibility:"] .. "|r")
         print("  /duicomp sexymap - " .. L["Show current SexyMap compatibility mode"])
         print("  /duicomp sexymap reset - " .. L["Reset SexyMap mode choice (re-prompts on reload)"])
         print("")
@@ -1317,8 +1317,8 @@ InitializeCommands()
 
 local function IsSexyMapInstalled()
     -- Check if SexyMap exists in the addon list at all (enabled or disabled).
-    -- We do NOT check enabled state because DragonUI itself disables SexyMap
-    -- in "DragonUI Only" mode, and the user needs the options to switch back.
+    -- We do NOT check enabled state because DuckcraftUI itself disables SexyMap
+    -- in "DuckcraftUI Only" mode, and the user needs the options to switch back.
     for i = 1, GetNumAddOns() do
         local name = GetAddOnInfo(i)
         if name and name:lower() == "sexymap" then
@@ -1341,7 +1341,7 @@ if sexyMapInstalled then
         args = {
             description = {
                 type = 'description',
-                name = L["Choose how DragonUI and SexyMap share the minimap."],
+                name = L["Choose how DuckcraftUI and SexyMap share the minimap."],
                 order = 1
             },
             sexymap_mode = {
@@ -1350,20 +1350,20 @@ if sexyMapInstalled then
                 desc = L["Requires UI reload to apply."],
                 values = {
                     ["sexymap"]  = L["SexyMap"],
-                    ["dragonui"] = L["DragonUI"],
+                    ["duckcraftui"] = L["DuckcraftUI"],
                     ["hybrid"]   = L["Hybrid"],
                 },
                 get = function()
                     local cfg = addon.db and addon.db.profile and addon.db.profile.modules
                         and addon.db.profile.modules.minimap
-                    return cfg and cfg.sexymap_mode or "dragonui"
+                    return cfg and cfg.sexymap_mode or "duckcraftui"
                 end,
                 set = function(_, val)
                     if addon.db and addon.db.profile and addon.db.profile.modules
                         and addon.db.profile.modules.minimap then
                         addon.db.profile.modules.minimap.sexymap_mode = val
                     end
-                    StaticPopup_Show("DRAGONUI_SEXYMAP_MODE_RELOAD")
+                    StaticPopup_Show("DUCKCRAFTUI_SEXYMAP_MODE_RELOAD")
                 end,
                 order = 2,
             },
@@ -1371,16 +1371,16 @@ if sexyMapInstalled then
                 type = 'description',
                 name = function()
                     return "\n|cFF888888" .. L["SexyMap"] .. ":|r " .. L["Uses SexyMap for the minimap."] .. "\n" ..
-                           "|cFF888888" .. L["DragonUI"] .. ":|r " .. L["Uses DragonUI for the minimap."] .. "\n" ..
-                           "|cFF888888" .. L["Hybrid"] .. ":|r " .. L["SexyMap visuals with DragonUI editor and positioning."]
+                           "|cFF888888" .. L["DuckcraftUI"] .. ":|r " .. L["Uses DuckcraftUI for the minimap."] .. "\n" ..
+                           "|cFF888888" .. L["Hybrid"] .. ":|r " .. L["SexyMap visuals with DuckcraftUI editor and positioning."]
                 end,
                 order = 3
             }
         }
     }
 
-    StaticPopupDialogs["DRAGONUI_SEXYMAP_MODE_RELOAD"] = {
-        text = "|cFF00CCFFDragonUI|r\n\n" .. L["Minimap mode changed. Reload UI to apply?"],
+    StaticPopupDialogs["DUCKCRAFTUI_SEXYMAP_MODE_RELOAD"] = {
+        text = "|cFF00CCFFDuckcraftUI|r\n\n" .. L["Minimap mode changed. Reload UI to apply?"],
         button1 = ACCEPT or "Accept",
         button2 = CANCEL or "Cancel",
         OnAccept = function() ReloadUI() end,
@@ -1390,7 +1390,7 @@ if sexyMapInstalled then
         preferredIndex = 3
     }
 
-    -- DragonUI_Options is LoadOnDemand — RegisterOptionsGroup may not exist yet.
+    -- DuckcraftUI_Options is LoadOnDemand — RegisterOptionsGroup may not exist yet.
     -- Queue the table; it gets picked up when the first RegisterOptionsGroup call runs.
     if addon.RegisterOptionsGroup then
         addon:RegisterOptionsGroup("sexymap", sexyMapOptions)

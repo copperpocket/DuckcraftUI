@@ -13,7 +13,7 @@ local hooksecurefunc = hooksecurefunc;
 local _G = getfenv(0);
 
 -- ============================================================================
--- BUTTONS MODULE FOR DRAGONUI
+-- BUTTONS MODULE FOR DUCKCRAFTUI
 -- ============================================================================
 
 local actionbars = {
@@ -783,7 +783,7 @@ initFrame:RegisterEvent("PLAYER_ENTERING_WORLD")
 initFrame:RegisterEvent("PLAYER_REGEN_ENABLED")
 initFrame:RegisterEvent("UPDATE_BINDINGS")  -- CLAVE: Actualizar hotkeys cuando cambien los bindings
 initFrame:SetScript("OnEvent", function(self, event, addonName)
-    if event == "ADDON_LOADED" and addonName == "DragonUI" then
+    if event == "ADDON_LOADED" and addonName == "DuckcraftUI" then
         Initialize()
         self:UnregisterEvent("ADDON_LOADED")
     elseif event == "PLAYER_ENTERING_WORLD" then

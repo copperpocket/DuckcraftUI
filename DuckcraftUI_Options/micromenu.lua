@@ -1,6 +1,6 @@
 --[[
 ================================================================================
-DragonUI Options - Micro Menu (Legacy Stub)
+DuckcraftUI Options - Micro Menu (Legacy Stub)
 ================================================================================
 Legacy AceConfig options have been removed.
 All settings are now managed through the modern custom panel (panel/).

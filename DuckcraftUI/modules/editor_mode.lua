@@ -1,5 +1,5 @@
 -- ============================================================================
--- DragonUI - Editor Mode
+-- DuckcraftUI - Editor Mode
 -- Provides a visual grid overlay and controls for repositioning UI elements.
 -- ============================================================================
 
@@ -14,7 +14,7 @@ local exitEditorButton = nil;
 local resetAllButton = nil;
 
 -- StaticPopup to reload UI after exiting editor mode
-StaticPopupDialogs["DRAGONUI_RELOAD_UI"] = {
+StaticPopupDialogs["DUCKCRAFTUI_RELOAD_UI"] = {
     text = L["UI elements have been repositioned. Reload UI to ensure all graphics display correctly?"],
     button1 = L["Reload Now"],
     button2 = L["Later"],
@@ -28,7 +28,7 @@ StaticPopupDialogs["DRAGONUI_RELOAD_UI"] = {
 }
 
 -- ============================================================================
--- BUTTON STYLING (matches DragonUI Options panel theme)
+-- BUTTON STYLING (matches DuckcraftUI Options panel theme)
 -- ============================================================================
 local BD_EDITOR_BUTTON = {
     bgFile   = "Interface\\ChatFrame\\ChatFrameBackground",
@@ -75,7 +75,7 @@ local function styleEditorButton(button)
     local fontString = button:GetFontString()
     if fontString then
         fontString:SetTextColor(0.9, 0.9, 0.9, 1)
-        local fontPath = (addon.Fonts and addon.Fonts.NARROW) or "Interface\\AddOns\\DragonUI_Options\\fonts\\PTSansNarrow.ttf"
+        local fontPath = (addon.Fonts and addon.Fonts.NARROW) or "Interface\\AddOns\\DuckcraftUI_Options\\fonts\\PTSansNarrow.ttf"
         fontString:SetFont(fontPath, 12, "")
     end
 end
@@ -83,7 +83,7 @@ end
 local function createExitButton()
     if exitEditorButton then return; end
 
-    exitEditorButton = CreateFrame("Button", "DragonUIExitEditorButton", UIParent, "UIPanelButtonTemplate");
+    exitEditorButton = CreateFrame("Button", "DuckcraftUIExitEditorButton", UIParent, "UIPanelButtonTemplate");
     exitEditorButton:SetText(L["Exit Edit Mode"]);
     exitEditorButton:SetSize(140, 28);
     exitEditorButton:SetPoint("CENTER", UIParent, "CENTER", 0, 200);
@@ -103,7 +103,7 @@ end
 local function createResetAllButton()
     if resetAllButton then return; end
 
-    resetAllButton = CreateFrame("Button", "DragonUIResetAllButton", UIParent, "UIPanelButtonTemplate");
+    resetAllButton = CreateFrame("Button", "DuckcraftUIResetAllButton", UIParent, "UIPanelButtonTemplate");
     resetAllButton:SetText(L["Reset All Positions"]);
     resetAllButton:SetSize(140, 28);
     resetAllButton:SetPoint("CENTER", UIParent, "CENTER", 0, 165);
@@ -146,13 +146,13 @@ local function createGridOverlay()
     local centerX = screenWidth / 2
     local centerY = screenHeight / 2
     
-    gridOverlay = CreateFrame('Frame', "DragonUIGridOverlay", UIParent)
+    gridOverlay = CreateFrame('Frame', "DuckcraftUIGridOverlay", UIParent)
     gridOverlay:SetAllPoints(UIParent)
     gridOverlay:SetFrameStrata("BACKGROUND")
     gridOverlay:SetFrameLevel(0)
 
     --  ADD SEMI-TRANSPARENT DARK BACKGROUND LAYER
-    local background = gridOverlay:CreateTexture("DragonUIGridBackground", 'BACKGROUND')
+    local background = gridOverlay:CreateTexture("DuckcraftUIGridBackground", 'BACKGROUND')
     background:SetAllPoints(gridOverlay)
     background:SetTexture(0, 0, 0, 0.3)  -- Semi-transparent black
     background:SetDrawLayer('BACKGROUND', -1)  -- Behind everything
@@ -161,7 +161,7 @@ local function createGridOverlay()
 
     -- === SYMMETRICAL VERTICAL LINES ===
     for i = 0, totalHorizontalCells do
-        local line = gridOverlay:CreateTexture("DragonUIGridV"..i, 'BACKGROUND')
+        local line = gridOverlay:CreateTexture("DuckcraftUIGridV"..i, 'BACKGROUND')
         
         -- The center line is exactly at halfCellsHorizontal
         if i == halfCellsHorizontal then
@@ -177,7 +177,7 @@ local function createGridOverlay()
 
     -- === SYMMETRICAL HORIZONTAL LINES ===
     for i = 0, totalVerticalCells do
-        local line = gridOverlay:CreateTexture("DragonUIGridH"..i, 'BACKGROUND')
+        local line = gridOverlay:CreateTexture("DuckcraftUIGridH"..i, 'BACKGROUND')
         
         -- The center line is exactly at halfCellsVertical
         if i == halfCellsVertical then
@@ -254,7 +254,7 @@ function EditorMode:Hide(showReloadPopup)
     
     -- Only show reload UI popup if not coming from reset positions
     if showReloadPopup ~= false then
-        StaticPopup_Show("DRAGONUI_RELOAD_UI")
+        StaticPopup_Show("DUCKCRAFTUI_RELOAD_UI")
     end
     
     
@@ -266,7 +266,7 @@ function EditorMode:RefreshOptionsUI()
     addon.core:ScheduleTimer(function()
         local AceConfigRegistry = LibStub("AceConfigRegistry-3.0", true)
         if AceConfigRegistry then
-            AceConfigRegistry:NotifyChange("DragonUI")
+            AceConfigRegistry:NotifyChange("DuckcraftUI")
         end
     end, 0.1)
 end
@@ -285,9 +285,9 @@ function EditorMode:IsActive()
 end
 
 -- Slash commands
-SLASH_DRAGONUI_EDITOR1 = "/duiedit"
-SLASH_DRAGONUI_EDITOR2 = "/dragonedit"
-SlashCmdList["DRAGONUI_EDITOR"] = function()
+SLASH_DUCKCRAFTUI_EDITOR1 = "/duiedit"
+SLASH_DUCKCRAFTUI_EDITOR2 = "/dragonedit"
+SlashCmdList["DUCKCRAFTUI_EDITOR"] = function()
     EditorMode:Toggle()
 end
 
@@ -338,7 +338,7 @@ function EditorMode:RemoveScaleHooks()
 end
 
 function EditorMode:ShowResetConfirmation()
-    StaticPopup_Show("DRAGONUI_RESET_ALL_POSITIONS")
+    StaticPopup_Show("DUCKCRAFTUI_RESET_ALL_POSITIONS")
 end
 
 -- Reset widget positions to defaults (works outside editor mode)
@@ -428,7 +428,7 @@ if not addon.CopyTable then
 end
 
 -- Reset confirmation dialog
-StaticPopupDialogs["DRAGONUI_RESET_ALL_POSITIONS"] = {
+StaticPopupDialogs["DUCKCRAFTUI_RESET_ALL_POSITIONS"] = {
     text = L["Are you sure you want to reset all interface elements to their default positions?"],
     button1 = L["Yes"],
     button2 = L["No"],

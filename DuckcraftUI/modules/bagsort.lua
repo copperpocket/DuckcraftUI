@@ -6,10 +6,10 @@ local function T(key, fallback)
 end
 
 -- ============================================================================
--- BAG SORT MODULE FOR DRAGONUI
+-- BAG SORT MODULE FOR DUCKCRAFTUI
 -- Sorts items in bags and bank by type, rarity, level, name.
 -- Adds sort buttons to both Combustor frames and vanilla bag/bank frames.
--- Inspired by BankStack sorting algorithm adapted for DragonUI.
+-- Inspired by BankStack sorting algorithm adapted for DuckcraftUI.
 -- ============================================================================
 
 -- Module state tracking
@@ -129,21 +129,21 @@ end
 local GetBagSlotFromButton
 
 local function EnsureLockMarker(button)
-    if not button or button._dragonUISortLockMarker then return end
+    if not button or button._duckcraftUISortLockMarker then return end
     local marker = button:CreateTexture(nil, "OVERLAY")
     marker:SetTexture("Interface\\Buttons\\WHITE8X8")
     marker:SetSize(7, 7)
     marker:SetPoint("TOPLEFT", button, "TOPLEFT", 2, -2)
     marker:SetVertexColor(0.15, 0.80, 1.00, 0.95)
     marker:Hide()
-    button._dragonUISortLockMarker = marker
+    button._duckcraftUISortLockMarker = marker
 end
 
 local function UpdateButtonLockMarker(button)
     if not button then return end
     EnsureLockMarker(button)
 
-    local marker = button._dragonUISortLockMarker
+    local marker = button._duckcraftUISortLockMarker
     if not marker then return end
 
     local bag, slot = GetBagSlotFromButton(button)
@@ -164,9 +164,9 @@ local function ToggleSlotLockByBagSlot(bag, slot)
     local newState = not IsSlotLocked(bag, slot)
     SetSlotLocked(bag, slot, newState)
     if newState then
-        DEFAULT_CHAT_FRAME:AddMessage(string.format("|cff00cc66DragonUI:|r " .. T("Slot locked (bag %d, slot %d).", "Slot locked (bag %d, slot %d)."), bag, slot), 0.4, 1, 0.4)
+        DEFAULT_CHAT_FRAME:AddMessage(string.format("|cff00cc66DuckcraftUI:|r " .. T("Slot locked (bag %d, slot %d).", "Slot locked (bag %d, slot %d)."), bag, slot), 0.4, 1, 0.4)
     else
-        DEFAULT_CHAT_FRAME:AddMessage(string.format("|cff00cc66DragonUI:|r " .. T("Slot unlocked (bag %d, slot %d).", "Slot unlocked (bag %d, slot %d)."), bag, slot), 0.4, 1, 0.4)
+        DEFAULT_CHAT_FRAME:AddMessage(string.format("|cff00cc66DuckcraftUI:|r " .. T("Slot unlocked (bag %d, slot %d).", "Slot unlocked (bag %d, slot %d)."), bag, slot), 0.4, 1, 0.4)
     end
 
     RefreshAllLockMarkers()
@@ -256,7 +256,7 @@ end
 local function ToggleHoveredSlotLock()
     local bag, slot = GetHoveredBagSlot()
     if not bag or not slot then
-        DEFAULT_CHAT_FRAME:AddMessage("|cff00cc66DragonUI:|r " .. T("Hover an item or slot, then type /sortlock.", "Hover an item or slot, then type /sortlock."), 1, 0.8, 0)
+        DEFAULT_CHAT_FRAME:AddMessage("|cff00cc66DuckcraftUI:|r " .. T("Hover an item or slot, then type /sortlock.", "Hover an item or slot, then type /sortlock."), 1, 0.8, 0)
         return
     end
 
@@ -268,8 +268,8 @@ local function InstallAltClickHooks()
     clickHooksInstalled = true
 
     local function HookSlotButton(button)
-        if not button or button._dragonUISortLockHooked then return end
-        button._dragonUISortLockHooked = true
+        if not button or button._duckcraftUISortLockHooked then return end
+        button._duckcraftUISortLockHooked = true
         hookedSlotButtons[button] = true
         EnsureLockMarker(button)
 
@@ -278,8 +278,8 @@ local function InstallAltClickHooks()
         end)
 
         button:HookScript("OnHide", function(self)
-            if self._dragonUISortLockMarker then
-                self._dragonUISortLockMarker:Hide()
+            if self._duckcraftUISortLockMarker then
+                self._duckcraftUISortLockMarker:Hide()
             end
         end)
 
@@ -321,7 +321,7 @@ local function InstallAltClickHooks()
 
         -- Combuctor item slots
         for idx = 1, 400 do
-            local btn = _G["DragonUI_CombuctorItem" .. idx]
+            local btn = _G["DuckcraftUI_CombuctorItem" .. idx]
             if btn then HookSlotButton(btn) end
         end
     end
@@ -344,11 +344,11 @@ end
 local function ClearAllLockedSlots()
     local locks = GetLockedSlotsTable()
     if not locks then
-        DEFAULT_CHAT_FRAME:AddMessage("|cff00cc66DragonUI:|r " .. T("Could not clear locks (config not ready).", "Could not clear locks (config not ready)."), 1, 0.4, 0.4)
+        DEFAULT_CHAT_FRAME:AddMessage("|cff00cc66DuckcraftUI:|r " .. T("Could not clear locks (config not ready).", "Could not clear locks (config not ready)."), 1, 0.4, 0.4)
         return
     end
     wipe(locks)
-    DEFAULT_CHAT_FRAME:AddMessage("|cff00cc66DragonUI:|r " .. T("Cleared all sort-locked slots.", "Cleared all sort-locked slots."), 0.4, 1, 0.4)
+    DEFAULT_CHAT_FRAME:AddMessage("|cff00cc66DuckcraftUI:|r " .. T("Cleared all sort-locked slots.", "Cleared all sort-locked slots."), 0.4, 1, 0.4)
     RefreshAllLockMarkers()
 end
 
@@ -682,7 +682,7 @@ moveFrame:SetScript("OnUpdate", function(self, elapsed)
     if CursorHasItem() then
         local itemid = link_to_id(select(3, GetCursorInfo()))
         if current_id ~= itemid then
-            StopSorting("DragonUI: Sort interrupted.")
+            StopSorting("DuckcraftUI: Sort interrupted.")
             return
         end
     end
@@ -710,7 +710,7 @@ moveFrame:SetScript("OnUpdate", function(self, elapsed)
             local source_link = GetContainerItemLink(source_bag, source_slot)
             local source_itemid = link_to_id(source_link)
             if not source_itemid then
-                StopSorting("DragonUI: Sort confused, stopping.")
+                StopSorting("DuckcraftUI: Sort confused, stopping.")
                 return
             end
 
@@ -732,7 +732,7 @@ moveFrame:SetScript("OnUpdate", function(self, elapsed)
         end
     end
 
-    DEFAULT_CHAT_FRAME:AddMessage("|cff00cc66DragonUI:|r " .. T("Sort complete.", "Sort complete."), 0.4, 1, 0.4)
+    DEFAULT_CHAT_FRAME:AddMessage("|cff00cc66DuckcraftUI:|r " .. T("Sort complete.", "Sort complete."), 0.4, 1, 0.4)
     StopSorting()
 end)
 moveFrame:Hide()
@@ -766,7 +766,7 @@ end
 
 local function SortPlayerBags()
     if running then
-        DEFAULT_CHAT_FRAME:AddMessage("|cff00cc66DragonUI:|r " .. T("Sort already in progress.", "Sort already in progress."), 1, 0.8, 0)
+        DEFAULT_CHAT_FRAME:AddMessage("|cff00cc66DuckcraftUI:|r " .. T("Sort already in progress.", "Sort already in progress."), 1, 0.8, 0)
         return
     end
 
@@ -776,17 +776,17 @@ local function SortPlayerBags()
     StartSorting()
 
     if #moves == 0 then
-        DEFAULT_CHAT_FRAME:AddMessage("|cff00cc66DragonUI:|r " .. T("Bags already sorted!", "Bags already sorted!"), 0.4, 1, 0.4)
+        DEFAULT_CHAT_FRAME:AddMessage("|cff00cc66DuckcraftUI:|r " .. T("Bags already sorted!", "Bags already sorted!"), 0.4, 1, 0.4)
     end
 end
 
 local function SortBankBags()
     if running then
-        DEFAULT_CHAT_FRAME:AddMessage("|cff00cc66DragonUI:|r " .. T("Sort already in progress.", "Sort already in progress."), 1, 0.8, 0)
+        DEFAULT_CHAT_FRAME:AddMessage("|cff00cc66DuckcraftUI:|r " .. T("Sort already in progress.", "Sort already in progress."), 1, 0.8, 0)
         return
     end
     if not bank_open then
-        DEFAULT_CHAT_FRAME:AddMessage("|cff00cc66DragonUI:|r " .. T("You must be at the bank.", "You must be at the bank."), 1, 0.4, 0.4)
+        DEFAULT_CHAT_FRAME:AddMessage("|cff00cc66DuckcraftUI:|r " .. T("You must be at the bank.", "You must be at the bank."), 1, 0.4, 0.4)
         return
     end
 
@@ -830,7 +830,7 @@ local function SortBankBags()
     StartSorting()
 
     if #moves == 0 then
-        DEFAULT_CHAT_FRAME:AddMessage("|cff00cc66DragonUI:|r " .. T("Bank already sorted!", "Bank already sorted!"), 0.4, 1, 0.4)
+        DEFAULT_CHAT_FRAME:AddMessage("|cff00cc66DuckcraftUI:|r " .. T("Bank already sorted!", "Bank already sorted!"), 0.4, 1, 0.4)
     end
 end
 
@@ -945,7 +945,7 @@ local combustorBagSortBtn, combustorBankSortBtn
 local combustorBagClearBtn, combustorBankClearBtn
 
 local function GetCombuctorFrame(index)
-    return _G["DragonUI_CombuctorFrame" .. index]
+    return _G["DuckcraftUI_CombuctorFrame" .. index]
 end
 
 local function AttachCombuctorButtons(frame, sortRef, clearRef, sortFunc, sortBtnName, clearBtnName, tooltipText)
@@ -994,7 +994,7 @@ local function CreateCombuctorSortButtons()
     if inventoryFrame and (not combustorBagSortBtn or not combustorBagClearBtn) then
         combustorBagSortBtn, combustorBagClearBtn = AttachCombuctorButtons(
             inventoryFrame, combustorBagSortBtn, combustorBagClearBtn,
-            SortPlayerBags, "DragonUI_CombuctorBagSortBtn", "DragonUI_CombuctorBagClearBtn", T("Sort Bags", "Sort Bags")
+            SortPlayerBags, "DuckcraftUI_CombuctorBagSortBtn", "DuckcraftUI_CombuctorBagClearBtn", T("Sort Bags", "Sort Bags")
         )
         BagSortModule.frames.combustorBagSortBtn = combustorBagSortBtn
         BagSortModule.frames.combustorBagClearBtn = combustorBagClearBtn
@@ -1003,7 +1003,7 @@ local function CreateCombuctorSortButtons()
     if bankFrame and (not combustorBankSortBtn or not combustorBankClearBtn) then
         combustorBankSortBtn, combustorBankClearBtn = AttachCombuctorButtons(
             bankFrame, combustorBankSortBtn, combustorBankClearBtn,
-            SortBankBags, "DragonUI_CombuctorBankSortBtn", "DragonUI_CombuctorBankClearBtn", T("Sort Bank", "Sort Bank")
+            SortBankBags, "DuckcraftUI_CombuctorBankSortBtn", "DuckcraftUI_CombuctorBankClearBtn", T("Sort Bank", "Sort Bank")
         )
         BagSortModule.frames.combustorBankSortBtn = combustorBankSortBtn
         BagSortModule.frames.combustorBankClearBtn = combustorBankClearBtn
@@ -1021,13 +1021,13 @@ local function CreateVanillaBagSortButton()
     if vanillaBagSortBtn then return end
 
     vanillaBagSortBtn = CreateSortButton(
-        "DragonUI_VanillaBagSortBtn",
+        "DuckcraftUI_VanillaBagSortBtn",
         UIParent,
         SortPlayerBags,
         T("Sort Bags", "Sort Bags"),
         0.53
     )
-    vanillaBagClearBtn = CreateClearLocksButton("DragonUI_VanillaBagClearBtn", UIParent, 0.53)
+    vanillaBagClearBtn = CreateClearLocksButton("DuckcraftUI_VanillaBagClearBtn", UIParent, 0.53)
     vanillaBagSortBtn:Hide()
     vanillaBagClearBtn:Hide()
     BagSortModule.frames.vanillaBagSortBtn = vanillaBagSortBtn
@@ -1076,13 +1076,13 @@ local function CreateVanillaBankSortButton()
     if not bankFrameUI then return end
 
     vanillaBankSortBtn = CreateSortButton(
-        "DragonUI_VanillaBankSortBtn",
+        "DuckcraftUI_VanillaBankSortBtn",
         bankFrameUI,
         SortBankBags,
         T("Sort Bank", "Sort Bank"),
         0.70
     )
-    vanillaBankClearBtn = CreateClearLocksButton("DragonUI_VanillaBankClearBtn", bankFrameUI, 0.70)
+    vanillaBankClearBtn = CreateClearLocksButton("DuckcraftUI_VanillaBankClearBtn", bankFrameUI, 0.70)
     -- Position near top-right, to the left of the close button
     local closeBtn = _G["BankCloseButton"]
     if closeBtn then
@@ -1209,16 +1209,16 @@ ApplyBagSortSystem = function()
     BagSortModule.registeredEvents["BANKFRAME_CLOSED"] = true
 
     -- Register slash commands
-    SlashCmdList["DRAGONUI_SORT"] = SortPlayerBags
-    SLASH_DRAGONUI_SORT1 = "/sort"
-    SLASH_DRAGONUI_SORT2 = "/sortbags"
+    SlashCmdList["DUCKCRAFTUI_SORT"] = SortPlayerBags
+    SLASH_DUCKCRAFTUI_SORT1 = "/sort"
+    SLASH_DUCKCRAFTUI_SORT2 = "/sortbags"
 
-    SlashCmdList["DRAGONUI_SORTBANK"] = SortBankBags
-    SLASH_DRAGONUI_SORTBANK1 = "/sortbank"
+    SlashCmdList["DUCKCRAFTUI_SORTBANK"] = SortBankBags
+    SLASH_DUCKCRAFTUI_SORTBANK1 = "/sortbank"
 
-    SlashCmdList["DRAGONUI_SORTLOCK"] = HandleSortLockCommand
-    SLASH_DRAGONUI_SORTLOCK1 = "/sortlock"
-    SLASH_DRAGONUI_SORTLOCK2 = "/sortignore"
+    SlashCmdList["DUCKCRAFTUI_SORTLOCK"] = HandleSortLockCommand
+    SLASH_DUCKCRAFTUI_SORTLOCK1 = "/sortlock"
+    SLASH_DUCKCRAFTUI_SORTLOCK2 = "/sortignore"
 
     -- Delay button creation to ensure combustor frames are ready, then install hooks
     InstallAltClickHooks()
@@ -1260,9 +1260,9 @@ local function RestoreBagSortSystem()
     if vanillaBankClearBtn then vanillaBankClearBtn:Hide() end
 
     -- Remove slash commands
-    SlashCmdList["DRAGONUI_SORT"] = nil
-    SlashCmdList["DRAGONUI_SORTBANK"] = nil
-    SlashCmdList["DRAGONUI_SORTLOCK"] = nil
+    SlashCmdList["DUCKCRAFTUI_SORT"] = nil
+    SlashCmdList["DUCKCRAFTUI_SORTBANK"] = nil
+    SlashCmdList["DUCKCRAFTUI_SORTLOCK"] = nil
 
     if lockVisualFrame then
         lockVisualFrame:SetScript("OnUpdate", nil)
@@ -1271,8 +1271,8 @@ local function RestoreBagSortSystem()
     end
 
     for button, _ in pairs(hookedSlotButtons) do
-        if button and button._dragonUISortLockMarker then
-            button._dragonUISortLockMarker:Hide()
+        if button and button._duckcraftUISortLockMarker then
+            button._duckcraftUISortLockMarker:Hide()
         end
     end
 
@@ -1305,7 +1305,7 @@ initFrame:RegisterEvent("ADDON_LOADED")
 initFrame:RegisterEvent("PLAYER_ENTERING_WORLD")
 
 initFrame:SetScript("OnEvent", function(self, event, arg1)
-    if event == "ADDON_LOADED" and arg1 == "DragonUI" then
+    if event == "ADDON_LOADED" and arg1 == "DuckcraftUI" then
         if not IsModuleEnabled() then return end
 
         -- Register profile callbacks after DB is ready

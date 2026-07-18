@@ -1,5 +1,5 @@
 --[[
-  DragonUI - Target of Focus (FoT)
+  DuckcraftUI - Target of Focus (FoT)
 
   FoT-specific configuration passed to the UF.SmallFrame closure factory.
 ]]
@@ -33,7 +33,7 @@ local ToFModule = UF.SmallFrame.Create({
     -- No cvar for FoT (only ToT has showTargetOfTarget)
 })
 
--- Export public API (must match names used by DragonUI_Options/unitframes.lua)
+-- Export public API (must match names used by DuckcraftUI_Options/unitframes.lua)
 addon.TargetOfFocus = {
     Refresh = ToFModule.Refresh,
     RefreshToFFrame = ToFModule.Refresh,

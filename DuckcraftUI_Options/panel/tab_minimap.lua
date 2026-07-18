@@ -1,12 +1,12 @@
 --[[
 ================================================================================
-DragonUI Options Panel - Minimap Tab
+DuckcraftUI Options Panel - Minimap Tab
 ================================================================================
 Minimap scale, tracking, clock, display settings.
 ================================================================================
 ]]
 
-local addon = DragonUI
+local addon = DuckcraftUI
 if not addon then return end
 
 local L = addon.L
@@ -54,7 +54,7 @@ local function BuildMinimapTab(scroll)
 
     C:AddToggle(basic, {
         label = LO["Addon Button Skin"],
-        desc = LO["Apply DragonUI border styling to addon icons."],
+        desc = LO["Apply DuckcraftUI border styling to addon icons."],
         dbPath = "minimap.addon_button_skin",
         callback = function()
             if addon.RefreshMinimap then addon:RefreshMinimap() end
@@ -152,20 +152,20 @@ local function BuildMinimapTab(scroll)
         local sm = C:AddSection(scroll, L["SexyMap Compatibility"])
 
         C:AddDescription(sm,
-            L["Choose how DragonUI and SexyMap share the minimap."])
+            L["Choose how DuckcraftUI and SexyMap share the minimap."])
 
         C:AddDropdown(sm, {
             label = L["Minimap Mode"],
             values = {
                 ["sexymap"]  = L["SexyMap"],
-                ["dragonui"] = L["DragonUI"],
+                ["duckcraftui"] = L["DuckcraftUI"],
                 ["hybrid"]   = L["Hybrid"],
             },
             width = 220,
             getFunc = function()
                 local cfg = addon.db and addon.db.profile and addon.db.profile.modules
                     and addon.db.profile.modules.minimap
-                return cfg and cfg.sexymap_mode or "dragonui"
+                return cfg and cfg.sexymap_mode or "duckcraftui"
             end,
             setFunc = function(val)
                 if addon.db and addon.db.profile and addon.db.profile.modules
@@ -174,20 +174,20 @@ local function BuildMinimapTab(scroll)
                 end
                 -- Enable/Disable the SexyMap addon at the WoW level so it
                 -- actually loads (or doesn't) after the UI reload
-                if val == "dragonui" then
+                if val == "duckcraftui" then
                     DisableAddOn("SexyMap")
                 else
                     -- "sexymap" or "hybrid" both need SexyMap loaded
                     EnableAddOn("SexyMap")
                 end
-                StaticPopup_Show("DRAGONUI_SEXYMAP_MODE_RELOAD")
+                StaticPopup_Show("DUCKCRAFTUI_SEXYMAP_MODE_RELOAD")
             end,
         })
 
         C:AddDescription(sm,
             "|cFF888888" .. L["SexyMap"] .. ":|r " .. L["Uses SexyMap for the minimap."] .. "\n" ..
-            "|cFF888888" .. L["DragonUI"] .. ":|r " .. L["Uses DragonUI for the minimap."] .. "\n" ..
-            "|cFF888888" .. L["Hybrid"] .. ":|r " .. L["SexyMap visuals with DragonUI editor and positioning."])
+            "|cFF888888" .. L["DuckcraftUI"] .. ":|r " .. L["Uses DuckcraftUI for the minimap."] .. "\n" ..
+            "|cFF888888" .. L["Hybrid"] .. ":|r " .. L["SexyMap visuals with DuckcraftUI editor and positioning."])
     end
 end
 

@@ -1,5 +1,5 @@
 -- ============================================================================
--- DragonUI - Noop Module
+-- DuckcraftUI - Noop Module
 -- Disables unused Blizzard UI elements (gryphons, extra bars, etc.)
 -- ============================================================================
 local addon = select(2,...);
@@ -98,7 +98,7 @@ local function ApplyNoopChangesImpl()
     elements = nil
     
     -- VehicleMenuBar handling depends on whether the vehicle module is enabled.
-    -- When enabled, DragonUI's vehicle module provides its own UI, so we KILL
+    -- When enabled, DuckcraftUI's vehicle module provides its own UI, so we KILL
     -- VehicleMenuBar completely. Keeping its events alive causes Blizzard's
     -- vehicle transition code (MainMenuBar_ToVehicleArt etc.) to interfere by
     -- reparenting VehicleMenuBarActionButtons and repositioning frames —
@@ -135,7 +135,7 @@ local function ApplyNoopChangesImpl()
     uiManagedFrames = nil
 
     -- Prevent Blizzard from repositioning the chat dock when bar layout
-    -- changes.  DragonUI manages all bottom bars independently, so the
+    -- changes.  DuckcraftUI manages all bottom bars independently, so the
     -- Blizzard bottomOffset calculation is meaningless and would move the
     -- chat frame every time the dual-bar offset changes.
     if FCF_UpdateDockPosition then
@@ -186,7 +186,7 @@ local initFrame = CreateFrame("Frame")
 initFrame:RegisterEvent("ADDON_LOADED")
 initFrame:RegisterEvent("PLAYER_LOGIN")
 initFrame:SetScript("OnEvent", function(self, event, addonName)
-    if event == "ADDON_LOADED" and addonName == "DragonUI" then
+    if event == "ADDON_LOADED" and addonName == "DuckcraftUI" then
         -- Config should be available now
         NoopModule.initialized = true
         InitializeNoop()

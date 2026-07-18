@@ -1,5 +1,5 @@
 -- ============================================================================
--- DragonUI - Database Defaults
+-- DuckcraftUI - Database Defaults
 -- Defines default profile values for AceDB-3.0. All configurable settings
 -- live here as the single source of truth for new/reset profiles.
 -- ============================================================================
@@ -421,7 +421,17 @@ local defaults = {
                 x_position = -211,
                 y_offset = -58, -- Additional Y offset for fine-tuning position
                 button_size = 31, -- Size of stance buttons (native Blizzard size)
-                button_spacing = 6 -- Spacing between stance buttons
+                button_spacing = 6, -- Spacing between stance buttons
+                visibility = {
+                    hidden           = false,
+                    show_on_hover    = false,
+                    show_in_combat   = false,
+                    show_with_target = false,
+                    show_on_health   = false,
+                    show_on_power    = false,
+                    fade_delay       = 0,
+                    fade_duration    = 0.2,
+                },
             },
             pet = {
                 scale = 1.0,
@@ -573,7 +583,7 @@ local defaults = {
                 scale = 1.0,
                 classcolor = false,
                 classPortrait = false, -- Show class icon instead of character portrait
-                alternativeClassIcons = false, -- Use DragonUI alternative class icons for class portraits
+                alternativeClassIcons = false, -- Use DuckcraftUI alternative class icons for class portraits
                 textFormat = "both",
                 showHealthTextAlways = false,
                 showManaTextAlways = false,
@@ -588,7 +598,7 @@ local defaults = {
                 fat_manabar_width = 200,
                 fat_manabar_height = 8,
                 fat_manabar_hidden = false,
-                manabar_texture = "dragonui", -- "dragonui", "blizzard", "blizzard_flat", "smooth", "aluminium", "litestep"
+                manabar_texture = "duckcraftui", -- "duckcraftui", "blizzard", "blizzard_flat", "smooth", "aluminium", "litestep"
                 -- Dragonflight-style power bar colors (applied on override textures in fat mode)
                 power_colors = {
                     MANA         = { r = 0.02, g = 0.32, b = 0.71 },
@@ -614,7 +624,7 @@ local defaults = {
             target = {
                 classcolor = false,
                 classPortrait = false, -- Show class icon instead of character portrait
-                alternativeClassIcons = false, -- Use DragonUI alternative class icons for class portraits
+                alternativeClassIcons = false, -- Use DuckcraftUI alternative class icons for class portraits
                 breakUpLargeNumbers = true,
                 textFormat = 'both',
                 showHealthTextAlways = false,
@@ -628,7 +638,7 @@ local defaults = {
             focus = {
                 classcolor = false,
                 classPortrait = false, -- Show class icon instead of character portrait
-                alternativeClassIcons = false, -- Use DragonUI alternative class icons for class portraits
+                alternativeClassIcons = false, -- Use DuckcraftUI alternative class icons for class portraits
                 breakUpLargeNumbers = true,
                 textFormat = 'both',
                 showHealthTextAlways = false,
@@ -668,7 +678,7 @@ local defaults = {
             tot = {
                 classcolor = false,
                 classPortrait = false, -- Show class icon instead of character portrait
-                alternativeClassIcons = false, -- Use DragonUI alternative class icons for class portraits
+                alternativeClassIcons = false, -- Use DuckcraftUI alternative class icons for class portraits
                 scale = 1.0,
                 x = -27,
                 y = -14,
@@ -684,7 +694,7 @@ local defaults = {
             fot = {
                 classcolor = false,
                 classPortrait = false, -- Show class icon instead of character portrait
-                alternativeClassIcons = false, -- Use DragonUI alternative class icons for class portraits
+                alternativeClassIcons = false, -- Use DuckcraftUI alternative class icons for class portraits
                 scale = 1.0,
                 x = -27,
                 y = -14,
@@ -712,7 +722,7 @@ local defaults = {
         -- MODULES SETTINGS
         modules = {
             noop = {
-                enabled = true -- Hide default Blizzard UI elements to allow DragonUI replacements
+                enabled = true -- Hide default Blizzard UI elements to allow DuckcraftUI replacements
             },
             cooldowns = {
                 enabled = true -- Show cooldown timers on action buttons
@@ -721,38 +731,38 @@ local defaults = {
                 enabled = true -- Tint action button icons by range and usability
             },
             buttons = {
-                enabled = true -- Apply DragonUI button styling and enhancements
+                enabled = true -- Apply DuckcraftUI button styling and enhancements
             },
             vehicle = {
-                enabled = true -- Apply DragonUI vehicle interface enhancements
+                enabled = true -- Apply DuckcraftUI vehicle interface enhancements
             },
             stance = {
-                enabled = true -- Apply DragonUI stance/shapeshift bar positioning and styling
+                enabled = true -- Apply DuckcraftUI stance/shapeshift bar positioning and styling
             },
             petbar = {
-                enabled = true -- Apply DragonUI pet bar positioning and styling
+                enabled = true -- Apply DuckcraftUI pet bar positioning and styling
             },
             multicast = {
-                enabled = true -- Apply DragonUI multicast (totem/possess) bar positioning and styling
+                enabled = true -- Apply DuckcraftUI multicast (totem/possess) bar positioning and styling
             },
             micromenu = {
-                enabled = true -- Apply DragonUI micro menu and bags system styling and positioning
+                enabled = true -- Apply DuckcraftUI micro menu and bags system styling and positioning
             },
             mainbars = {
-                enabled = true -- Apply DragonUI main action bars, status bars (XP/Rep), scaling, and positioning system
+                enabled = true -- Apply DuckcraftUI main action bars, status bars (XP/Rep), scaling, and positioning system
             },
             minimap = {
-                enabled = true -- Apply DragonUI minimap enhancements including custom styling, positioning, tracking icons, and calendar
+                enabled = true -- Apply DuckcraftUI minimap enhancements including custom styling, positioning, tracking icons, and calendar
             },
             buffs = {
-                enabled = true -- Enable DragonUI buff frame with custom styling, positioning, and toggle button functionality
+                enabled = true -- Enable DuckcraftUI buff frame with custom styling, positioning, and toggle button functionality
             },
             keybinding = {
                 enabled = true, -- Enable LibKeyBound integration for intuitive keybinding (hover + key press)
                 auto_register_action_buttons = true -- Automatically make action buttons bindable
             },
             questtracker = {
-                enabled = true -- Enable DragonUI quest tracker positioning and styling
+                enabled = true -- Enable DuckcraftUI quest tracker positioning and styling
             },
             darkmode = {
                 enabled = false, -- Apply darker tinted textures to UI chrome

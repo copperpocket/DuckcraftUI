@@ -1,7 +1,7 @@
 -- ============================================================================
 -- UNITFRAME LAYERS DEPENDENCIES
 -- Merged from UnitFrameLayers/Dependence/ (MathUtil, Mixin, GetSpellPowerCost,
--- AnimatedHealthLossMixin, BuilderSpenderFrame) — scoped to DragonUI namespace.
+-- AnimatedHealthLossMixin, BuilderSpenderFrame) — scoped to DuckcraftUI namespace.
 -- ============================================================================
 local addon = select(2, ...);
 
@@ -43,7 +43,7 @@ addon.UFL_Round = Round;
 -- MIXIN UTILITY (from Mixin.lua)
 -- ============================================================================
 
-function DragonUI_Mixin(object, ...)
+function DuckcraftUI_Mixin(object, ...)
 	for i = 1, select("#", ...) do
 		local mixin = select(i, ...);
 		for k, v in pairs(mixin) do
@@ -311,9 +311,9 @@ end);
 -- ANIMATED HEALTH LOSS MIXIN (from AnimatedHealthLossMixin.lua)
 -- ============================================================================
 
-DragonUI_AnimatedHealthLossMixin = {};
+DuckcraftUI_AnimatedHealthLossMixin = {};
 
-function DragonUI_AnimatedHealthLossMixin:OnLoad()
+function DuckcraftUI_AnimatedHealthLossMixin:OnLoad()
 	self:SetStatusBarColor(1, 0, 0, 1);
 	self:SetDuration(.25);
 	self:SetStartDelay(.1);
@@ -321,23 +321,23 @@ function DragonUI_AnimatedHealthLossMixin:OnLoad()
 	self:SetPostponeDelay(.05);
 end
 
-function DragonUI_AnimatedHealthLossMixin:SetDuration(duration)
+function DuckcraftUI_AnimatedHealthLossMixin:SetDuration(duration)
 	self.animationDuration = duration or 0;
 end
 
-function DragonUI_AnimatedHealthLossMixin:SetStartDelay(delay)
+function DuckcraftUI_AnimatedHealthLossMixin:SetStartDelay(delay)
 	self.animationStartDelay = delay or 0;
 end
 
-function DragonUI_AnimatedHealthLossMixin:SetPauseDelay(delay)
+function DuckcraftUI_AnimatedHealthLossMixin:SetPauseDelay(delay)
 	self.animationPauseDelay = delay or 0;
 end
 
-function DragonUI_AnimatedHealthLossMixin:SetPostponeDelay(delay)
+function DuckcraftUI_AnimatedHealthLossMixin:SetPostponeDelay(delay)
 	self.animationPostponeDelay = delay or 0;
 end
 
-function DragonUI_AnimatedHealthLossMixin:SetUnitHealthBar(unit, healthBar)
+function DuckcraftUI_AnimatedHealthLossMixin:SetUnitHealthBar(unit, healthBar)
 	if self.unit ~= unit then
 		healthBar.AnimatedLossBar = self;
 		self.unit = unit;
@@ -346,12 +346,12 @@ function DragonUI_AnimatedHealthLossMixin:SetUnitHealthBar(unit, healthBar)
 	end
 end
 
-function DragonUI_AnimatedHealthLossMixin:UpdateHealthMinMax()
+function DuckcraftUI_AnimatedHealthLossMixin:UpdateHealthMinMax()
 	local maxValue = UnitHealthMax(self.unit);
 	self:SetMinMaxValues(0, maxValue);
 end
 
-function DragonUI_AnimatedHealthLossMixin:GetHealthLossAnimationData(currentHealth, previousHealth)
+function DuckcraftUI_AnimatedHealthLossMixin:GetHealthLossAnimationData(currentHealth, previousHealth)
 	if self.animationStartTime then
 		local totalElapsedTime = GetTime() - self.animationStartTime;
 		if totalElapsedTime > 0 then
@@ -368,13 +368,13 @@ function DragonUI_AnimatedHealthLossMixin:GetHealthLossAnimationData(currentHeal
 	return 0, 1;
 end
 
-function DragonUI_AnimatedHealthLossMixin:CancelAnimation()
+function DuckcraftUI_AnimatedHealthLossMixin:CancelAnimation()
 	self:Hide();
 	self.animationStartTime = nil;
 	self.animationCompletePercent = nil;
 end
 
-function DragonUI_AnimatedHealthLossMixin:BeginAnimation(value)
+function DuckcraftUI_AnimatedHealthLossMixin:BeginAnimation(value)
 	self.animationStartValue = value;
 	self.animationStartTime = GetTime() + self.animationStartDelay;
 	self.animationCompletePercent = 0;
@@ -382,11 +382,11 @@ function DragonUI_AnimatedHealthLossMixin:BeginAnimation(value)
 	self:SetValue(self.animationStartValue);
 end
 
-function DragonUI_AnimatedHealthLossMixin:PostponeStartTime()
+function DuckcraftUI_AnimatedHealthLossMixin:PostponeStartTime()
 	self.animationStartTime = self.animationStartTime + self.animationPostponeDelay;
 end
 
-function DragonUI_AnimatedHealthLossMixin:UpdateHealth(currentHealth, previousHealth)
+function DuckcraftUI_AnimatedHealthLossMixin:UpdateHealth(currentHealth, previousHealth)
 	local delta = currentHealth - previousHealth;
 	local hasLoss = delta < 0;
 	local hasBegun = self.animationStartTime ~= nil;
@@ -403,7 +403,7 @@ function DragonUI_AnimatedHealthLossMixin:UpdateHealth(currentHealth, previousHe
 	end
 end
 
-function DragonUI_AnimatedHealthLossMixin:UpdateLossAnimation(currentHealth)
+function DuckcraftUI_AnimatedHealthLossMixin:UpdateLossAnimation(currentHealth)
 	local totalAbsorb = addon.UFL_UnitGetTotalAbsorbs and addon.UFL_UnitGetTotalAbsorbs(self.unit) or 0;
 	if totalAbsorb > 0 then
 		self:CancelAnimation();
@@ -423,13 +423,13 @@ end
 -- BUILDER/SPENDER MIXIN (from BuilderSpenderFrame.lua)
 -- ============================================================================
 
-DragonUI_BuilderSpender = {};
+DuckcraftUI_BuilderSpender = {};
 
-function DragonUI_BuilderSpender:OnLoad()
+function DuckcraftUI_BuilderSpender:OnLoad()
 	self.initialized = false;
 end
 
-function DragonUI_BuilderSpender:Initialize(textureInfo, unit, powerType)
+function DuckcraftUI_BuilderSpender:Initialize(textureInfo, unit, powerType)
 	if (textureInfo.atlas) then
 		self.BarTexture:SetAtlas(textureInfo.atlas, false);
 	else
@@ -513,18 +513,18 @@ local function BuilderSpender_OnUpdateFeedback(self)
 	end
 end
 
-function DragonUI_BuilderSpender:EndFeedbackGain()
+function DuckcraftUI_BuilderSpender:EndFeedbackGain()
 	self.GainGlowTexture:Hide();
 	self.updatingGain = false;
 end
 
-function DragonUI_BuilderSpender:EndFeedbackLoss()
+function DuckcraftUI_BuilderSpender:EndFeedbackLoss()
 	self.LossGlowTexture:Hide();
 	self.BarTexture:Hide();
 	self.updatingLoss = false;
 end
 
-function DragonUI_BuilderSpender:StartFeedbackAnim(oldValue, newValue)
+function DuckcraftUI_BuilderSpender:StartFeedbackAnim(oldValue, newValue)
 	if (not self.initialized) then return end
 	oldValue = Clamp(oldValue, 0, self.maxValue);
 	newValue = math.max(newValue, 0);
@@ -563,7 +563,7 @@ function DragonUI_BuilderSpender:StartFeedbackAnim(oldValue, newValue)
 	end
 end
 
-function DragonUI_BuilderSpender:StopFeedbackAnim()
+function DuckcraftUI_BuilderSpender:StopFeedbackAnim()
 	if self.updatingGain then
 		self:EndFeedbackGain();
 	elseif self.updatingLoss then
@@ -575,9 +575,9 @@ end
 -- FULL RESOURCE PULSE (from BuilderSpenderFrame.lua)
 -- ============================================================================
 
-DragonUI_FullResourcePulse = {};
+DuckcraftUI_FullResourcePulse = {};
 
-function DragonUI_FullResourcePulse:Initialize(active)
+function DuckcraftUI_FullResourcePulse:Initialize(active)
 	self.active = active;
 	if ( active ) then
 		self:RegisterEvent("PLAYER_REGEN_ENABLED");
@@ -594,11 +594,11 @@ function DragonUI_FullResourcePulse:Initialize(active)
 	end
 end
 
-function DragonUI_FullResourcePulse:SetMaxValue(maxValue)
+function DuckcraftUI_FullResourcePulse:SetMaxValue(maxValue)
 	self.maxValue = maxValue;
 end
 
-function DragonUI_FullResourcePulse:StartAnimIfFull(oldValue, newValue)
+function DuckcraftUI_FullResourcePulse:StartAnimIfFull(oldValue, newValue)
 	if ( newValue == self.maxValue and UnitAffectingCombat("player") ) then
 		if ( (self.FadeoutAnim and self.FadeoutAnim:IsPlaying()) or not self.PulseFrame.PulseAnim:IsPlaying() ) then
 			self.SpikeFrame.BigSpikeGlow:SetAlpha(1);
@@ -615,7 +615,7 @@ function DragonUI_FullResourcePulse:StartAnimIfFull(oldValue, newValue)
 	end
 end
 
-function DragonUI_FullResourcePulse:RemoveAnims()
+function DuckcraftUI_FullResourcePulse:RemoveAnims()
 	self:SetAlpha(0);
 	self.PulseFrame.PulseAnim:Stop();
 	self.SpikeFrame.SpikeAnim:Stop();

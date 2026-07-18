@@ -3,7 +3,7 @@
 	<Script file="combuctor.lua" />
 
 	<!-- Side tab button template -->
-	<CheckButton name="DragonUI_CombuctorSideTabButtonTemplate" virtual="true" hidden="true">
+	<CheckButton name="DuckcraftUI_CombuctorSideTabButtonTemplate" virtual="true" hidden="true">
 		<Size x="32" y="32"/>
 		<Layers>
 			<Layer level="BACKGROUND">
@@ -30,7 +30,7 @@
 	</CheckButton>
 
 	<!-- Bottom tab template -->
-	<Button name="DragonUI_CombuctorFrameTabButtonTemplate" inherits="CharacterFrameTabButtonTemplate" virtual="true">
+	<Button name="DuckcraftUI_CombuctorFrameTabButtonTemplate" inherits="CharacterFrameTabButtonTemplate" virtual="true">
 		<Scripts>
 			<OnLoad>
 				self:SetFrameLevel(self:GetFrameLevel() + 4);
@@ -39,7 +39,7 @@
 	</Button>
 
 	<!-- Portrait icon button -->
-	<Button name="DragonUI_CombuctorIconButtonTemplate" virtual="true">
+	<Button name="DuckcraftUI_CombuctorIconButtonTemplate" virtual="true">
 		<Size x="64" y="64"/>
 		<Anchors>
 			<Anchor point="TOPLEFT">
@@ -91,7 +91,7 @@
 	</Button>
 
 	<!-- Bag toggle button -->
-	<Button name="DragonUI_CombuctorBagToggleTemplate" virtual="true">
+	<Button name="DuckcraftUI_CombuctorBagToggleTemplate" virtual="true">
 		<Size x="32" y="32"/>
 		<Layers>
 			<Layer level="BACKGROUND">
@@ -140,7 +140,7 @@
 	</Button>
 
 	<!-- Search box -->
-	<EditBox name="DragonUI_CombuctorSearchBoxTemplate" autoFocus="false" inherits="InputBoxTemplate" virtual="true">
+	<EditBox name="DuckcraftUI_CombuctorSearchBoxTemplate" autoFocus="false" inherits="InputBoxTemplate" virtual="true">
 		<Size x="0" y="20"/>
 		<Anchors>
 			<Anchor point="TOPLEFT">
@@ -189,7 +189,7 @@
 	</EditBox>
 
 	<!-- Reset/cancel search button -->
-	<Button name="DragonUI_CombuctorResetButtonTemplate" virtual="true">
+	<Button name="DuckcraftUI_CombuctorResetButtonTemplate" virtual="true">
 		<Size x="39" y="39"/>
 		<Scripts>
 			<OnClick>
@@ -209,7 +209,7 @@
 	</Button>
 
 	<!-- Drag/title bar -->
-	<Button name="DragonUI_CombuctorDragFrameTemplate" topLevel="true" virtual="true" text="TEXT">
+	<Button name="DuckcraftUI_CombuctorDragFrameTemplate" topLevel="true" virtual="true" text="TEXT">
 		<Size x="262" y="14"/>
 		<Anchors>
 			<Anchor point="TOP">
@@ -251,7 +251,7 @@
 	</Button>
 
 	<!-- Main inventory/bank frame template -->
-	<Frame name="DragonUI_CombuctorInventoryTemplate" resizable="true" clampedToScreen="true" enableMouse="true" movable="true" topLevel="true" frameStrata="HIGH" parent="UIParent" hidden="true" virtual="true">
+	<Frame name="DuckcraftUI_CombuctorInventoryTemplate" resizable="true" clampedToScreen="true" enableMouse="true" movable="true" topLevel="true" frameStrata="HIGH" parent="UIParent" hidden="true" virtual="true">
 		<Size x="384" y="512"/>
 		<HitRectInsets>
 			<AbsInset left="0" right="35" top="0" bottom="75"/>
@@ -349,17 +349,17 @@
 			<Button name="$parentCloseButton" inherits="UIPanelCloseButton">
 				<Anchors><Anchor point="TOPRIGHT"><Offset x="-29" y="-8"/></Anchor></Anchors>
 			</Button>
-			<Button name="$parentIconButton" inherits="DragonUI_CombuctorIconButtonTemplate"/>
-			<Button name="$parentTitle" inherits="DragonUI_CombuctorDragFrameTemplate"/>
-			<EditBox name="$parentSearch" inherits="DragonUI_CombuctorSearchBoxTemplate"/>
-			<Button name="$parentReset" inherits="DragonUI_CombuctorResetButtonTemplate">
+			<Button name="$parentIconButton" inherits="DuckcraftUI_CombuctorIconButtonTemplate"/>
+			<Button name="$parentTitle" inherits="DuckcraftUI_CombuctorDragFrameTemplate"/>
+			<EditBox name="$parentSearch" inherits="DuckcraftUI_CombuctorSearchBoxTemplate"/>
+			<Button name="$parentReset" inherits="DuckcraftUI_CombuctorResetButtonTemplate">
 				<Anchors>
 					<Anchor point="LEFT" relativeTo="$parentSearch" relativePoint="RIGHT">
 						<Offset x="-2" y="-2"/>
 					</Anchor>
 				</Anchors>
 			</Button>
-			<Button name="$parentBagToggle" inherits="DragonUI_CombuctorBagToggleTemplate">
+			<Button name="$parentBagToggle" inherits="DuckcraftUI_CombuctorBagToggleTemplate">
 				<Anchors>
 					<Anchor point="LEFT" relativeTo="$parentReset" relativePoint="RIGHT"/>
 				</Anchors>

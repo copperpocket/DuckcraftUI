@@ -1,9 +1,9 @@
 local addon = select(2, ...)
 local L = addon.L
-addon._dir = "Interface\\AddOns\\DragonUI\\assets\\"
+addon._dir = "Interface\\AddOns\\DuckcraftUI\\assets\\"
 
 -- ============================================================================
--- MAINBARS MODULE FOR DRAGONUI
+-- MAINBARS MODULE FOR DUCKCRAFTUI
 -- ============================================================================
 
 -- Module state tracking (file scope for cross-function access)
@@ -299,7 +299,7 @@ local function InitializeMainbars()
             return
         end
 
-        -- Hide DragonUI frames
+        -- Hide DuckcraftUI frames
         if MainbarsModule.frames.pUiMainBar then
             MainbarsModule.frames.pUiMainBar:Hide()
             MainbarsModule.frames.pUiMainBar = nil
@@ -391,9 +391,9 @@ local function InitializeMainbars()
             local ActionButtons = _G['ActionButton' .. index]
             do_action.SetThreeSlice(ActionButtons);
             -- Tag divider textures so update_main_bar_background skips them
-            if pUiMainBar.divider_top then pUiMainBar.divider_top._isDragonUIDivider = true end
-            if pUiMainBar.divider_mid then pUiMainBar.divider_mid._isDragonUIDivider = true end
-            if pUiMainBar.divider_bottom then pUiMainBar.divider_bottom._isDragonUIDivider = true end
+            if pUiMainBar.divider_top then pUiMainBar.divider_top._isDuckcraftUIDivider = true end
+            if pUiMainBar.divider_mid then pUiMainBar.divider_mid._isDuckcraftUIDivider = true end
+            if pUiMainBar.divider_bottom then pUiMainBar.divider_bottom._isDuckcraftUIDivider = true end
             -- Store reference to dividers created on pUiMainBar
             addon.MainBarDividers[index] = {
                 top = pUiMainBar.divider_top,
@@ -460,7 +460,7 @@ end
         -- hide loose textures within pUiMainBar (skip bar-size managed dividers)
         for i = 1, pUiMainBar:GetNumRegions() do
             local region = select(i, pUiMainBar:GetRegions())
-            if region and region:GetObjectType() == "Texture" and not region._isDragonUIDivider then
+            if region and region:GetObjectType() == "Texture" and not region._isDuckcraftUIDivider then
                 local texPath = region:GetTexture()
                 if texPath and not string.find(texPath, "ICON") then
                     region:SetAlpha(alpha)
@@ -1206,7 +1206,7 @@ end
         local sizeX = cfg.bar_width or 466
         local sizeY = GetXpBarHeight("dragonflightui")
 
-        local f = CreateFrame("Frame", "DragonUI_XPBar", UIParent)
+        local f = CreateFrame("Frame", "DuckcraftUI_XPBar", UIParent)
         f:SetSize(sizeX, sizeY)
         f:SetFrameLevel(2)
 
@@ -1308,7 +1308,7 @@ end
         local sizeX = cfg.bar_width or 466
         local sizeY = GetXpBarHeight("dragonflightui")
 
-        local f = CreateFrame("Frame", "DragonUI_RepBar", UIParent)
+        local f = CreateFrame("Frame", "DuckcraftUI_RepBar", UIParent)
         f:SetSize(sizeX, sizeY)
         f:SetFrameLevel(2)
 
@@ -1559,7 +1559,7 @@ end
         local cfg = GetXpRepConfig() or {}
         local barW = cfg.bar_width or 466
         local barH = GetXpBarHeight("retailui")
-        local ExperienceBarAsset = "Interface\\AddOns\\DragonUI\\Textures\\UI\\ExperienceBar"
+        local ExperienceBarAsset = "Interface\\AddOns\\DuckcraftUI\\Textures\\UI\\ExperienceBar"
 
         -- === XP BAR ===
         -- NOTE: Do NOT ClearAllPoints here — positioning is handled by
@@ -1593,8 +1593,8 @@ end
             end
 
             -- Clean up old custom background from previous approach
-            if MainMenuExpBar._dragonuiBg then
-                MainMenuExpBar._dragonuiBg:Hide()
+            if MainMenuExpBar._duckcraftuiBg then
+                MainMenuExpBar._duckcraftuiBg:Hide()
             end
 
             -- ExhaustionLevelFillBar: match reference (set height, keep visible for rested display)
@@ -1619,8 +1619,8 @@ end
 
             -- DON'T change the StatusBar fill texture — reference leaves Blizzard default intact
             -- Clean up old custom fill texture if it exists from previous approach
-            if MainMenuExpBar._dragonuiTex then
-                MainMenuExpBar._dragonuiTex:Hide()
+            if MainMenuExpBar._duckcraftuiTex then
+                MainMenuExpBar._duckcraftuiTex:Hide()
             end
 
             -- Clean up old custom rested overlay if it exists from previous approach
@@ -2738,7 +2738,7 @@ end
     initFrame:RegisterEvent("UNIT_ENTERED_VEHICLE")
     initFrame:RegisterEvent("PLAYER_LOGIN")
     initFrame:SetScript("OnEvent", function(self, event, addonName)
-        if event == "ADDON_LOADED" and addonName == "DragonUI" then
+        if event == "ADDON_LOADED" and addonName == "DuckcraftUI" then
             if IsModuleEnabled() then
                 ApplyMainbarsSystem()
             end
@@ -2803,7 +2803,7 @@ end
                 addon.RefreshActionBarVisibility()
             end
 
-            -- Sync Blizzard CVars with DragonUI bar enable/disable settings
+            -- Sync Blizzard CVars with DuckcraftUI bar enable/disable settings
             addon.SyncBarCVarsFromProfile()
 
             self:UnregisterEvent("PLAYER_ENTERING_WORLD")
@@ -2865,11 +2865,11 @@ end
 -- ============================================================================
 -- In WoW 3.3.5a, bar visibility is controlled via global variables
 -- SHOW_MULTI_ACTIONBAR_1..4 and persisted by SetActionBarToggles().
--- We sync DragonUI's actionbars.*_enabled settings bidirectionally.
+-- We sync DuckcraftUI's actionbars.*_enabled settings bidirectionally.
 
 local syncingBars = false
 
--- Push DragonUI profile → Blizzard (persistent via SetActionBarToggles)
+-- Push DuckcraftUI profile → Blizzard (persistent via SetActionBarToggles)
 function addon.SyncBarCVarsFromProfile()
     if syncingBars then return end
     syncingBars = true
@@ -2904,7 +2904,7 @@ function addon.SyncBarCVarsFromProfile()
             end
         end
 
-        -- Re-apply DragonUI positioning (Blizzard may have moved things)
+        -- Re-apply DuckcraftUI positioning (Blizzard may have moved things)
         if not InCombatLockdown() and addon.ActionBarFrames then
             if addon.PositionActionBarsToContainers then
                 addon.PositionActionBarsToContainers()
@@ -2920,7 +2920,7 @@ function addon.SyncBarCVarsFromProfile()
     end
 end
 
--- Pull Blizzard globals → DragonUI profile (called from MultiActionBar_Update hook)
+-- Pull Blizzard globals → DuckcraftUI profile (called from MultiActionBar_Update hook)
 local function SyncBarGlobalsToProfile()
     if syncingBars then return end
     local config = addon.db and addon.db.profile and addon.db.profile.actionbars
@@ -2929,7 +2929,7 @@ local function SyncBarGlobalsToProfile()
     config.bottom_right_enabled = (SHOW_MULTI_ACTIONBAR_2 == 1 or SHOW_MULTI_ACTIONBAR_2 == "1")
     config.right_enabled        = (SHOW_MULTI_ACTIONBAR_3 == 1 or SHOW_MULTI_ACTIONBAR_3 == "1")
     config.left_enabled         = (SHOW_MULTI_ACTIONBAR_4 == 1 or SHOW_MULTI_ACTIONBAR_4 == "1")
-    -- Re-apply DragonUI positioning after Blizzard repositioned
+    -- Re-apply DuckcraftUI positioning after Blizzard repositioned
     if not InCombatLockdown() and addon.ActionBarFrames then
         if addon.PositionActionBarsToContainers then
             addon.PositionActionBarsToContainers()
@@ -3545,7 +3545,7 @@ local function SetupActionBarHoverDetection(barName, frame)
         for i = 1, NUM_ACTIONBAR_BUTTONS do
             local button = _G[buttonPrefix .. i]
 
-            if button and not button.__DragonUI_HoverHooked then
+            if button and not button.__DuckcraftUI_HoverHooked then
                 button:HookScript("OnEnter", function()
                     if hoverTimers[barName]
                         and addon.core
@@ -3579,7 +3579,7 @@ local function SetupActionBarHoverDetection(barName, frame)
                     end
                 end)
 
-                button.__DragonUI_HoverHooked = true
+                button.__DuckcraftUI_HoverHooked = true
             end
         end
     end
@@ -3778,7 +3778,7 @@ local initFrame = CreateFrame("Frame")
 initFrame:RegisterEvent("ADDON_LOADED")
 initFrame:RegisterEvent("PLAYER_LOGIN")
 initFrame:SetScript("OnEvent", function(self, event, addonName)
-    if event == "ADDON_LOADED" and addonName == "DragonUI" then
+    if event == "ADDON_LOADED" and addonName == "DuckcraftUI" then
         -- Only initialize if enabled
         InitializeMainbars()
         self:UnregisterEvent("ADDON_LOADED")

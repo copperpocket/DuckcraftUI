@@ -1,15 +1,15 @@
 ﻿--[[
- DragonUI_Options - Portuguese (Brazil) Locale (ptBR)
+ DuckcraftUI_Options - Portuguese (Brazil) Locale (ptBR)
  Community translation — Edit this file to contribute!
 
  Guidelines:
  - Use `true` for strings you haven't translated yet (falls back to English)
  - Keep format specifiers like %s, %d, %.1f intact
- - Keep "DragonUI" as addon name untranslated
+ - Keep "DuckcraftUI" as addon name untranslated
  - Keep color codes |cff...|r outside of L[] strings
 ]]
 
-local L = LibStub("AceLocale-3.0"):NewLocale("DragonUI_Options", "ptBR")
+local L = LibStub("AceLocale-3.0"):NewLocale("DuckcraftUI_Options", "ptBR")
 if not L then return end
 
 -- Example:
@@ -48,7 +48,7 @@ L["Enter a name for the imported preset:"] = "Digite um nome para a predefiniç�
 L["Imported Preset"] = "Predefinição Importada"
 L["Preset imported: "] = "Predefinição importada: "
 L["Invalid preset string."] = "Texto de predefinição inválido."
-L["Not a valid DragonUI preset string."] = "Não é um texto de predefinição DragonUI válido."
+L["Not a valid DuckcraftUI preset string."] = "Não é um texto de predefinição DuckcraftUI válido."
 L["Failed to export preset."] = "Falha ao exportar a predefinição."
 L["Show Buff/Debuff on Focus"] = "Mostrar buffs/debuffs no foco"
 L["Uses the native large focus frame mode to show buffs and debuffs on the focus frame."] = "Usa o modo nativo de quadro de foco grande para mostrar buffs e debuffs no quadro de foco."
@@ -73,7 +73,7 @@ L["Visual style for the chat frame background."] = "Estilo visual do fundo do qu
 L["Editbox Style"] = "Estilo da caixa de entrada"
 L["Visual style for the chat input box background."] = "Estilo visual do fundo da caixa de entrada do chat."
 L["Dark"] = "Escuro"
-L["DragonUI Style"] = "Estilo DragonUI"
+L["DuckcraftUI Style"] = "Estilo DuckcraftUI"
 L["Midnight"] = "Meia-noite"
 L["Chat"] = "Chat"
 L["Appearance"] = "Apar\u00eancia"

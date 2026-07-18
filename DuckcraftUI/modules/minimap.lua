@@ -1,6 +1,6 @@
 -- ============================================================================
--- DragonUI - Minimap Module
--- Based on RetailUI by Dmitriy, adapted for DragonUI.
+-- DuckcraftUI - Minimap Module
+-- Based on RetailUI by Dmitriy, adapted for DuckcraftUI.
 -- ============================================================================
 
 local addon = select(2, ...);
@@ -54,7 +54,7 @@ local DEFAULT_MINIMAP_HEIGHT = Minimap:GetHeight() * 1.36
 local blipScale = 1.12
 local BORDER_SIZE = 71 * 2 * 2 ^ 1
 local BORDER_TO_MAP_RATIO = BORDER_SIZE / (DEFAULT_MINIMAP_WIDTH / blipScale)
-local DRAGONUI_MINIMAP_MASK = "Interface\\AddOns\\DragonUI\\assets\\uiminimapmask.tga"
+local DUCKCRAFTUI_MINIMAP_MASK = "Interface\\AddOns\\DuckcraftUI\\assets\\uiminimapmask.tga"
 
 local ADDON_ORBIT_RADIUS = 15
 
@@ -125,9 +125,9 @@ local function UpdateMinimapMaskForRotation()
         return
     end
 
-    if MinimapModule.activeMask ~= DRAGONUI_MINIMAP_MASK then
-        Minimap:SetMaskTexture(DRAGONUI_MINIMAP_MASK)
-        MinimapModule.activeMask = DRAGONUI_MINIMAP_MASK
+    if MinimapModule.activeMask ~= DUCKCRAFTUI_MINIMAP_MASK then
+        Minimap:SetMaskTexture(DUCKCRAFTUI_MINIMAP_MASK)
+        MinimapModule.activeMask = DUCKCRAFTUI_MINIMAP_MASK
     end
 end
 
@@ -187,7 +187,7 @@ local function UpdateIndoorRotationPolicy()
     if not Minimap then return end
     if MinimapModule._rotationPolicyUpdating then return end
 
-    -- In SexyMap hybrid mode, DragonUI must not control rotateMinimap.
+    -- In SexyMap hybrid mode, DuckcraftUI must not control rotateMinimap.
     if IsHybridMinimapModeActive() then
         if MinimapModule.forcingIndoorRotation then
             MinimapModule.forcingIndoorRotation = false
@@ -400,14 +400,14 @@ local function ReplaceBlizzardFrame(frame)
 
     -- In hybrid mode with SexyMap, skip border/zone text customization
     -- SexyMap handles: borders, zone text styling, shapes
-    -- DragonUI handles: positioning, tracking icons, calendar, POI textures
+    -- DuckcraftUI handles: positioning, tracking icons, calendar, POI textures
     local isHybridMode = MinimapModule.sexyMapHybridMode
         or (addon.db and addon.db.profile and addon.db.profile.modules
             and addon.db.profile.modules.minimap
             and addon.db.profile.modules.minimap.sexymap_mode == "hybrid")
 
     if not isHybridMode then
-        -- DragonUI border top styling (skipped in hybrid mode)
+        -- DuckcraftUI border top styling (skipped in hybrid mode)
         local minimapBorderTop = MinimapBorderTop
         minimapBorderTop:ClearAllPoints()
         minimapBorderTop:SetPoint("TOP", 0, 5)
@@ -448,7 +448,7 @@ local function ReplaceBlizzardFrame(frame)
     end
 
     if not isHybridMode then
-        -- DragonUI clock/calendar positioning (anchored to DragonUI's border top)
+        -- DuckcraftUI clock/calendar positioning (anchored to DuckcraftUI's border top)
         local timeClockButton = TimeManagerClockButton
         timeClockButton:GetRegions():Hide()
         timeClockButton:ClearAllPoints()
@@ -465,8 +465,8 @@ local function ReplaceBlizzardFrame(frame)
         UpdateCalendarDate()
 
         -- Blizzard refreshes calendar visuals on several events; re-apply our atlas after each update.
-        if not gameTimeFrame.DragonUI_CalendarHooked then
-            gameTimeFrame.DragonUI_CalendarHooked = true
+        if not gameTimeFrame.DuckcraftUI_CalendarHooked then
+            gameTimeFrame.DuckcraftUI_CalendarHooked = true
             gameTimeFrame:HookScript("OnEvent", function()
                 if MinimapModule.applied then
                     UpdateCalendarDate()
@@ -511,8 +511,8 @@ local function ReplaceBlizzardFrame(frame)
             end
         end
         durability_captureBarActive = captureBarVisible
-        if not durabilityFrame.DragonUI_SettingPoint then
-            durabilityFrame.DragonUI_SettingPoint = true
+        if not durabilityFrame.DuckcraftUI_SettingPoint then
+            durabilityFrame.DuckcraftUI_SettingPoint = true
             durabilityFrame:ClearAllPoints()
             if captureBarVisible then
                 -- Move down below the capture bar (shifted left to align)
@@ -521,25 +521,25 @@ local function ReplaceBlizzardFrame(frame)
                 -- Default position: slightly left of center below the minimap
                 durabilityFrame:SetPoint("TOP", Minimap, "BOTTOM", -15, -5)
             end
-            durabilityFrame.DragonUI_SettingPoint = nil
+            durabilityFrame.DuckcraftUI_SettingPoint = nil
         end
     end
 
     -- Hook DurabilityFrame:SetPoint to prevent Blizzard from overriding our position
-    if durabilityFrame and not durabilityFrame._dragonUISetPointHooked then
+    if durabilityFrame and not durabilityFrame._duckcraftUISetPointHooked then
         hooksecurefunc(durabilityFrame, "SetPoint", function(self)
-            if not self.DragonUI_SettingPoint then
-                self.DragonUI_SettingPoint = true
+            if not self.DuckcraftUI_SettingPoint then
+                self.DuckcraftUI_SettingPoint = true
                 self:ClearAllPoints()
                 if durability_captureBarActive then
                     self:SetPoint("TOP", Minimap, "BOTTOM", -15, -35)
                 else
                     self:SetPoint("TOP", Minimap, "BOTTOM", -15, -5)
                 end
-                self.DragonUI_SettingPoint = nil
+                self.DuckcraftUI_SettingPoint = nil
             end
         end)
-        durabilityFrame._dragonUISetPointHooked = true
+        durabilityFrame._duckcraftUISetPointHooked = true
     end
 
     local minimapBattlefieldFrame = MiniMapBattlefieldFrame
@@ -547,7 +547,7 @@ local function ReplaceBlizzardFrame(frame)
     minimapBattlefieldFrame:SetPoint("BOTTOMLEFT", 8, 2)
 
     if not isHybridMode then
-        -- DragonUI positioning for elements anchored to the border top
+        -- DuckcraftUI positioning for elements anchored to the border top
         local minimapInstanceFrame = MiniMapInstanceDifficulty
         minimapInstanceFrame:ClearAllPoints()
         minimapInstanceFrame:SetPoint("TOP", MinimapBorderTop, 'BOTTOMRIGHT', -20, 6)
@@ -621,10 +621,10 @@ local function ReplaceBlizzardFrame(frame)
     end
 
     -- POI (Point of Interest) Custom Textures
-    minimapFrame:SetStaticPOIArrowTexture("Interface\\AddOns\\DragonUI\\assets\\poi-static")
-    minimapFrame:SetCorpsePOIArrowTexture("Interface\\AddOns\\DragonUI\\assets\\poi-corpse")
-    minimapFrame:SetPOIArrowTexture("Interface\\AddOns\\DragonUI\\assets\\poi-guard")
-    minimapFrame:SetPlayerTexture("Interface\\AddOns\\DragonUI\\assets\\poi-player")
+    minimapFrame:SetStaticPOIArrowTexture("Interface\\AddOns\\DuckcraftUI\\assets\\poi-static")
+    minimapFrame:SetCorpsePOIArrowTexture("Interface\\AddOns\\DuckcraftUI\\assets\\poi-corpse")
+    minimapFrame:SetPOIArrowTexture("Interface\\AddOns\\DuckcraftUI\\assets\\poi-guard")
+    minimapFrame:SetPlayerTexture("Interface\\AddOns\\DuckcraftUI\\assets\\poi-player")
 
     -- Player arrow size (configurable)
     local playerArrowSize = addon.db and addon.db.profile and addon.db.profile.minimap and
@@ -632,14 +632,14 @@ local function ReplaceBlizzardFrame(frame)
     minimapFrame:SetPlayerTextureHeight(playerArrowSize)
     minimapFrame:SetPlayerTextureWidth(playerArrowSize)
 
-    -- Blip texture (configurable: new DragonUI icons vs old Blizzard icons)
+    -- Blip texture (configurable: new DuckcraftUI icons vs old Blizzard icons)
     local useNewBlipStyle = addon.db and addon.db.profile and addon.db.profile.minimap and
                                 addon.db.profile.minimap.blip_skin
     if useNewBlipStyle == nil then
         useNewBlipStyle = true -- Default to new style
     end
 
-    local blipTexture = useNewBlipStyle and "Interface\\AddOns\\DragonUI\\assets\\objecticons" or
+    local blipTexture = useNewBlipStyle and "Interface\\AddOns\\DuckcraftUI\\assets\\objecticons" or
                             'Interface\\Minimap\\ObjectIcons'
     minimapFrame:SetBlipTexture(blipTexture)
 
@@ -650,14 +650,14 @@ local function ReplaceBlizzardFrame(frame)
     -- addons like Carbonite that call SetBlipTexture on a repeating timer.
     -- =====================================================================
     if not MinimapModule.hooks.SetBlipTexture then
-        -- Public function: re-applies all DragonUI minimap textures
+        -- Public function: re-applies all DuckcraftUI minimap textures
         -- Called by compatibility module after conflicting addons load
         MinimapModule.ReapplyMinimapTextures = function()
             local useNew = addon.db and addon.db.profile and addon.db.profile.minimap and
                                addon.db.profile.minimap.blip_skin
             if useNew == nil then useNew = true end
 
-            local tex = useNew and "Interface\\AddOns\\DragonUI\\assets\\objecticons" or
+            local tex = useNew and "Interface\\AddOns\\DuckcraftUI\\assets\\objecticons" or
                             'Interface\\Minimap\\ObjectIcons'
 
             MinimapModule._settingBlipTexture = true
@@ -665,10 +665,10 @@ local function ReplaceBlizzardFrame(frame)
             MinimapModule._settingBlipTexture = false
 
             -- Re-apply POI textures (Carbonite resets these on init)
-            Minimap:SetStaticPOIArrowTexture("Interface\\AddOns\\DragonUI\\assets\\poi-static")
-            Minimap:SetCorpsePOIArrowTexture("Interface\\AddOns\\DragonUI\\assets\\poi-corpse")
-            Minimap:SetPOIArrowTexture("Interface\\AddOns\\DragonUI\\assets\\poi-guard")
-            Minimap:SetPlayerTexture("Interface\\AddOns\\DragonUI\\assets\\poi-player")
+            Minimap:SetStaticPOIArrowTexture("Interface\\AddOns\\DuckcraftUI\\assets\\poi-static")
+            Minimap:SetCorpsePOIArrowTexture("Interface\\AddOns\\DuckcraftUI\\assets\\poi-corpse")
+            Minimap:SetPOIArrowTexture("Interface\\AddOns\\DuckcraftUI\\assets\\poi-guard")
+            Minimap:SetPlayerTexture("Interface\\AddOns\\DuckcraftUI\\assets\\poi-player")
             -- Only re-apply mask if not in hybrid mode (SexyMap controls the mask/shape)
             local hybridCheck = MinimapModule.sexyMapHybridMode
                 or (addon.db and addon.db.profile and addon.db.profile.modules
@@ -683,7 +683,7 @@ local function ReplaceBlizzardFrame(frame)
         -- passes through when using classic style or module is disabled
         local origSetBlipTexture = Minimap.SetBlipTexture
         Minimap.SetBlipTexture = function(self, texture)
-            -- DragonUI's own calls always pass through
+            -- DuckcraftUI's own calls always pass through
             if MinimapModule._settingBlipTexture then
                 return origSetBlipTexture(self, texture)
             end
@@ -737,7 +737,7 @@ local function ReplaceBlizzardFrame(frame)
     end)
 
     -- In hybrid mode, don't touch MinimapBackdrop, border, circle, or zoom button skins
-    -- SexyMap controls all visual elements; DragonUI only handles positioning
+    -- SexyMap controls all visual elements; DuckcraftUI only handles positioning
     if not isHybridMode then
         local minimapBackdropTexture = MinimapBackdrop
         minimapBackdropTexture:ClearAllPoints()
@@ -748,7 +748,7 @@ local function ReplaceBlizzardFrame(frame)
         minimapBorderTexture:Hide()
         if not Minimap.Circle then
             Minimap.Circle = MinimapBackdrop:CreateTexture(nil, 'ARTWORK')
-            Minimap.Circle:SetTexture("Interface\\AddOns\\DragonUI\\assets\\uiminimapborder.tga")
+            Minimap.Circle:SetTexture("Interface\\AddOns\\DuckcraftUI\\assets\\uiminimapborder.tga")
         end
         UpdateMinimapCircleSize()
 
@@ -802,15 +802,15 @@ local function ReplaceBlizzardFrame(frame)
     -- Reposition a single WorldStateCaptureBar to below the minimap
     local function RepositionCaptureBar(bar)
         if not bar then return end
-        if not bar._dragonUISetPointHooked then
+        if not bar._duckcraftUISetPointHooked then
             -- Post-hook SetPoint to re-apply our positioning after any Blizzard repositioning
             hooksecurefunc(bar, "SetPoint", function(self, point, relativeTo, relativePoint)
                 if not (point == 'CENTER' and relativeTo == minimapFrame and relativePoint == 'BOTTOM') then
-                    if not self.DragonUI_SettingPoint then
-                        self.DragonUI_SettingPoint = true
+                    if not self.DuckcraftUI_SettingPoint then
+                        self.DuckcraftUI_SettingPoint = true
                         self:ClearAllPoints()
                         self:SetPoint('CENTER', minimapFrame, 'BOTTOM', 0, -20)
-                        self.DragonUI_SettingPoint = nil
+                        self.DuckcraftUI_SettingPoint = nil
                     end
                 end
             end)
@@ -820,14 +820,14 @@ local function ReplaceBlizzardFrame(frame)
             -- OnHide fires after the frame is actually hidden (more reliable than Hide hook)
             bar:HookScript("OnHide", function() UpdateDurabilityPosition(false) end)
             bar:HookScript("OnShow", function() UpdateDurabilityPosition(true) end)
-            bar._dragonUISetPointHooked = true
+            bar._duckcraftUISetPointHooked = true
         end
         -- Always force our position (safe even with the hook's recursion guard)
-        if not bar.DragonUI_SettingPoint then
-            bar.DragonUI_SettingPoint = true
+        if not bar.DuckcraftUI_SettingPoint then
+            bar.DuckcraftUI_SettingPoint = true
             bar:ClearAllPoints()
             bar:SetPoint('CENTER', minimapFrame, 'BOTTOM', 0, -20)
-            bar.DragonUI_SettingPoint = nil
+            bar.DuckcraftUI_SettingPoint = nil
         end
     end
 
@@ -1000,7 +1000,7 @@ local function CreateMinimapBorderFrame(width, height)
     do
         local texture = minimapBorderFrame:CreateTexture(nil, "BORDER")
         texture:SetAllPoints(minimapBorderFrame)
-        texture:SetTexture("Interface\\AddOns\\DragonUI\\Textures\\Minimap\\MinimapBorder.blp")
+        texture:SetTexture("Interface\\AddOns\\DuckcraftUI\\Textures\\Minimap\\MinimapBorder.blp")
         texture:SetAlpha(0)
 
         minimapBorderFrame.border = texture
@@ -1040,19 +1040,19 @@ local function ApplyAddonIconSkin(button)
     end
 
     -- First-time setup: catalogue regions and create overlay (only once)
-    if not button.DragonUI_Skinned then
-        button.DragonUI_Skinned = true
+    if not button.DuckcraftUI_Skinned then
+        button.DuckcraftUI_Skinned = true
 
         -- Save original size
-        button.DragonUI_OrigW, button.DragonUI_OrigH = button:GetSize()
+        button.DuckcraftUI_OrigW, button.DuckcraftUI_OrigH = button:GetSize()
 
         -- Classify original regions into "decoration" (border/bg), "highlight" (hover effect), and "icon"
-        button.DragonUI_DecoRegions = {}
-        button.DragonUI_HighlightRegions = {}
-        button.DragonUI_IconRegions = {}
-        button.DragonUI_PrimaryIconRegions = {}
-        button.DragonUI_ExtraIconRegions = {}
-        button.DragonUI_UsesStateTextures = false
+        button.DuckcraftUI_DecoRegions = {}
+        button.DuckcraftUI_HighlightRegions = {}
+        button.DuckcraftUI_IconRegions = {}
+        button.DuckcraftUI_PrimaryIconRegions = {}
+        button.DuckcraftUI_ExtraIconRegions = {}
+        button.DuckcraftUI_UsesStateTextures = false
         local seenRegions = {}
 
         local function SaveRegionState(region)
@@ -1062,20 +1062,20 @@ local function ApplyAddonIconSkin(button)
             seenRegions[region] = true
 
             local numPoints = region:GetNumPoints()
-            region.DragonUI_OrigPoints = {}
+            region.DuckcraftUI_OrigPoints = {}
             for p = 1, numPoints do
-                region.DragonUI_OrigPoints[p] = { region:GetPoint(p) }
+                region.DuckcraftUI_OrigPoints[p] = { region:GetPoint(p) }
             end
-            region.DragonUI_OrigW, region.DragonUI_OrigH = region:GetWidth(), region:GetHeight()
-            region.DragonUI_OrigLayer = region:GetDrawLayer()
-            region.DragonUI_OrigAlpha = region:GetAlpha()
-            region.DragonUI_OrigTexCoord = { region:GetTexCoord() }
+            region.DuckcraftUI_OrigW, region.DuckcraftUI_OrigH = region:GetWidth(), region:GetHeight()
+            region.DuckcraftUI_OrigLayer = region:GetDrawLayer()
+            region.DuckcraftUI_OrigAlpha = region:GetAlpha()
+            region.DuckcraftUI_OrigTexCoord = { region:GetTexCoord() }
         end
 
         local normalTex = button:GetNormalTexture()
         local pushedTex = button:GetPushedTexture()
         if normalTex and pushedTex and normalTex:GetTexture() and pushedTex:GetTexture() then
-            button.DragonUI_UsesStateTextures = true
+            button.DuckcraftUI_UsesStateTextures = true
         end
 
         for index = 1, button:GetNumRegions() do
@@ -1087,14 +1087,14 @@ local function ApplyAddonIconSkin(button)
                 if layer == 'HIGHLIGHT' then
                     -- Highlight textures: save original state for restore
                     SaveRegionState(region)
-                    table.insert(button.DragonUI_HighlightRegions, region)
+                    table.insert(button.DuckcraftUI_HighlightRegions, region)
                 elseif texStr:find('Border') or texStr:find('Background') or texStr:find('AlphaMask') then
-                    region.DragonUI_OrigAlpha = region:GetAlpha()
-                    table.insert(button.DragonUI_DecoRegions, region)
+                    region.DuckcraftUI_OrigAlpha = region:GetAlpha()
+                    table.insert(button.DuckcraftUI_DecoRegions, region)
                 else
                     -- Save original anchoring/size for icon regions
                     SaveRegionState(region)
-                    table.insert(button.DragonUI_IconRegions, region)
+                    table.insert(button.DuckcraftUI_IconRegions, region)
                 end
             end
         end
@@ -1102,73 +1102,73 @@ local function ApplyAddonIconSkin(button)
         -- Ensure state textures are tracked even when not exposed by GetRegions().
         if normalTex and normalTex:GetObjectType() == 'Texture' and not seenRegions[normalTex] then
             SaveRegionState(normalTex)
-            table.insert(button.DragonUI_IconRegions, normalTex)
+            table.insert(button.DuckcraftUI_IconRegions, normalTex)
         end
         if pushedTex and pushedTex:GetObjectType() == 'Texture' and not seenRegions[pushedTex] then
             SaveRegionState(pushedTex)
-            table.insert(button.DragonUI_IconRegions, pushedTex)
+            table.insert(button.DuckcraftUI_IconRegions, pushedTex)
         end
 
         local highlightTex = button:GetHighlightTexture()
         if highlightTex and highlightTex:GetObjectType() == 'Texture' and not seenRegions[highlightTex] then
             SaveRegionState(highlightTex)
-            table.insert(button.DragonUI_HighlightRegions, highlightTex)
+            table.insert(button.DuckcraftUI_HighlightRegions, highlightTex)
         end
 
         -- Select icon textures to skin: for stateful buttons use normal+pushed only.
-        if button.DragonUI_UsesStateTextures and normalTex and normalTex:GetObjectType() == 'Texture' then
-            table.insert(button.DragonUI_PrimaryIconRegions, normalTex)
+        if button.DuckcraftUI_UsesStateTextures and normalTex and normalTex:GetObjectType() == 'Texture' then
+            table.insert(button.DuckcraftUI_PrimaryIconRegions, normalTex)
             if pushedTex and pushedTex:GetObjectType() == 'Texture' then
-                table.insert(button.DragonUI_PrimaryIconRegions, pushedTex)
+                table.insert(button.DuckcraftUI_PrimaryIconRegions, pushedTex)
             end
-            for _, region in ipairs(button.DragonUI_IconRegions) do
+            for _, region in ipairs(button.DuckcraftUI_IconRegions) do
                 if region ~= normalTex and region ~= pushedTex then
-                    table.insert(button.DragonUI_ExtraIconRegions, region)
+                    table.insert(button.DuckcraftUI_ExtraIconRegions, region)
                 end
             end
         else
-            button.DragonUI_PrimaryIconRegions = button.DragonUI_IconRegions
+            button.DuckcraftUI_PrimaryIconRegions = button.DuckcraftUI_IconRegions
         end
 
         -- Create circle border overlay (once)
         button.circle = button:CreateTexture(nil, 'OVERLAY')
         button.circle:SetSize(23, 23)
         button.circle:SetPoint('CENTER', button)
-        button.circle:SetTexture("Interface\\AddOns\\DragonUI\\assets\\border_buttons.tga")
+        button.circle:SetTexture("Interface\\AddOns\\DuckcraftUI\\assets\\border_buttons.tga")
 
         -- Hook fade (once, permanent; functions check IsFadeEnabled() dynamically)
-        if not button.DragonUI_FadeHooked then
-            button.DragonUI_FadeHooked = true
+        if not button.DuckcraftUI_FadeHooked then
+            button.DuckcraftUI_FadeHooked = true
             button:HookScript('OnEnter', fadein)
             button:HookScript('OnLeave', fadeout)
         end
     end
 
     -- === ACTIVATE skinned state ===
-    button.DragonUI_SkinActive = true
-    local skinSize = button.DragonUI_UsesStateTextures and 24 or 21
+    button.DuckcraftUI_SkinActive = true
+    local skinSize = button.DuckcraftUI_UsesStateTextures and 24 or 21
     button:SetSize(skinSize, skinSize)
 
     -- Hide decoration regions (borders, backgrounds)
-    for _, region in ipairs(button.DragonUI_DecoRegions) do
+    for _, region in ipairs(button.DuckcraftUI_DecoRegions) do
         region:SetAlpha(0)
     end
 
     -- Keep only primary icon regions visible while skinned.
-    for _, region in ipairs(button.DragonUI_ExtraIconRegions) do
+    for _, region in ipairs(button.DuckcraftUI_ExtraIconRegions) do
         region:SetAlpha(0)
     end
 
     -- Reposition primary icon regions.
-    for _, region in ipairs(button.DragonUI_PrimaryIconRegions) do
+    for _, region in ipairs(button.DuckcraftUI_PrimaryIconRegions) do
         region:SetAlpha(1)
         region:ClearAllPoints()
-        local inset = button.DragonUI_UsesStateTextures and 0 or 2
+        local inset = button.DuckcraftUI_UsesStateTextures and 0 or 2
         region:SetPoint('TOPLEFT', button, 'TOPLEFT', inset, -inset)
         region:SetPoint('BOTTOMRIGHT', button, 'BOTTOMRIGHT', -inset, inset)
 
-        if button.DragonUI_UsesStateTextures and region.DragonUI_OrigTexCoord then
-            region:SetTexCoord(unpack(region.DragonUI_OrigTexCoord))
+        if button.DuckcraftUI_UsesStateTextures and region.DuckcraftUI_OrigTexCoord then
+            region:SetTexCoord(unpack(region.DuckcraftUI_OrigTexCoord))
         else
             region:SetTexCoord(0.1, 0.9, 0.1, 0.9)
         end
@@ -1177,14 +1177,14 @@ local function ApplyAddonIconSkin(button)
     end
 
     -- Reposition highlight regions to fit skinned button (auto-show on hover by WoW)
-    for _, region in ipairs(button.DragonUI_HighlightRegions) do
+    for _, region in ipairs(button.DuckcraftUI_HighlightRegions) do
         region:ClearAllPoints()
         region:SetAllPoints(button)
     end
 
-    -- Show DragonUI circle border
+    -- Show DuckcraftUI circle border
     if button.circle then
-        button.circle:SetSize(button.DragonUI_UsesStateTextures and 26 or 23, button.DragonUI_UsesStateTextures and 26 or 23)
+        button.circle:SetSize(button.DuckcraftUI_UsesStateTextures and 26 or 23, button.DuckcraftUI_UsesStateTextures and 26 or 23)
         button.circle:Show()
     end
 
@@ -1194,64 +1194,64 @@ end
 
 -- Restore original button appearance (non-destructive toggle)
 local function UnskinAddonButton(button)
-    if not button or not button.DragonUI_Skinned then return end
+    if not button or not button.DuckcraftUI_Skinned then return end
 
-    button.DragonUI_SkinActive = false
+    button.DuckcraftUI_SkinActive = false
 
     -- Restore original size
-    if button.DragonUI_OrigW then
-        button:SetSize(button.DragonUI_OrigW, button.DragonUI_OrigH)
+    if button.DuckcraftUI_OrigW then
+        button:SetSize(button.DuckcraftUI_OrigW, button.DuckcraftUI_OrigH)
     end
 
     -- Restore decoration regions
-    if button.DragonUI_DecoRegions then
-        for _, region in ipairs(button.DragonUI_DecoRegions) do
-            region:SetAlpha(region.DragonUI_OrigAlpha or 1)
+    if button.DuckcraftUI_DecoRegions then
+        for _, region in ipairs(button.DuckcraftUI_DecoRegions) do
+            region:SetAlpha(region.DuckcraftUI_OrigAlpha or 1)
         end
     end
 
     -- Restore icon regions to original positioning
-    if button.DragonUI_IconRegions then
-        for _, region in ipairs(button.DragonUI_IconRegions) do
-            region:SetAlpha(region.DragonUI_OrigAlpha or 1)
-            if region.DragonUI_OrigTexCoord then
-                region:SetTexCoord(unpack(region.DragonUI_OrigTexCoord))
+    if button.DuckcraftUI_IconRegions then
+        for _, region in ipairs(button.DuckcraftUI_IconRegions) do
+            region:SetAlpha(region.DuckcraftUI_OrigAlpha or 1)
+            if region.DuckcraftUI_OrigTexCoord then
+                region:SetTexCoord(unpack(region.DuckcraftUI_OrigTexCoord))
             else
                 region:SetTexCoord(0, 1, 0, 1)
             end
-            region:SetDrawLayer(region.DragonUI_OrigLayer or 'ARTWORK')
+            region:SetDrawLayer(region.DuckcraftUI_OrigLayer or 'ARTWORK')
             region:ClearAllPoints()
-            if region.DragonUI_OrigPoints then
-                for _, pt in ipairs(region.DragonUI_OrigPoints) do
+            if region.DuckcraftUI_OrigPoints then
+                for _, pt in ipairs(region.DuckcraftUI_OrigPoints) do
                     region:SetPoint(pt[1], pt[2], pt[3], pt[4], pt[5])
                 end
             else
                 region:SetAllPoints(button)
             end
-            if region.DragonUI_OrigW then
-                region:SetSize(region.DragonUI_OrigW, region.DragonUI_OrigH)
+            if region.DuckcraftUI_OrigW then
+                region:SetSize(region.DuckcraftUI_OrigW, region.DuckcraftUI_OrigH)
             end
         end
     end
 
     -- Restore highlight regions to original positioning
-    if button.DragonUI_HighlightRegions then
-        for _, region in ipairs(button.DragonUI_HighlightRegions) do
+    if button.DuckcraftUI_HighlightRegions then
+        for _, region in ipairs(button.DuckcraftUI_HighlightRegions) do
             region:ClearAllPoints()
-            if region.DragonUI_OrigPoints then
-                for _, pt in ipairs(region.DragonUI_OrigPoints) do
+            if region.DuckcraftUI_OrigPoints then
+                for _, pt in ipairs(region.DuckcraftUI_OrigPoints) do
                     region:SetPoint(pt[1], pt[2], pt[3], pt[4], pt[5])
                 end
             else
                 region:SetAllPoints(button)
             end
-            if region.DragonUI_OrigW then
-                region:SetSize(region.DragonUI_OrigW, region.DragonUI_OrigH)
+            if region.DuckcraftUI_OrigW then
+                region:SetSize(region.DuckcraftUI_OrigW, region.DuckcraftUI_OrigH)
             end
         end
     end
 
-    -- Hide DragonUI circle border
+    -- Hide DuckcraftUI circle border
     if button.circle then button.circle:Hide() end
 
     -- Full alpha
@@ -1309,7 +1309,7 @@ end
 
 -- Compatibility: some addons ship LibDBIcon with a larger default radius,
 -- which pushes minimap addon buttons farther from the map edge.
--- Keep this defensive and minimal: only clamp excessive defaults while DragonUI minimap is active.
+-- Keep this defensive and minimal: only clamp excessive defaults while DuckcraftUI minimap is active.
 local function NormalizeLibDBIconRadius()
     if not LibStub or not LibStub.GetLibrary then
         return
@@ -1372,8 +1372,8 @@ local function UpdateAddonButtonFade()
     for _, child in ipairs(buttons) do
         if not IsFrameWhitelisted(child:GetName()) then
             -- Hook fade scripts once if not already hooked
-            if not child.DragonUI_FadeHooked then
-                child.DragonUI_FadeHooked = true
+            if not child.DuckcraftUI_FadeHooked then
+                child.DuckcraftUI_FadeHooked = true
                 child:HookScript('OnEnter', fadein)
                 child:HookScript('OnLeave', fadeout)
             end
@@ -1389,7 +1389,7 @@ MinimapModule.ApplySkinsToAllMinimapButtons = ApplySkinsToAllMinimapButtons
 local function UnskinAllMinimapButtons()
     local buttons = GetAllMinimapButtons()
     for _, child in ipairs(buttons) do
-        if child.DragonUI_Skinned then
+        if child.DuckcraftUI_Skinned then
             UnskinAddonButton(child)
         end
     end
@@ -1449,8 +1449,8 @@ minimapButtonSkinFrame:SetScript("OnEvent", function(self, event, addonName)
     end
 
     -- ADDON_LOADED handling
-    -- Skip DragonUI's own loading to avoid double-processing
-    if addonName == "DragonUI" then return end
+    -- Skip DuckcraftUI's own loading to avoid double-processing
+    if addonName == "DuckcraftUI" then return end
 
     -- Apply defensive LibDBIcon compatibility for late-loading addons.
     NormalizeLibDBIconRadius()
@@ -1538,7 +1538,7 @@ local function RemoveBlizzardFrames()
         end
     end
 
-    -- Hide vanilla north indicator and compass — DragonUI doesn't use them
+    -- Hide vanilla north indicator and compass — DuckcraftUI doesn't use them
     if MinimapNorthTag then MinimapNorthTag:Hide() end
     if MinimapCompassTexture then MinimapCompassTexture:Hide() end
 
@@ -1557,7 +1557,7 @@ MinimapModule.UpdateRotation = function()
         or MinimapModule._allowExternalBorderControl
 
     if not isHybridMode then
-        -- Always hide the vanilla MinimapBorder — DragonUI uses Minimap.Circle instead.
+        -- Always hide the vanilla MinimapBorder — DuckcraftUI uses Minimap.Circle instead.
         -- Blizzard's Minimap_UpdateRotationSetting re-shows MinimapBorder when rotation
         -- is toggled off (e.g. closing Interface Options); our post-hook must counteract that.
         if MinimapBorder then
@@ -1863,7 +1863,7 @@ function MinimapModule:ApplyMinimapSystem()
         return
     end
 
-    -- If SexyMap-only mode, don't apply any DragonUI minimap modifications
+    -- If SexyMap-only mode, don't apply any DuckcraftUI minimap modifications
     local minimapModuleConfig = addon.db and addon.db.profile and addon.db.profile.modules
         and addon.db.profile.modules.minimap
     if minimapModuleConfig and minimapModuleConfig.sexymap_mode == "sexymap" then
@@ -1880,13 +1880,13 @@ function MinimapModule:ApplyMinimapSystem()
         return
     end
 
-    -- Store original settings before applying DragonUI changes
+    -- Store original settings before applying DuckcraftUI changes
     self:StoreOriginalSettings()
 
     -- Defensive compatibility for LibDBIcon-based addon buttons.
     NormalizeLibDBIconRadius()
     
-    -- Initialize the DragonUI minimap system
+    -- Initialize the DuckcraftUI minimap system
     self:InitializeMinimapSystem()
     
     self.applied = true
@@ -1926,7 +1926,7 @@ function MinimapModule:RestoreMinimapSystem()
         return
     end
 
-    -- Hide DragonUI frames
+    -- Hide DuckcraftUI frames
     if self.minimapFrame then
         self.minimapFrame:Hide()
         self.frames.minimapFrame = nil
@@ -2102,7 +2102,7 @@ function MinimapModule:InitializeMinimapSystem()
     -- below immediately restores the real blip texture, so this is invisible.
     MinimapModule._settingBlipTexture = true
     pcall(function()
-        Minimap:SetBlipTexture("Interface\\AddOns\\DragonUI\\assets\\blip-blank.tga")
+        Minimap:SetBlipTexture("Interface\\AddOns\\DuckcraftUI\\assets\\blip-blank.tga")
     end)
     MinimapModule._settingBlipTexture = false
 
@@ -2137,11 +2137,11 @@ function MinimapModule:Initialize()
     
     -- Check if minimap module is enabled
     if not IsModuleEnabled() then
-        -- Don't apply any DragonUI modifications when disabled
+        -- Don't apply any DuckcraftUI modifications when disabled
         return
     end
 
-    -- If SexyMap-only mode is saved, skip all DragonUI minimap modifications
+    -- If SexyMap-only mode is saved, skip all DuckcraftUI minimap modifications
     -- so SexyMap gets a clean, unmodified minimap to work with
     local minimapModuleConfig = addon.db and addon.db.profile and addon.db.profile.modules
         and addon.db.profile.modules.minimap
@@ -2151,13 +2151,13 @@ function MinimapModule:Initialize()
         return
     end
 
-    -- Only apply DragonUI modifications if module is enabled
+    -- Only apply DuckcraftUI modifications if module is enabled
     self:ApplyMinimapSystem()
     
     self.initialized = true
 end
 
--- Remove functions that no longer exist and convert to DragonUI functions
+-- Remove functions that no longer exist and convert to DuckcraftUI functions
 function MinimapModule:UpdateSettings()
     local scale = addon.db.profile.minimap.scale or 1.0
 
@@ -2215,7 +2215,7 @@ function MinimapModule:UpdateSettings()
             useNewBlipStyle = true -- Default to new style
         end
 
-        local blipTexture = useNewBlipStyle and "Interface\\AddOns\\DragonUI\\assets\\objecticons" or
+        local blipTexture = useNewBlipStyle and "Interface\\AddOns\\DuckcraftUI\\assets\\objecticons" or
                                 'Interface\\Minimap\\ObjectIcons'
         -- Use re-entrancy guard to avoid triggering our own SetBlipTexture hook
         MinimapModule._settingBlipTexture = true
@@ -2427,7 +2427,7 @@ local function ApplyAlphaToMinimapTree(frame, alpha, visited)
     end
 end
 
-local BLIP_BLANK = "Interface\\AddOns\\DragonUI\\assets\\blip-blank.tga"
+local BLIP_BLANK = "Interface\\AddOns\\DuckcraftUI\\assets\\blip-blank.tga"
 
 -- Clears or restores the engine-drawn icon layers (town/static/corpse arrows
 -- and the blip/quest-icon sheet). These are rendered by the client, not as Lua
@@ -2443,11 +2443,11 @@ local function SetEngineIconsVisible(show)
         local useNew = addon.db and addon.db.profile and addon.db.profile.minimap
                            and addon.db.profile.minimap.blip_skin
         if useNew == nil then useNew = true end
-        Minimap:SetBlipTexture(useNew and "Interface\\AddOns\\DragonUI\\assets\\objecticons"
+        Minimap:SetBlipTexture(useNew and "Interface\\AddOns\\DuckcraftUI\\assets\\objecticons"
                                        or "Interface\\Minimap\\ObjectIcons")
-        Minimap:SetPOIArrowTexture("Interface\\AddOns\\DragonUI\\assets\\poi-guard")
-        Minimap:SetStaticPOIArrowTexture("Interface\\AddOns\\DragonUI\\assets\\poi-static")
-        Minimap:SetCorpsePOIArrowTexture("Interface\\AddOns\\DragonUI\\assets\\poi-corpse")
+        Minimap:SetPOIArrowTexture("Interface\\AddOns\\DuckcraftUI\\assets\\poi-guard")
+        Minimap:SetStaticPOIArrowTexture("Interface\\AddOns\\DuckcraftUI\\assets\\poi-static")
+        Minimap:SetCorpsePOIArrowTexture("Interface\\AddOns\\DuckcraftUI\\assets\\poi-corpse")
     else
         Minimap:SetBlipTexture(BLIP_BLANK)
         Minimap:SetPOIArrowTexture("")
@@ -2841,7 +2841,7 @@ local function ApplyClockAndZoneLayout(showClock)
     if MinimapZoneTextButton and MinimapBorderTop then
         MinimapZoneTextButton:ClearAllPoints()
         if showClock then
-            -- Restore default DragonUI position when clock is visible.
+            -- Restore default DuckcraftUI position when clock is visible.
             MinimapZoneTextButton:SetPoint("LEFT", MinimapBorderTop, "LEFT", 7, 1)
             MinimapZoneTextButton:SetWidth(108)
         else
@@ -2867,7 +2867,7 @@ function MinimapModule:ApplyAllSettings()
 
     local settings = addon.db.profile.minimap
 
-    -- In hybrid mode, skip settings that modify DragonUI-styled elements
+    -- In hybrid mode, skip settings that modify DuckcraftUI-styled elements
     -- (border top, zone text positioning, clock anchoring, calendar)
     -- SexyMap controls those visual elements
     local isHybridMode = self.sexyMapHybridMode
@@ -2932,7 +2932,7 @@ function MinimapModule:ApplyAllSettings()
 
     --  APPLY BLIP TEXTURE (NEW VS OLD STYLE)
     if settings.blip_skin ~= nil and Minimap then
-        local blipTexture = settings.blip_skin and "Interface\\AddOns\\DragonUI\\assets\\objecticons" or
+        local blipTexture = settings.blip_skin and "Interface\\AddOns\\DuckcraftUI\\assets\\objecticons" or
                                 'Interface\\Minimap\\ObjectIcons'
         Minimap:SetBlipTexture(blipTexture)
     end
@@ -3023,7 +3023,7 @@ end
 
 -- System refresh function for enable/disable
 function addon:RefreshMinimapSystem()
-    -- If SexyMap-only mode, never apply DragonUI minimap
+    -- If SexyMap-only mode, never apply DuckcraftUI minimap
     local minimapModuleConfig = addon.db and addon.db.profile and addon.db.profile.modules
         and addon.db.profile.modules.minimap
     if minimapModuleConfig and minimapModuleConfig.sexymap_mode == "sexymap" then
@@ -3089,7 +3089,7 @@ local initFrame = CreateFrame("Frame")
 initFrame:RegisterEvent("ADDON_LOADED")
 initFrame:RegisterEvent("PLAYER_ENTERING_WORLD")
 initFrame:SetScript("OnEvent", function(self, event, addonName)
-    if event == "ADDON_LOADED" and addonName == "DragonUI" then
+    if event == "ADDON_LOADED" and addonName == "DuckcraftUI" then
         -- Set original mask to standard Blizzard default
         if not MinimapModule.originalMask then
             MinimapModule.originalMask = "Textures\\MinimapMask"

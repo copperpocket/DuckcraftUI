@@ -1,5 +1,5 @@
 --[[
-  DragonUI - Unit Frame Shared Core (uf_core.lua)
+  DuckcraftUI - Unit Frame Shared Core (uf_core.lua)
 
   Shared constants, utilities, and factory helpers for all unit frame modules.
   Loaded first via unitframes.xml; other UF modules reference addon.UF.
@@ -19,78 +19,78 @@ local UF = addon.UF
 UF.TEXTURES = {
     -- Target-style frames (TargetFrame, FocusFrame)
     targetStyle = {
-        BACKGROUND     = "Interface\\AddOns\\DragonUI\\Textures\\UI-HUD-UnitFrame-Target-PortraitOn-BACKGROUND",
-        BACKGROUND_FAT = "Interface\\AddOns\\DragonUI\\Textures\\UI-HUD-UnitFrame-Target-PortraitOn-BACKGROUND-Fat",
-        BORDER         = "Interface\\AddOns\\DragonUI\\Textures\\UI-HUD-UnitFrame-Target-PortraitOn-BORDER",
-        BORDER_FAT     = "Interface\\AddOns\\DragonUI\\Textures\\UI-HUD-UnitFrame-Target-PortraitOn-BORDER-Fat",
-        BAR_PREFIX     = "Interface\\AddOns\\DragonUI\\Textures\\Unitframe\\UI-HUD-UnitFrame-Target-PortraitOn-Bar-",
-        NAME_BACKGROUND = "Interface\\AddOns\\DragonUI\\Textures\\TargetFrame\\NameBackground",
-        BOSS           = "Interface\\AddOns\\DragonUI\\Textures\\uiunitframeboss2x",
-        THREAT         = "Interface\\AddOns\\DragonUI\\Textures\\Unitframe2x\\ui-hud-unitframe-target-portraiton-incombat-2x",
-        THREAT_NUMERIC = "Interface\\AddOns\\DragonUI\\Textures\\uiunitframe",
+        BACKGROUND     = "Interface\\AddOns\\DuckcraftUI\\Textures\\UI-HUD-UnitFrame-Target-PortraitOn-BACKGROUND",
+        BACKGROUND_FAT = "Interface\\AddOns\\DuckcraftUI\\Textures\\UI-HUD-UnitFrame-Target-PortraitOn-BACKGROUND-Fat",
+        BORDER         = "Interface\\AddOns\\DuckcraftUI\\Textures\\UI-HUD-UnitFrame-Target-PortraitOn-BORDER",
+        BORDER_FAT     = "Interface\\AddOns\\DuckcraftUI\\Textures\\UI-HUD-UnitFrame-Target-PortraitOn-BORDER-Fat",
+        BAR_PREFIX     = "Interface\\AddOns\\DuckcraftUI\\Textures\\Unitframe\\UI-HUD-UnitFrame-Target-PortraitOn-Bar-",
+        NAME_BACKGROUND = "Interface\\AddOns\\DuckcraftUI\\Textures\\TargetFrame\\NameBackground",
+        BOSS           = "Interface\\AddOns\\DuckcraftUI\\Textures\\uiunitframeboss2x",
+        THREAT         = "Interface\\AddOns\\DuckcraftUI\\Textures\\Unitframe2x\\ui-hud-unitframe-target-portraiton-incombat-2x",
+        THREAT_NUMERIC = "Interface\\AddOns\\DuckcraftUI\\Textures\\uiunitframe",
     },
 
     -- Small-style frames (ToT, FoT, Pet)
     smallStyle = {
-        BACKGROUND = "Interface\\AddOns\\DragonUI\\Textures\\UI-HUD-UnitFrame-TargetofTarget-PortraitOn-BACKGROUND",
-        BORDER     = "Interface\\AddOns\\DragonUI\\Textures\\UI-HUD-UnitFrame-TargetofTarget-PortraitOn-BORDER",
-        BAR_PREFIX = "Interface\\AddOns\\DragonUI\\Textures\\Unitframe\\UI-HUD-UnitFrame-TargetofTarget-PortraitOn-Bar-",
-        BOSS       = "Interface\\AddOns\\DragonUI\\Textures\\uiunitframeboss2x",
+        BACKGROUND = "Interface\\AddOns\\DuckcraftUI\\Textures\\UI-HUD-UnitFrame-TargetofTarget-PortraitOn-BACKGROUND",
+        BORDER     = "Interface\\AddOns\\DuckcraftUI\\Textures\\UI-HUD-UnitFrame-TargetofTarget-PortraitOn-BORDER",
+        BAR_PREFIX = "Interface\\AddOns\\DuckcraftUI\\Textures\\Unitframe\\UI-HUD-UnitFrame-TargetofTarget-PortraitOn-Bar-",
+        BOSS       = "Interface\\AddOns\\DuckcraftUI\\Textures\\uiunitframeboss2x",
     },
 
     -- Player frame (unique textures)
     -- NOTE: Vehicle border uses atlas 'PlayerFrame-TextureFrame-Vehicle' from UnitFrame.blp (defined in Atlas.lua)
     player = {
-        BASE          = "Interface\\Addons\\DragonUI\\Textures\\uiunitframe",
-        BASE_FAT      = "Interface\\Addons\\DragonUI\\Textures\\uiunitframe-fat",
-        HEALTH_BAR    = "Interface\\Addons\\DragonUI\\Textures\\Unitframe\\UI-HUD-UnitFrame-Player-PortraitOn-Bar-Health",
-        HEALTH_STATUS = "Interface\\Addons\\DragonUI\\Textures\\Unitframe\\UI-HUD-UnitFrame-Player-PortraitOn-Bar-Health-Status",
-        BORDER        = "Interface\\Addons\\DragonUI\\Textures\\UI-HUD-UnitFrame-Player-PortraitOn-BORDER",
-        BORDER_FAT    = "Interface\\Addons\\DragonUI\\Textures\\UI-HUD-UnitFrame-Player-PortraitOn-BORDER-Fat",
-        REST_ICON     = "Interface\\AddOns\\DragonUI\\Textures\\PlayerFrame\\PlayerRestFlipbook",
-        RUNE_TEXTURE  = "Interface\\AddOns\\DragonUI\\Textures\\PlayerFrame\\ClassOverlayDeathKnightRunes",
-        LFG_ICONS     = "Interface\\AddOns\\DragonUI\\Textures\\PlayerFrame\\LFGRoleIcons",
+        BASE          = "Interface\\Addons\\DuckcraftUI\\Textures\\uiunitframe",
+        BASE_FAT      = "Interface\\Addons\\DuckcraftUI\\Textures\\uiunitframe-fat",
+        HEALTH_BAR    = "Interface\\Addons\\DuckcraftUI\\Textures\\Unitframe\\UI-HUD-UnitFrame-Player-PortraitOn-Bar-Health",
+        HEALTH_STATUS = "Interface\\Addons\\DuckcraftUI\\Textures\\Unitframe\\UI-HUD-UnitFrame-Player-PortraitOn-Bar-Health-Status",
+        BORDER        = "Interface\\Addons\\DuckcraftUI\\Textures\\UI-HUD-UnitFrame-Player-PortraitOn-BORDER",
+        BORDER_FAT    = "Interface\\Addons\\DuckcraftUI\\Textures\\UI-HUD-UnitFrame-Player-PortraitOn-BORDER-Fat",
+        REST_ICON     = "Interface\\AddOns\\DuckcraftUI\\Textures\\PlayerFrame\\PlayerRestFlipbook",
+        RUNE_TEXTURE  = "Interface\\AddOns\\DuckcraftUI\\Textures\\PlayerFrame\\ClassOverlayDeathKnightRunes",
+        LFG_ICONS     = "Interface\\AddOns\\DuckcraftUI\\Textures\\PlayerFrame\\LFGRoleIcons",
         POWER_BARS = {
-            MANA        = "Interface\\Addons\\DragonUI\\Textures\\Unitframe\\UI-HUD-UnitFrame-Player-PortraitOn-Bar-Mana",
-            RAGE        = "Interface\\Addons\\DragonUI\\Textures\\Unitframe\\UI-HUD-UnitFrame-Player-PortraitOn-Bar-Rage",
-            FOCUS       = "Interface\\Addons\\DragonUI\\Textures\\Unitframe\\UI-HUD-UnitFrame-Player-PortraitOn-Bar-Focus",
-            ENERGY      = "Interface\\Addons\\DragonUI\\Textures\\Unitframe\\UI-HUD-UnitFrame-Player-PortraitOn-Bar-Energy",
-            RUNIC_POWER = "Interface\\Addons\\DragonUI\\Textures\\Unitframe\\UI-HUD-UnitFrame-Player-PortraitOn-Bar-RunicPower",
+            MANA        = "Interface\\Addons\\DuckcraftUI\\Textures\\Unitframe\\UI-HUD-UnitFrame-Player-PortraitOn-Bar-Mana",
+            RAGE        = "Interface\\Addons\\DuckcraftUI\\Textures\\Unitframe\\UI-HUD-UnitFrame-Player-PortraitOn-Bar-Rage",
+            FOCUS       = "Interface\\Addons\\DuckcraftUI\\Textures\\Unitframe\\UI-HUD-UnitFrame-Player-PortraitOn-Bar-Focus",
+            ENERGY      = "Interface\\Addons\\DuckcraftUI\\Textures\\Unitframe\\UI-HUD-UnitFrame-Player-PortraitOn-Bar-Energy",
+            RUNIC_POWER = "Interface\\Addons\\DuckcraftUI\\Textures\\Unitframe\\UI-HUD-UnitFrame-Player-PortraitOn-Bar-RunicPower",
         },
     },
 
     -- Party frames (unique textures)
     party = {
-        healthBarStatus = "Interface\\Addons\\DragonUI\\Textures\\Partyframe\\UI-HUD-UnitFrame-Party-PortraitOn-Bar-Health-Status",
-        frame           = "Interface\\Addons\\DragonUI\\Textures\\Partyframe\\uipartyframe",
-        border          = "Interface\\Addons\\DragonUI\\Textures\\UI-HUD-UnitFrame-TargetofTarget-PortraitOn-BORDER",
-        healthBar       = "Interface\\Addons\\DragonUI\\Textures\\Partyframe\\UI-HUD-UnitFrame-Party-PortraitOn-Bar-Health",
-        manaBar         = "Interface\\Addons\\DragonUI\\Textures\\Partyframe\\UI-HUD-UnitFrame-Party-PortraitOn-Bar-Mana",
-        focusBar        = "Interface\\Addons\\DragonUI\\Textures\\Partyframe\\UI-HUD-UnitFrame-Party-PortraitOn-Bar-Focus",
-        rageBar         = "Interface\\Addons\\DragonUI\\Textures\\Partyframe\\UI-HUD-UnitFrame-Party-PortraitOn-Bar-Rage",
-        energyBar       = "Interface\\Addons\\DragonUI\\Textures\\Partyframe\\UI-HUD-UnitFrame-Party-PortraitOn-Bar-Energy",
-        runicPowerBar   = "Interface\\Addons\\DragonUI\\Textures\\Partyframe\\UI-HUD-UnitFrame-Party-PortraitOn-Bar-RunicPower",
+        healthBarStatus = "Interface\\Addons\\DuckcraftUI\\Textures\\Partyframe\\UI-HUD-UnitFrame-Party-PortraitOn-Bar-Health-Status",
+        frame           = "Interface\\Addons\\DuckcraftUI\\Textures\\Partyframe\\uipartyframe",
+        border          = "Interface\\Addons\\DuckcraftUI\\Textures\\UI-HUD-UnitFrame-TargetofTarget-PortraitOn-BORDER",
+        healthBar       = "Interface\\Addons\\DuckcraftUI\\Textures\\Partyframe\\UI-HUD-UnitFrame-Party-PortraitOn-Bar-Health",
+        manaBar         = "Interface\\Addons\\DuckcraftUI\\Textures\\Partyframe\\UI-HUD-UnitFrame-Party-PortraitOn-Bar-Mana",
+        focusBar        = "Interface\\Addons\\DuckcraftUI\\Textures\\Partyframe\\UI-HUD-UnitFrame-Party-PortraitOn-Bar-Focus",
+        rageBar         = "Interface\\Addons\\DuckcraftUI\\Textures\\Partyframe\\UI-HUD-UnitFrame-Party-PortraitOn-Bar-Rage",
+        energyBar       = "Interface\\Addons\\DuckcraftUI\\Textures\\Partyframe\\UI-HUD-UnitFrame-Party-PortraitOn-Bar-Energy",
+        runicPowerBar   = "Interface\\Addons\\DuckcraftUI\\Textures\\Partyframe\\UI-HUD-UnitFrame-Party-PortraitOn-Bar-RunicPower",
     },
 
     -- Pet frame (constructs paths from prefix)
     pet = {
-        TEXTURE_PATH   = "Interface\\Addons\\DragonUI\\Textures\\",
-        UNITFRAME_PATH = "Interface\\Addons\\DragonUI\\Textures\\Unitframe\\",
-        ATLAS_TEXTURE  = "Interface\\Addons\\DragonUI\\Textures\\uiunitframe",
+        TEXTURE_PATH   = "Interface\\Addons\\DuckcraftUI\\Textures\\",
+        UNITFRAME_PATH = "Interface\\Addons\\DuckcraftUI\\Textures\\Unitframe\\",
+        ATLAS_TEXTURE  = "Interface\\Addons\\DuckcraftUI\\Textures\\uiunitframe",
         TOT_BASE       = "UI-HUD-UnitFrame-TargetofTarget-PortraitOn-",
         -- Pre-computed power textures (same as smallStyle BAR_PREFIX + power name)
         POWER_TEXTURES = {
-            MANA        = "Interface\\Addons\\DragonUI\\Textures\\Unitframe\\UI-HUD-UnitFrame-TargetofTarget-PortraitOn-Bar-Mana",
-            FOCUS       = "Interface\\Addons\\DragonUI\\Textures\\Unitframe\\UI-HUD-UnitFrame-TargetofTarget-PortraitOn-Bar-Focus",
-            RAGE        = "Interface\\Addons\\DragonUI\\Textures\\Unitframe\\UI-HUD-UnitFrame-TargetofTarget-PortraitOn-Bar-Rage",
-            ENERGY      = "Interface\\Addons\\DragonUI\\Textures\\Unitframe\\UI-HUD-UnitFrame-TargetofTarget-PortraitOn-Bar-Energy",
-            RUNIC_POWER = "Interface\\Addons\\DragonUI\\Textures\\Unitframe\\UI-HUD-UnitFrame-TargetofTarget-PortraitOn-Bar-RunicPower",
+            MANA        = "Interface\\Addons\\DuckcraftUI\\Textures\\Unitframe\\UI-HUD-UnitFrame-TargetofTarget-PortraitOn-Bar-Mana",
+            FOCUS       = "Interface\\Addons\\DuckcraftUI\\Textures\\Unitframe\\UI-HUD-UnitFrame-TargetofTarget-PortraitOn-Bar-Focus",
+            RAGE        = "Interface\\Addons\\DuckcraftUI\\Textures\\Unitframe\\UI-HUD-UnitFrame-TargetofTarget-PortraitOn-Bar-Rage",
+            ENERGY      = "Interface\\Addons\\DuckcraftUI\\Textures\\Unitframe\\UI-HUD-UnitFrame-TargetofTarget-PortraitOn-Bar-Energy",
+            RUNIC_POWER = "Interface\\Addons\\DuckcraftUI\\Textures\\Unitframe\\UI-HUD-UnitFrame-TargetofTarget-PortraitOn-Bar-RunicPower",
         },
         COMBAT_TEX_COORDS = {0.3095703125, 0.4208984375, 0.3125, 0.404296875},
     },
 
     -- Shared class icon texture (used by class portrait system)
-    CLASS_ICON_ALTERNATIVE_PREFIX = "Interface\\AddOns\\DragonUI\\Textures\\ClassIcons\\",
+    CLASS_ICON_ALTERNATIVE_PREFIX = "Interface\\AddOns\\DuckcraftUI\\Textures\\ClassIcons\\",
     CLASS_ICON_ALTERNATIVE_SUFFIX = ".blp",
     CLASS_ICON = "Interface\\TargetingFrame\\UI-Classes-Circles",
 }

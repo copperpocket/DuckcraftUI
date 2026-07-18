@@ -2,7 +2,7 @@ local addon = select(2, ...)
 local UF = addon.UF
 
 -- ====================================================================
--- DRAGONUI PLAYER FRAME - CUSTOM VISIBILITY MODULE
+-- DUCKCRAFTUI PLAYER FRAME - CUSTOM VISIBILITY MODULE
 -- ====================================================================
 -- Alpha-based visibility (NOT Show/Hide) so it is 100% taint-safe in combat.
 -- PlayerFrame is a protected frame; :Hide()/:Show() during combat is blocked.
@@ -18,7 +18,7 @@ local fadeActive = false
 
 local hoverFrame = CreateFrame(
     "Frame",
-    "DragonUIPlayerFrameVisibilityHover",
+    "DuckcraftUIPlayerFrameVisibilityHover",
     UIParent
 )
 
@@ -267,7 +267,7 @@ function Vis.Refresh()
     Vis.Apply()
 end
 
--- Force full visibility while the DragonUI editor is active, if the addon
+-- Force full visibility while the DuckcraftUI editor is active, if the addon
 -- exposes an editor-state query. Falls back to a slash-command toggle.
 local function HookEditorState()
     if addon.IsEditorMode then

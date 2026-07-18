@@ -1,5 +1,5 @@
 -- ===============================================================
--- DRAGONUI PET FRAME MODULE
+-- DUCKCRAFTUI PET FRAME MODULE
 -- ===============================================================
 local addon = select(2, ...)
 local L = addon.L
@@ -94,18 +94,18 @@ local function HideBlizzardPetTexts()
         _G.PetFrameManaBarText
     }
     for _, t in pairs(petTexts) do
-        if t and not t.DragonUIHidden then
+        if t and not t.DuckcraftUIHidden then
             t:SetAlpha(0)
             -- Phase 2: hooksecurefunc instead of direct .Show override to avoid taint
             hooksecurefunc(t, "Show", function(self)
-                if not self.DragonUI_ShowGuard then
-                    self.DragonUI_ShowGuard = true
+                if not self.DuckcraftUI_ShowGuard then
+                    self.DuckcraftUI_ShowGuard = true
                     self:SetAlpha(0)
-                    self.DragonUI_ShowGuard = nil
+                    self.DuckcraftUI_ShowGuard = nil
                 end
             end)
             t:Hide()
-            t.DragonUIHidden = true
+            t.DuckcraftUIHidden = true
         end
     end
 end
@@ -238,14 +238,14 @@ local function SetupStatusBar(bar, point, size, texture)
         bar:GetStatusBarTexture():SetTexture(texture)
         bar:SetStatusBarColor(1, 1, 1, 1)
         -- Phase 2.5: hooksecurefunc instead of direct override to avoid taint
-        if not bar.DragonUI_ColorHooked then
+        if not bar.DuckcraftUI_ColorHooked then
             hooksecurefunc(bar, "SetStatusBarColor", function(self)
                 local tex = self:GetStatusBarTexture()
                 if tex then
                     tex:SetVertexColor(1, 1, 1, 1)
                 end
             end)
-            bar.DragonUI_ColorHooked = true
+            bar.DuckcraftUI_ColorHooked = true
         end
     end
 end
@@ -315,11 +315,11 @@ local function ReplaceBlizzardPetFrame()
         portrait:SetDrawLayer('BACKGROUND')
     end
     
-    -- Create DragonUI elements if needed
+    -- Create DuckcraftUI elements if needed
     if not moduleState.frame.background then
         moduleState.frame.background = SetupFrameElement(
             petFrame,
-            'DragonUIPetFrameBackground',
+            'DuckcraftUIPetFrameBackground',
             {'BACKGROUND', 1},
             TEXTURE_PATH .. TOT_BASE .. 'BACKGROUND',
             {'LEFT', portrait, 'CENTER', -24, -9}
@@ -329,7 +329,7 @@ local function ReplaceBlizzardPetFrame()
     if not moduleState.frame.border then
         moduleState.frame.border = SetupFrameElement(
             PetFrameHealthBar,
-            'DragonUIPetFrameBorder',
+            'DuckcraftUIPetFrameBorder',
             {'OVERLAY', 6},
             TEXTURE_PATH .. TOT_BASE .. 'BORDER',
             {'LEFT', portrait, 'CENTER', -24, -9}
@@ -345,7 +345,7 @@ local function ReplaceBlizzardPetFrame()
     )
 
     -- TexCoord clipping for health bar (prevents baked texture squish)
-    if not PetFrameHealthBar.DragonUI_TexCoordHooked then
+    if not PetFrameHealthBar.DuckcraftUI_TexCoordHooked then
         hooksecurefunc(PetFrameHealthBar, "SetValue", function(self)
             local texture = self:GetStatusBarTexture()
             if not texture then return end
@@ -355,7 +355,7 @@ local function ReplaceBlizzardPetFrame()
                 texture:SetTexCoord(0, cur / max, 0, 1)
             end
         end)
-        PetFrameHealthBar.DragonUI_TexCoordHooked = true
+        PetFrameHealthBar.DuckcraftUI_TexCoordHooked = true
     end
     
     -- Setup mana bar
@@ -367,7 +367,7 @@ local function ReplaceBlizzardPetFrame()
     UpdatePowerBarTexture()
 
     -- TexCoord clipping for mana bar (prevents baked texture squish/inversion)
-    if not PetFrameManaBar.DragonUI_TexCoordHooked then
+    if not PetFrameManaBar.DuckcraftUI_TexCoordHooked then
         hooksecurefunc(PetFrameManaBar, "SetValue", function(self)
             local texture = self:GetStatusBarTexture()
             if not texture then return end
@@ -379,7 +379,7 @@ local function ReplaceBlizzardPetFrame()
                 texture:SetTexCoord(0, cur / max, 0, 1)
             end
         end)
-        PetFrameManaBar.DragonUI_TexCoordHooked = true
+        PetFrameManaBar.DuckcraftUI_TexCoordHooked = true
     end
     
     -- Configure combat mode
@@ -534,7 +534,7 @@ eventFrame:RegisterEvent("UNIT_ENTERED_VEHICLE")
 eventFrame:RegisterEvent("UNIT_EXITED_VEHICLE")
 
 eventFrame:SetScript("OnEvent", function(self, event, arg1)
-    if event == "ADDON_LOADED" and arg1 == "DragonUI" then
+    if event == "ADDON_LOADED" and arg1 == "DuckcraftUI" then
         PetFrameModule:OnEnable()
     elseif event == "PLAYER_ENTERING_WORLD" then
         PetFrameModule:PLAYER_ENTERING_WORLD()
@@ -731,7 +731,7 @@ InitializePetFrameForEditor()
 local readyFrame = CreateFrame("Frame")
 readyFrame:RegisterEvent("ADDON_LOADED")
 readyFrame:SetScript("OnEvent", function(self, event, addonName)
-    if addonName == "DragonUI" then
+    if addonName == "DuckcraftUI" then
         -- Apply widget position when the addon is ready
         if PetFrameModule.UpdateWidgets then
             PetFrameModule:UpdateWidgets()

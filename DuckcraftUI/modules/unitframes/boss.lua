@@ -1,5 +1,5 @@
 --[[
-  DragonUI - Boss Frames (boss.lua)
+  DuckcraftUI - Boss Frames (boss.lua)
 
   Reskins Blizzard's native Boss1-4TargetFrame with Dragonflight visual styling.
   Follows the RetailUI pattern: retexture existing Blizzard frames instead of
@@ -71,11 +71,11 @@ local DEFAULT_BOSS_ATLAS = "TargetFrame-TextureFrame-Elite"
 
 -- Re-anchor border (called from hooks after Blizzard resets)
 local function UpdateBossFrameBorder(bossFrame)
-    if not bossFrame.DragonUI_FrameBorder or not bossFrame.DragonUI_FrameBG then return end
-    bossFrame.DragonUI_FrameBG:ClearAllPoints()
-    bossFrame.DragonUI_FrameBG:SetPoint("TOPLEFT", bossFrame, "TOPLEFT", 0, -8)
+    if not bossFrame.DuckcraftUI_FrameBorder or not bossFrame.DuckcraftUI_FrameBG then return end
+    bossFrame.DuckcraftUI_FrameBG:ClearAllPoints()
+    bossFrame.DuckcraftUI_FrameBG:SetPoint("TOPLEFT", bossFrame, "TOPLEFT", 0, -8)
     -- Border is on its own overlay frame — just reanchor the frame
-    local borderFrame = bossFrame.DragonUI_BorderFrame
+    local borderFrame = bossFrame.DuckcraftUI_BorderFrame
     if borderFrame then
         borderFrame:ClearAllPoints()
         borderFrame:SetAllPoints(bossFrame)
@@ -91,14 +91,14 @@ local function UpdateBossFrameBorder(bossFrame)
         end
     end
     -- Decoration frame (child of borderFrame) always renders above border
-    local decoFrame = bossFrame.DragonUI_DecoFrame
+    local decoFrame = bossFrame.DuckcraftUI_DecoFrame
     if decoFrame then
         decoFrame:ClearAllPoints()
         decoFrame:SetAllPoints(bossFrame)
     end
-    bossFrame.DragonUI_FrameBorder:ClearAllPoints()
-    bossFrame.DragonUI_FrameBorder:SetPoint(
-        "TOPLEFT", bossFrame.DragonUI_FrameBG, "TOPLEFT", 0, 0)
+    bossFrame.DuckcraftUI_FrameBorder:ClearAllPoints()
+    bossFrame.DuckcraftUI_FrameBorder:SetPoint(
+        "TOPLEFT", bossFrame.DuckcraftUI_FrameBG, "TOPLEFT", 0, 0)
 end
 
 -- Re-apply custom flash styling on our mirror texture (on BorderFrame)
@@ -112,17 +112,17 @@ local function EnforceFlashStyle(flashTex, parentFrame)
     -- Create mirror flash on bossFrame itself (once).
     -- bossFrame is level N, borderFrame is level N+2, so the flash
     -- naturally renders BELOW the border — correct "glow behind border" look.
-    if not bossFrame.DragonUI_Flash then
+    if not bossFrame.DuckcraftUI_Flash then
         local mirror = bossFrame:CreateTexture(nil, "OVERLAY")
         mirror:SetDrawLayer("OVERLAY", 7)
-        bossFrame.DragonUI_Flash = mirror
+        bossFrame.DuckcraftUI_Flash = mirror
         -- Sync: when Blizzard shows/hides the original flash, mirror it
         hooksecurefunc(flashTex, "Show", function() mirror:Show() end)
         hooksecurefunc(flashTex, "Hide", function() mirror:Hide() end)
         mirror:Hide()
     end
 
-    local mirror = bossFrame.DragonUI_Flash
+    local mirror = bossFrame.DuckcraftUI_Flash
     mirror:SetTexture(TEXTURES.THREAT)
     mirror:SetTexCoord(0, 376/512, 0, 134/256)
     mirror:SetVertexColor(1, 0, 0, 1)
@@ -145,17 +145,17 @@ end
 -- can't catch with just TargetFrame_Update hooks.
 
 local function HookBossFrameSetPoint(bossFrame, bossIndex)
-    if bossFrame.__DragonUI_SetPointHooked then return end
+    if bossFrame.__DuckcraftUI_SetPointHooked then return end
     hooksecurefunc(bossFrame, "SetPoint", function(self, ...)
-        if self._DragonUI_SettingPoint then return end
+        if self._DuckcraftUI_SettingPoint then return end
         local w = BossModule.wrapperFrames[bossIndex]
         if not w then return end
-        self._DragonUI_SettingPoint = true
+        self._DuckcraftUI_SettingPoint = true
         self:ClearAllPoints()
         self:SetPoint("TOPLEFT", w, "TOPLEFT", 0, 0)
-        self._DragonUI_SettingPoint = nil
+        self._DuckcraftUI_SettingPoint = nil
     end)
-    bossFrame.__DragonUI_SetPointHooked = true
+    bossFrame.__DuckcraftUI_SetPointHooked = true
 end
 
 -- ============================================================================
@@ -164,11 +164,11 @@ end
 
 local function ReskinBossFrame(wrapperFrame, bossFrame)
     -- Anchor the Blizzard boss frame to our wrapper
-    bossFrame._DragonUI_SettingPoint = true
+    bossFrame._DuckcraftUI_SettingPoint = true
     bossFrame:ClearAllPoints()
     bossFrame:SetPoint("TOPLEFT", wrapperFrame, "TOPLEFT", 0, 0)
     bossFrame:SetHitRectInsets(0, 0, 0, 0)
-    bossFrame._DragonUI_SettingPoint = nil
+    bossFrame._DuckcraftUI_SettingPoint = nil
 
     local frameName = bossFrame:GetName()
 
@@ -179,30 +179,30 @@ local function ReskinBossFrame(wrapperFrame, bossFrame)
     if blizzBG then blizzBG:SetAlpha(0) end
 
     -- ---- Frame background (dark fill behind bars — same as target_style) ----
-    if not bossFrame.DragonUI_FrameBG then
-        bossFrame.DragonUI_FrameBG = bossFrame:CreateTexture(
+    if not bossFrame.DuckcraftUI_FrameBG then
+        bossFrame.DuckcraftUI_FrameBG = bossFrame:CreateTexture(
             nil, "BACKGROUND")
-        bossFrame.DragonUI_FrameBG:SetDrawLayer("BACKGROUND", -7)
-        bossFrame.DragonUI_FrameBG:SetTexture(TEXTURES.BACKGROUND)
-        bossFrame.DragonUI_FrameBG:ClearAllPoints()
-        bossFrame.DragonUI_FrameBG:SetPoint("TOPLEFT", bossFrame, "TOPLEFT", 0, -8)
+        bossFrame.DuckcraftUI_FrameBG:SetDrawLayer("BACKGROUND", -7)
+        bossFrame.DuckcraftUI_FrameBG:SetTexture(TEXTURES.BACKGROUND)
+        bossFrame.DuckcraftUI_FrameBG:ClearAllPoints()
+        bossFrame.DuckcraftUI_FrameBG:SetPoint("TOPLEFT", bossFrame, "TOPLEFT", 0, -8)
     end
 
     -- ---- Frame border (on its own overlay frame above bars) ----
-    if not bossFrame.DragonUI_BorderFrame then
+    if not bossFrame.DuckcraftUI_BorderFrame then
         local borderFrame = CreateFrame("Frame", nil, bossFrame)
         borderFrame:SetAllPoints(bossFrame)
         borderFrame:SetFrameLevel(bossFrame:GetFrameLevel() + 2)
         borderFrame:EnableMouse(false)
-        bossFrame.DragonUI_BorderFrame = borderFrame
+        bossFrame.DuckcraftUI_BorderFrame = borderFrame
 
-        bossFrame.DragonUI_FrameBorder = borderFrame:CreateTexture(
+        bossFrame.DuckcraftUI_FrameBorder = borderFrame:CreateTexture(
             nil, "OVERLAY")
-        bossFrame.DragonUI_FrameBorder:SetDrawLayer("OVERLAY", 5)
-        bossFrame.DragonUI_FrameBorder:SetTexture(TEXTURES.BORDER)
-        bossFrame.DragonUI_FrameBorder:ClearAllPoints()
-        bossFrame.DragonUI_FrameBorder:SetPoint(
-            "TOPLEFT", bossFrame.DragonUI_FrameBG, "TOPLEFT", 0, 0)
+        bossFrame.DuckcraftUI_FrameBorder:SetDrawLayer("OVERLAY", 5)
+        bossFrame.DuckcraftUI_FrameBorder:SetTexture(TEXTURES.BORDER)
+        bossFrame.DuckcraftUI_FrameBorder:ClearAllPoints()
+        bossFrame.DuckcraftUI_FrameBorder:SetPoint(
+            "TOPLEFT", bossFrame.DuckcraftUI_FrameBG, "TOPLEFT", 0, 0)
     end
 
     -- ---- Raise Blizzard TextureFrame above border AND decoFrame ----
@@ -210,18 +210,18 @@ local function ReskinBossFrame(wrapperFrame, bossFrame)
     -- borderFrame = N+2, decoFrame (child) = N+3, TextureFrame must be N+4.
     local textureFrame = _G[frameName .. "TextureFrame"]
     if textureFrame then
-        textureFrame:SetFrameLevel(bossFrame.DragonUI_BorderFrame:GetFrameLevel() + 2)
+        textureFrame:SetFrameLevel(bossFrame.DuckcraftUI_BorderFrame:GetFrameLevel() + 2)
     end
 
     -- ---- Decoration frame (child of borderFrame — always renders above border) ----
     -- In 3.3.5a, child frames render above parent textures regardless of
     -- draw layer, solving the random elite/border layering race condition.
     -- This is the same pattern target_style.lua uses with Blizzard's TextureFrame.
-    if not bossFrame.DragonUI_DecoFrame then
-        local decoFrame = CreateFrame("Frame", nil, bossFrame.DragonUI_BorderFrame)
+    if not bossFrame.DuckcraftUI_DecoFrame then
+        local decoFrame = CreateFrame("Frame", nil, bossFrame.DuckcraftUI_BorderFrame)
         decoFrame:SetAllPoints(bossFrame)
         decoFrame:EnableMouse(false)
-        bossFrame.DragonUI_DecoFrame = decoFrame
+        bossFrame.DuckcraftUI_DecoFrame = decoFrame
     end
 
     -- ---- Portrait (same anchor as target: TOPRIGHT) ----
@@ -238,28 +238,28 @@ local function ReskinBossFrame(wrapperFrame, bossFrame)
     end
 
     -- ---- Portrait mask (circular dark background) ----
-    if portrait and not bossFrame.DragonUI_PortraitMask then
-        bossFrame.DragonUI_PortraitMask = bossFrame:CreateTexture(
+    if portrait and not bossFrame.DuckcraftUI_PortraitMask then
+        bossFrame.DuckcraftUI_PortraitMask = bossFrame:CreateTexture(
             nil, "BACKGROUND")
-        bossFrame.DragonUI_PortraitMask:SetDrawLayer("BACKGROUND", 1)
-        bossFrame.DragonUI_PortraitMask:SetTexture(PORTRAIT_MASK)
-        bossFrame.DragonUI_PortraitMask:SetVertexColor(0, 0, 0, 1)
-        bossFrame.DragonUI_PortraitMask:SetPoint(
+        bossFrame.DuckcraftUI_PortraitMask:SetDrawLayer("BACKGROUND", 1)
+        bossFrame.DuckcraftUI_PortraitMask:SetTexture(PORTRAIT_MASK)
+        bossFrame.DuckcraftUI_PortraitMask:SetVertexColor(0, 0, 0, 1)
+        bossFrame.DuckcraftUI_PortraitMask:SetPoint(
             "CENTER", portrait, "CENTER", 0, 0)
-        bossFrame.DragonUI_PortraitMask:SetSize(56, 56)
+        bossFrame.DuckcraftUI_PortraitMask:SetSize(56, 56)
     end
 
     -- ---- Elite decoration (dragon) — on decoFrame (child of borderFrame) ----
-    local decoFrame = bossFrame.DragonUI_DecoFrame
-    if portrait and not bossFrame.DragonUI_Elite and decoFrame then
-        bossFrame.DragonUI_Elite = decoFrame:CreateTexture(
+    local decoFrame = bossFrame.DuckcraftUI_DecoFrame
+    if portrait and not bossFrame.DuckcraftUI_Elite and decoFrame then
+        bossFrame.DuckcraftUI_Elite = decoFrame:CreateTexture(
             nil, "OVERLAY")
-        bossFrame.DragonUI_Elite:SetDrawLayer("OVERLAY", 6)
-        bossFrame.DragonUI_Elite:SetTexture(TEXTURES.BOSS)
-        bossFrame.DragonUI_Elite:Hide()
+        bossFrame.DuckcraftUI_Elite:SetDrawLayer("OVERLAY", 6)
+        bossFrame.DuckcraftUI_Elite:SetTexture(TEXTURES.BOSS)
+        bossFrame.DuckcraftUI_Elite:Hide()
     end
     -- Apply classification decoration
-    if bossFrame.DragonUI_Elite and portrait then
+    if bossFrame.DuckcraftUI_Elite and portrait then
         local unit = bossFrame.unit or bossFrame:GetAttribute("unit")
         local classification
         if unit and UnitExists(unit) then
@@ -279,11 +279,11 @@ local function ReskinBossFrame(wrapperFrame, bossFrame)
             coords = BOSS_COORDS.rareelite
         end
         if coords then
-            bossFrame.DragonUI_Elite:SetTexCoord(coords[1], coords[2], coords[3], coords[4])
-            bossFrame.DragonUI_Elite:SetSize(coords[5], coords[6])
-            bossFrame.DragonUI_Elite:ClearAllPoints()
-            bossFrame.DragonUI_Elite:SetPoint("CENTER", portrait, "CENTER", coords[7], coords[8])
-            bossFrame.DragonUI_Elite:Show()
+            bossFrame.DuckcraftUI_Elite:SetTexCoord(coords[1], coords[2], coords[3], coords[4])
+            bossFrame.DuckcraftUI_Elite:SetSize(coords[5], coords[6])
+            bossFrame.DuckcraftUI_Elite:ClearAllPoints()
+            bossFrame.DuckcraftUI_Elite:SetPoint("CENTER", portrait, "CENTER", coords[7], coords[8])
+            bossFrame.DuckcraftUI_Elite:Show()
         end
     end
 
@@ -303,16 +303,16 @@ local function ReskinBossFrame(wrapperFrame, bossFrame)
             statusBarTex:SetVertexColor(1, 1, 1, 1)
         end
 
-        if not healthBar.DragonUI_ColorLocked then
+        if not healthBar.DuckcraftUI_ColorLocked then
             hooksecurefunc(healthBar, "SetStatusBarColor", function(self)
                 local tex = self:GetStatusBarTexture()
                 if tex then tex:SetVertexColor(1, 1, 1, 1) end
             end)
-            healthBar.DragonUI_ColorLocked = true
+            healthBar.DuckcraftUI_ColorLocked = true
         end
 
         -- Dynamic texcoord cropping (same as target_style)
-        if not healthBar.DragonUI_TexCoordHooked then
+        if not healthBar.DuckcraftUI_TexCoordHooked then
             hooksecurefunc(healthBar, "SetValue", function(self)
                 local texture = self:GetStatusBarTexture()
                 if not texture then return end
@@ -322,7 +322,7 @@ local function ReskinBossFrame(wrapperFrame, bossFrame)
                     texture:SetTexCoord(0, cur / max, 0, 1)
                 end
             end)
-            healthBar.DragonUI_TexCoordHooked = true
+            healthBar.DuckcraftUI_TexCoordHooked = true
         end
     end
 
@@ -342,17 +342,17 @@ local function ReskinBossFrame(wrapperFrame, bossFrame)
             statusBarTex:SetVertexColor(1, 1, 1, 1)
         end
 
-        if not manaBar.DragonUI_ColorLocked then
+        if not manaBar.DuckcraftUI_ColorLocked then
             hooksecurefunc(manaBar, "SetStatusBarColor", function(self)
                 local tex = self:GetStatusBarTexture()
                 if tex then tex:SetVertexColor(1, 1, 1, 1) end
             end)
             manaBar:SetStatusBarColor(1, 1, 1, 1)
-            manaBar.DragonUI_ColorLocked = true
+            manaBar.DuckcraftUI_ColorLocked = true
         end
 
         -- Dynamic texcoord cropping (same as target_style)
-        if not manaBar.DragonUI_TexCoordHooked then
+        if not manaBar.DuckcraftUI_TexCoordHooked then
             hooksecurefunc(manaBar, "SetValue", function(self)
                 local texture = self:GetStatusBarTexture()
                 if not texture then return end
@@ -363,7 +363,7 @@ local function ReskinBossFrame(wrapperFrame, bossFrame)
                     texture:SetTexCoord(0, cur / max, 0, 1)
                 end
             end)
-            manaBar.DragonUI_TexCoordHooked = true
+            manaBar.DuckcraftUI_TexCoordHooked = true
         end
     end
 
@@ -450,19 +450,19 @@ local function ReskinBossFrame(wrapperFrame, bossFrame)
         raidTargetIcon:ClearAllPoints()
         raidTargetIcon:SetPoint("CENTER", portrait, "TOP", 0, 5)
         -- Hook SetPoint to block Blizzard from resetting position after reload
-        if not raidTargetIcon.__DragonUI_SetPointHooked then
+        if not raidTargetIcon.__DuckcraftUI_SetPointHooked then
             local iconPortrait = portrait
             hooksecurefunc(raidTargetIcon, "SetPoint", function(self, ...)
-                if self._DragonUI_SettingPoint then return end
-                self._DragonUI_SettingPoint = true
+                if self._DuckcraftUI_SettingPoint then return end
+                self._DuckcraftUI_SettingPoint = true
                 self:ClearAllPoints()
                 self:SetPoint("CENTER", iconPortrait, "TOP", 0, 5)
-                self._DragonUI_SettingPoint = nil
+                self._DuckcraftUI_SettingPoint = nil
             end)
-            raidTargetIcon.__DragonUI_SetPointHooked = true
+            raidTargetIcon.__DuckcraftUI_SetPointHooked = true
         end
         -- Hook Hide to prevent Blizzard from hiding the icon when raid target exists
-        if not raidTargetIcon.__DragonUI_HideHooked then
+        if not raidTargetIcon.__DuckcraftUI_HideHooked then
             local iconBossFrame = bossFrame
             hooksecurefunc(raidTargetIcon, "Hide", function(self)
                 local unit = iconBossFrame.unit or iconBossFrame:GetAttribute("unit")
@@ -473,7 +473,7 @@ local function ReskinBossFrame(wrapperFrame, bossFrame)
                     end
                 end
             end)
-            raidTargetIcon.__DragonUI_HideHooked = true
+            raidTargetIcon.__DuckcraftUI_HideHooked = true
         end
     end
 
@@ -622,7 +622,7 @@ local function HookClassification()
 
         -- Re-enforce elite decoration on decoFrame
         local portrait = _G[frameName .. "Portrait"]
-        if self.DragonUI_Elite and portrait then
+        if self.DuckcraftUI_Elite and portrait then
             local unit = self.unit or self:GetAttribute("unit")
             local classification
             if unit and UnitExists(unit) then
@@ -641,12 +641,12 @@ local function HookClassification()
                 coords = BOSS_COORDS.rareelite
             end
             if coords then
-                self.DragonUI_Elite:SetTexCoord(coords[1], coords[2], coords[3], coords[4])
-                self.DragonUI_Elite:SetSize(coords[5], coords[6])
-                self.DragonUI_Elite:ClearAllPoints()
-                self.DragonUI_Elite:SetPoint("CENTER", portrait, "CENTER", coords[7], coords[8])
-                self.DragonUI_Elite:SetDrawLayer("OVERLAY", 6)
-                self.DragonUI_Elite:Show()
+                self.DuckcraftUI_Elite:SetTexCoord(coords[1], coords[2], coords[3], coords[4])
+                self.DuckcraftUI_Elite:SetSize(coords[5], coords[6])
+                self.DuckcraftUI_Elite:ClearAllPoints()
+                self.DuckcraftUI_Elite:SetPoint("CENTER", portrait, "CENTER", coords[7], coords[8])
+                self.DuckcraftUI_Elite:SetDrawLayer("OVERLAY", 6)
+                self.DuckcraftUI_Elite:Show()
             end
         end
 
@@ -716,11 +716,11 @@ local function HookTargetFrameUpdate()
             -- Re-anchor boss frame to our wrapper — Blizzard's TargetFrame_Update
             -- repositions frames to their default location during combat.
             -- (SetPoint hook also enforces this, but we double-check here.)
-            self._DragonUI_SettingPoint = true
+            self._DuckcraftUI_SettingPoint = true
             self:ClearAllPoints()
             self:SetPoint("TOPLEFT", wrapper, "TOPLEFT", 0, 0)
             self:SetHitRectInsets(0, 0, 0, 0)
-            self._DragonUI_SettingPoint = nil
+            self._DuckcraftUI_SettingPoint = nil
         end
 
         -- Re-enforce portrait positioning and refresh texture
@@ -768,7 +768,7 @@ local function HookTargetFrameUpdate()
         UpdateBossFrameBorder(self)
 
         -- Re-enforce elite decoration on decoFrame
-        if self.DragonUI_Elite and portrait then
+        if self.DuckcraftUI_Elite and portrait then
             local unit = self.unit or self:GetAttribute("unit")
             local classification
             if unit and UnitExists(unit) then
@@ -787,12 +787,12 @@ local function HookTargetFrameUpdate()
                 coords = BOSS_COORDS.rareelite
             end
             if coords then
-                self.DragonUI_Elite:SetTexCoord(coords[1], coords[2], coords[3], coords[4])
-                self.DragonUI_Elite:SetSize(coords[5], coords[6])
-                self.DragonUI_Elite:ClearAllPoints()
-                self.DragonUI_Elite:SetPoint("CENTER", portrait, "CENTER", coords[7], coords[8])
-                self.DragonUI_Elite:SetDrawLayer("OVERLAY", 6)
-                self.DragonUI_Elite:Show()
+                self.DuckcraftUI_Elite:SetTexCoord(coords[1], coords[2], coords[3], coords[4])
+                self.DuckcraftUI_Elite:SetSize(coords[5], coords[6])
+                self.DuckcraftUI_Elite:ClearAllPoints()
+                self.DuckcraftUI_Elite:SetPoint("CENTER", portrait, "CENTER", coords[7], coords[8])
+                self.DuckcraftUI_Elite:SetDrawLayer("OVERLAY", 6)
+                self.DuckcraftUI_Elite:Show()
             end
         end
 
@@ -904,7 +904,7 @@ local function InitializeBossFrames()
             ReskinBossFrame(wrapper, bossFrame)
 
             -- Hook OnShow to refresh visuals when boss appears
-            if not bossFrame.__DragonUI_OnShowHooked then
+            if not bossFrame.__DuckcraftUI_OnShowHooked then
                 bossFrame:HookScript("OnShow", function(self)
                     -- Re-hide Blizzard elements
                     local fn = self:GetName()
@@ -926,7 +926,7 @@ local function InitializeBossFrames()
                     local flashTex = _G[fn .. "Flash"]
                     EnforceFlashStyle(flashTex, self)
                     -- Re-enforce elite decoration on show
-                    if self.DragonUI_Elite and portrait then
+                    if self.DuckcraftUI_Elite and portrait then
                         local unit = self.unit or self:GetAttribute("unit")
                         local classification
                         if unit and UnitExists(unit) then
@@ -945,12 +945,12 @@ local function InitializeBossFrames()
                             coords = BOSS_COORDS.rareelite
                         end
                         if coords then
-                            self.DragonUI_Elite:SetTexCoord(coords[1], coords[2], coords[3], coords[4])
-                            self.DragonUI_Elite:SetSize(coords[5], coords[6])
-                            self.DragonUI_Elite:ClearAllPoints()
-                            self.DragonUI_Elite:SetPoint("CENTER", portrait, "CENTER", coords[7], coords[8])
-                            self.DragonUI_Elite:SetDrawLayer("OVERLAY", 6)
-                            self.DragonUI_Elite:Show()
+                            self.DuckcraftUI_Elite:SetTexCoord(coords[1], coords[2], coords[3], coords[4])
+                            self.DuckcraftUI_Elite:SetSize(coords[5], coords[6])
+                            self.DuckcraftUI_Elite:ClearAllPoints()
+                            self.DuckcraftUI_Elite:SetPoint("CENTER", portrait, "CENTER", coords[7], coords[8])
+                            self.DuckcraftUI_Elite:SetDrawLayer("OVERLAY", 6)
+                            self.DuckcraftUI_Elite:Show()
                         end
                     end
                     -- Re-enforce raid target icon draw layer on show
@@ -964,7 +964,7 @@ local function InitializeBossFrames()
                         end
                     end
                 end)
-                bossFrame.__DragonUI_OnShowHooked = true
+                bossFrame.__DuckcraftUI_OnShowHooked = true
             end
         end
     end
@@ -999,7 +999,7 @@ local function SetupEditorMode()
     )
 
     BossModule.overlay:HookScript("OnDragStop", function(self)
-        self.DragonUI_WasDragged = true
+        self.DuckcraftUI_WasDragged = true
     end)
 
     addon:RegisterEditableFrame({
@@ -1036,13 +1036,13 @@ local function SetupEditorMode()
             end
         end,
         onHide = function()
-            if BossModule.overlay and BossModule.overlay.DragonUI_WasDragged then
+            if BossModule.overlay and BossModule.overlay.DuckcraftUI_WasDragged then
                 local config = GetConfig()
                 if config then
                     config.override = true
                 end
                 PositionBossFrames()
-                BossModule.overlay.DragonUI_WasDragged = nil
+                BossModule.overlay.DuckcraftUI_WasDragged = nil
             end
         end,
         module = BossModule
@@ -1099,7 +1099,7 @@ local function RefreshRaidTargetIcons()
             local portrait = _G[fn .. "Portrait"]
             -- Re-raise TextureFrame above borderFrame+decoFrame
             local textureFrame = _G[fn .. "TextureFrame"]
-            local borderFrame = bf.DragonUI_BorderFrame
+            local borderFrame = bf.DuckcraftUI_BorderFrame
             if textureFrame and borderFrame then
                 textureFrame:SetFrameLevel(borderFrame:GetFrameLevel() + 2)
             end
@@ -1131,7 +1131,7 @@ eventsFrame:SetScript("OnEvent", function(self, event, ...)
 
     if event == "ADDON_LOADED" then
         local name = ...
-        if name == "DragonUI" then
+        if name == "DuckcraftUI" then
             SetupEditorMode()
             ApplyBossFramePosition()
         end

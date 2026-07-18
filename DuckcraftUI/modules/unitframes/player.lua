@@ -3,7 +3,7 @@ local UF = addon.UF
 local L = addon.L
 
 -- ====================================================================
--- DRAGONUI PLAYER FRAME MODULE
+-- DUCKCRAFTUI PLAYER FRAME MODULE
 -- ====================================================================
 
 -- ============================================================================
@@ -55,19 +55,19 @@ local PlayerLevelText = _G.PlayerLevelText
 local TEXTURES = UF.TEXTURES.player
 
 -- Keep a fixed on-screen border size so higher-resolution replacements
--- do not render larger than the original DragonUI frame.
+-- do not render larger than the original DuckcraftUI frame.
 local PLAYER_BORDER_WIDTH = 256
 local PLAYER_BORDER_HEIGHT = 128
 
 -- Dedicated player corner embellishment (normal state) from standalone texture.
-local PLAYER_CORNER_TEXTURE = "Interface\\AddOns\\DragonUI\\Textures\\ui-hud-unitframe-player-portraiton-cornerembellishment-2x"
+local PLAYER_CORNER_TEXTURE = "Interface\\AddOns\\DuckcraftUI\\Textures\\ui-hud-unitframe-player-portraiton-cornerembellishment-2x"
 local PLAYER_CORNER_TEX_COORDS = {
     0, 44 / 64,
     0, 44 / 64
 }
 
 -- Combat icon uses the white crossed-swords glyph from atlas crop.
-local PLAYER_COMBAT_ICON_TEXTURE = "Interface\\AddOns\\DragonUI\\Textures\\uiunitframe2x_ptr_icons_crop"
+local PLAYER_COMBAT_ICON_TEXTURE = "Interface\\AddOns\\DuckcraftUI\\Textures\\uiunitframe2x_ptr_icons_crop"
 local PLAYER_COMBAT_ICON_TEX_COORDS = {
     2 / 256, 32 / 256,   -- x: 2..31 (exclusive right edge at 32)
     63 / 256, 90 / 256   -- y: 63..89 (exclusive bottom edge at 90)
@@ -75,10 +75,10 @@ local PLAYER_COMBAT_ICON_TEX_COORDS = {
 
 -- Coordinates for elite/rare glows (inverted target frame)
 local ELITE_GLOW_COORDINATES = {
-    -- Using the correct texture: 'Interface\\Addons\\DragonUI\\Textures\\UI\\UnitFrame'
+    -- Using the correct texture: 'Interface\\Addons\\DuckcraftUI\\Textures\\UI\\UnitFrame'
     texCoord = {0.2061015625, 0, 0.537109375, 0.712890625},
     size = {209, 90},
-    texture = 'Interface\\Addons\\DragonUI\\Textures\\UI\\UnitFrame'
+    texture = 'Interface\\Addons\\DuckcraftUI\\Textures\\UI\\UnitFrame'
 }
 
 -- Dragon decoration coordinates for uiunitframeboss2x texture (always flipped for player frame)
@@ -257,13 +257,13 @@ local function GetPowerBarTexture(powerTypeString)
     -- Override textures only apply when fat healthbar is active
     if IsFatHealthbarActive() then
         local config = GetPlayerConfig()
-        local textureSetting = config and config.manabar_texture or "dragonui"
-        if textureSetting ~= "dragonui" and MANABAR_TEXTURE_OVERRIDES[textureSetting] then
+        local textureSetting = config and config.manabar_texture or "duckcraftui"
+        if textureSetting ~= "duckcraftui" and MANABAR_TEXTURE_OVERRIDES[textureSetting] then
             return MANABAR_TEXTURE_OVERRIDES[textureSetting]
         end
     end
     
-    -- Default DragonUI per-power-type textures (normal mode always uses these)
+    -- Default DuckcraftUI per-power-type textures (normal mode always uses these)
     return TEXTURES.POWER_BARS[powerTypeString] or TEXTURES.POWER_BARS.MANA
 end
 
@@ -371,21 +371,21 @@ local function HideBlizzardPlayerTexts()
 
     -- Hide each BLIZZARD text element permanently with alpha 0 (ONE TIME SETUP)
     for _, textElement in pairs(blizzardTexts) do
-        if textElement and not textElement.DragonUIHidden then
+        if textElement and not textElement.DuckcraftUIHidden then
             -- Set alpha to 0 immediately (taint-free)
             textElement:SetAlpha(0)
 
             -- Phase 2: hooksecurefunc instead of direct .Show override to avoid taint
             hooksecurefunc(textElement, "Show", function(self)
-                if not self.DragonUI_ShowGuard then
-                    self.DragonUI_ShowGuard = true
+                if not self.DuckcraftUI_ShowGuard then
+                    self.DuckcraftUI_ShowGuard = true
                     self:SetAlpha(0)
-                    self.DragonUI_ShowGuard = nil
+                    self.DuckcraftUI_ShowGuard = nil
                 end
             end)
 
             -- Mark as processed to avoid duplicate setup
-            textElement.DragonUIHidden = true
+            textElement.DuckcraftUIHidden = true
         end
     end
 end
@@ -397,12 +397,12 @@ local function HideBlizzardGlows()
             glow:Hide()
             glow:SetAlpha(0)
             -- Permanent hook: prevent Blizzard from re-showing the resting glow
-            if not glow.__DragonUI_GlowHooked and glow.HookScript then
+            if not glow.__DuckcraftUI_GlowHooked and glow.HookScript then
                 glow:HookScript("OnShow", function(self)
                     self:Hide()
                     self:SetAlpha(0)
                 end)
-                glow.__DragonUI_GlowHooked = true
+                glow.__DuckcraftUI_GlowHooked = true
             end
         end
     end
@@ -424,7 +424,7 @@ local function RemoveBlizzardFrames(isVehicle)
 
     for _, name in ipairs(elementsToHide) do
         local obj = _G[name]
-        if obj and not obj.__DragonUIHidden then
+        if obj and not obj.__DuckcraftUIHidden then
             obj:Hide()
             obj:SetAlpha(0)
 
@@ -439,7 +439,7 @@ local function RemoveBlizzardFrames(isVehicle)
                 obj:SetTexture(nil)
             end
 
-            obj.__DragonUIHidden = true
+            obj.__DuckcraftUIHidden = true
         end
     end
 
@@ -447,7 +447,7 @@ local function RemoveBlizzardFrames(isVehicle)
     if PlayerFrameTexture then
         PlayerFrameTexture:SetAlpha(0)
     end
-    -- Hide Blizzard's PlayerFrameBackground (global, not our DragonUI one)
+    -- Hide Blizzard's PlayerFrameBackground (global, not our DuckcraftUI one)
     if PlayerFrameBackground then
         PlayerFrameBackground:SetAlpha(0)
     end
@@ -483,7 +483,7 @@ end
 
 -- Toggle glow visibility based on elite mode
 local function UpdateGlowVisibility()
-    local dragonFrame = _G["DragonUIUnitframeFrame"]
+    local dragonFrame = _G["DuckcraftUIUnitframeFrame"]
     if not dragonFrame then
         return
     end
@@ -492,17 +492,17 @@ local function UpdateGlowVisibility()
     local config = GetPlayerConfig()
     local restGlowEnabled = config.show_rest_glow ~= false -- default true
 
-    -- Vehicle mode: DragonUI's custom glow textures (uiunitframe/uiunitframe-fat) don't
+    -- Vehicle mode: DuckcraftUI's custom glow textures (uiunitframe/uiunitframe-fat) don't
     -- match the vehicle border shape. Instead, use dedicated VehicleCombatFlash and
     -- VehicleStatusGlow frames which use the 209×89 vehicle atlas shape.
     -- This avoids conflict with Blizzard's UIFrameFlash system on PlayerFrameFlash.
     if IsInVehicle() then
         -- Suppress ALL normal/elite custom glows (wrong shape for vehicle frame)
-        if dragonFrame.DragonUICombatGlow then
-            dragonFrame.DragonUICombatGlow:Hide()
+        if dragonFrame.DuckcraftUICombatGlow then
+            dragonFrame.DuckcraftUICombatGlow:Hide()
         end
-        if dragonFrame.DragonUIStatusGlow then
-            dragonFrame.DragonUIStatusGlow:Hide()
+        if dragonFrame.DuckcraftUIStatusGlow then
+            dragonFrame.DuckcraftUIStatusGlow:Hide()
         end
         if dragonFrame.EliteStatusGlow then
             dragonFrame.EliteStatusGlow:Hide()
@@ -521,7 +521,7 @@ local function UpdateGlowVisibility()
             PlayerStatusTexture:SetAlpha(0)
         end
 
-        -- Vehicle combat flash: dedicated DragonUI frame with vehicle atlas shape
+        -- Vehicle combat flash: dedicated DuckcraftUI frame with vehicle atlas shape
         local combatFlashEnabled = GetCombatFlashConfig()
         if dragonFrame.VehicleCombatFlash then
             if combatGlowVisible and combatFlashEnabled then
@@ -532,7 +532,7 @@ local function UpdateGlowVisibility()
             end
         end
 
-        -- Vehicle status (resting) glow: dedicated DragonUI frame with vehicle atlas shape
+        -- Vehicle status (resting) glow: dedicated DuckcraftUI frame with vehicle atlas shape
         if dragonFrame.VehicleStatusGlow then
             if statusGlowVisible and restGlowEnabled then
                 dragonFrame.VehicleStatusGlow:Show()
@@ -544,8 +544,8 @@ local function UpdateGlowVisibility()
         return
     end
 
-    --  DragonUI always suppresses Blizzard's PlayerStatusTexture
-    --  Custom glow is handled by DragonUIStatusGlow / EliteStatusGlow / VehicleStatusGlow
+    --  DuckcraftUI always suppresses Blizzard's PlayerStatusTexture
+    --  Custom glow is handled by DuckcraftUIStatusGlow / EliteStatusGlow / VehicleStatusGlow
     if PlayerStatusTexture then
         PlayerStatusTexture:Hide()
         PlayerStatusTexture:SetAlpha(0)
@@ -554,28 +554,28 @@ local function UpdateGlowVisibility()
     eliteGlowActive = IsEliteModeActive()
     local combatFlashEnabled = GetCombatFlashConfig()
 
-    if dragonFrame.DragonUICombatGlow then
+    if dragonFrame.DuckcraftUICombatGlow then
         if eliteGlowActive then
             -- In elite mode: hide normal combat glow
-            dragonFrame.DragonUICombatGlow:Hide()
-            dragonFrame.DragonUICombatGlow:SetAlpha(0)
+            dragonFrame.DuckcraftUICombatGlow:Hide()
+            dragonFrame.DuckcraftUICombatGlow:SetAlpha(0)
         else
             -- In normal mode: show/hide original glow based on combatGlowVisible
-            dragonFrame.DragonUICombatGlow:SetAlpha(1) -- Restore alpha
+            dragonFrame.DuckcraftUICombatGlow:SetAlpha(1) -- Restore alpha
             if combatGlowVisible and combatFlashEnabled then
-                dragonFrame.DragonUICombatGlow:Show()
+                dragonFrame.DuckcraftUICombatGlow:Show()
             else
-                dragonFrame.DragonUICombatGlow:Hide()
+                dragonFrame.DuckcraftUICombatGlow:Hide()
             end
         end
     end
 
     -- Normal/fat status glow (only when NOT in elite mode)
-    if dragonFrame.DragonUIStatusGlow then
+    if dragonFrame.DuckcraftUIStatusGlow then
         if not eliteGlowActive and statusGlowVisible and restGlowEnabled then
-            dragonFrame.DragonUIStatusGlow:Show()
+            dragonFrame.DuckcraftUIStatusGlow:Show()
         else
-            dragonFrame.DragonUIStatusGlow:Hide()
+            dragonFrame.DuckcraftUIStatusGlow:Hide()
         end
     end
 
@@ -666,7 +666,7 @@ local function AnimateCombatFlashPulse(elapsed)
 
     -- Vehicle mode: pulse dedicated VehicleCombatFlash (uses vehicle atlas shape)
     if IsInVehicle() then
-        local dragonFrame = _G["DragonUIUnitframeFrame"]
+        local dragonFrame = _G["DuckcraftUIUnitframeFrame"]
         if dragonFrame and dragonFrame.VehicleCombatFlash and dragonFrame.VehicleCombatFlash:IsVisible() then
             combatPulseTimer = combatPulseTimer + (elapsed * COMBAT_PULSE_SETTINGS.speed)
             local pulseAlpha = COMBAT_PULSE_SETTINGS.minAlpha +
@@ -677,7 +677,7 @@ local function AnimateCombatFlashPulse(elapsed)
         return
     end
 
-    local dragonFrame = _G["DragonUIUnitframeFrame"]
+    local dragonFrame = _G["DuckcraftUIUnitframeFrame"]
     if not dragonFrame then
         return
     end
@@ -709,15 +709,15 @@ local function AnimateCombatFlashPulse(elapsed)
                                (COMBAT_PULSE_SETTINGS.maxAlpha - COMBAT_PULSE_SETTINGS.minAlpha) *
                                (math.sin(combatPulseTimer) * 0.5 + 0.5)
 
-        if dragonFrame.DragonUICombatGlow and dragonFrame.DragonUICombatGlow:IsVisible() then
-            dragonFrame.DragonUICombatTexture:SetAlpha(pulseAlpha * combatFlashOpacity)
+        if dragonFrame.DuckcraftUICombatGlow and dragonFrame.DuckcraftUICombatGlow:IsVisible() then
+            dragonFrame.DuckcraftUICombatTexture:SetAlpha(pulseAlpha * combatFlashOpacity)
         end
     end
 end
 
 -- Animate Status/Rest pulse effect (both normal and elite modes)
 local function AnimateStatusPulse(elapsed)
-    local dragonFrame = _G["DragonUIUnitframeFrame"]
+    local dragonFrame = _G["DuckcraftUIUnitframeFrame"]
     if not dragonFrame then
         return
     end
@@ -733,14 +733,14 @@ local function AnimateStatusPulse(elapsed)
             dragonFrame.EliteStatusTexture:SetAlpha(pulseAlpha)
         end
     else
-        -- Normal/fat mode: pulse DragonUIStatusGlow
+        -- Normal/fat mode: pulse DuckcraftUIStatusGlow
         if not NORMAL_STATUS_PULSE_SETTINGS.enabled then return end
-        if dragonFrame.DragonUIStatusGlow and dragonFrame.DragonUIStatusGlow:IsVisible() then
+        if dragonFrame.DuckcraftUIStatusGlow and dragonFrame.DuckcraftUIStatusGlow:IsVisible() then
             eliteStatusPulseTimer = eliteStatusPulseTimer + (elapsed * NORMAL_STATUS_PULSE_SETTINGS.speed)
             local pulseAlpha = NORMAL_STATUS_PULSE_SETTINGS.minAlpha +
                                    (NORMAL_STATUS_PULSE_SETTINGS.maxAlpha - NORMAL_STATUS_PULSE_SETTINGS.minAlpha) *
                                    (math.sin(eliteStatusPulseTimer) * 0.5 + 0.5)
-            dragonFrame.DragonUIStatusTexture:SetAlpha(pulseAlpha)
+            dragonFrame.DuckcraftUIStatusTexture:SetAlpha(pulseAlpha)
         end
     end
 end
@@ -805,16 +805,16 @@ local function SetupRuneFrame()
             end
             UpdateRune(button)
 
-            -- FIX: Hook each button's OnEvent to re-apply DragonUI texture
+            -- FIX: Hook each button's OnEvent to re-apply DuckcraftUI texture
             -- AFTER Blizzard's built-in handler runs (HookScript fires post-original).
             -- This prevents Blizzard's handler from permanently overwriting our texture.
-            if not button.__DragonUIRuneHooked then
+            if not button.__DuckcraftUIRuneHooked then
                 button:HookScript('OnEvent', function(self, event)
                     if event == 'RUNE_TYPE_UPDATE' then
                         UpdateRune(self)
                     end
                 end)
-                button.__DragonUIRuneHooked = true
+                button.__DuckcraftUIRuneHooked = true
             end
         end
     end
@@ -837,7 +837,7 @@ end
 
 -- Update LFG role icon display
 local function UpdatePlayerRoleIcon()
-    local dragonFrame = _G["DragonUIUnitframeFrame"]
+    local dragonFrame = _G["DuckcraftUIUnitframeFrame"]
     if not dragonFrame or not dragonFrame.PlayerRoleIcon then
         return
     end
@@ -913,7 +913,7 @@ local function UpdateLeaderIconPosition()
         -- In elite mode: reparent to EliteIconContainer so the icon renders
         -- above the dragon decoration textures (strata HIGH, level 1000).
         -- Same pattern used by UpdateMasterIconPosition.
-        local dragonFrame = _G["DragonUIUnitframeFrame"]
+        local dragonFrame = _G["DuckcraftUIUnitframeFrame"]
         if dragonFrame and dragonFrame.EliteIconContainer then
             PlayerLeaderIcon:SetParent(dragonFrame.EliteIconContainer)
         end
@@ -923,7 +923,7 @@ local function UpdateLeaderIconPosition()
         -- above the portrait overlay (level +2) and border overlay (level +3).
         -- If we parented to PlayerFrame directly, the icon (a texture) would
         -- draw below all child overlay frames and be hidden behind the border.
-        local dragonFrame = _G["DragonUIUnitframeFrame"]
+        local dragonFrame = _G["DuckcraftUIUnitframeFrame"]
         if dragonFrame and dragonFrame.EliteIconContainer then
             PlayerLeaderIcon:SetParent(dragonFrame.EliteIconContainer)
         end
@@ -944,13 +944,13 @@ local function UpdateMasterIconPosition()
     PlayerMasterIcon:ClearAllPoints()
 
     if isEliteMode then
-        local iconContainer = _G["DragonUIUnitframeFrame"].EliteIconContainer
+        local iconContainer = _G["DuckcraftUIUnitframeFrame"].EliteIconContainer
         PlayerMasterIcon:SetParent(iconContainer)
         PlayerMasterIcon:ClearAllPoints()
         PlayerMasterIcon:SetPoint("TOPRIGHT", PlayerFrame, "TOPRIGHT", -135, -55)
     else
         -- Non-elite mode: still use EliteIconContainer for correct layering
-        local dragonFrame = _G["DragonUIUnitframeFrame"]
+        local dragonFrame = _G["DuckcraftUIUnitframeFrame"]
         if dragonFrame and dragonFrame.EliteIconContainer then
             PlayerMasterIcon:SetParent(dragonFrame.EliteIconContainer)
         end
@@ -962,7 +962,7 @@ end
 -- The vehicle frame border has a different shape from normal/fat/elite, so
 -- glow textures designed for those shapes must be suppressed in vehicle mode.
 local function UpdateDragonVisibilityForVehicle(inVehicle, hasEliteDecoration)
-    local dragonFrame = _G["DragonUIUnitframeFrame"]
+    local dragonFrame = _G["DuckcraftUIUnitframeFrame"]
     if not dragonFrame then
         return
     end
@@ -973,7 +973,7 @@ local function UpdateDragonVisibilityForVehicle(inVehicle, hasEliteDecoration)
     end
     
     -- Update glow visibility: switches between atlas-based glows (vehicle)
-    -- and DragonUI custom glows (normal) based on current vehicle/combat/rest state
+    -- and DuckcraftUI custom glows (normal) based on current vehicle/combat/rest state
     UpdateGlowVisibility()
 end
 
@@ -987,7 +987,7 @@ local function UpdatePVPTimerPosition(isEliteMode)
     -- ONLY modify if there's elite decoration (elite, rareelite, worldboss, etc.)
     if isEliteMode then
         -- With elite decoration: use the SAME parent as the PVP icon (already above)
-        local dragonFrame = _G["DragonUIUnitframeFrame"]
+        local dragonFrame = _G["DuckcraftUIUnitframeFrame"]
         if dragonFrame and dragonFrame.EliteIconContainer then
             -- 1. Reparent to the same container as the PVP icon
             pvpTimerText:SetParent(dragonFrame.EliteIconContainer)
@@ -1010,7 +1010,7 @@ local function UpdatePVPIconPosition()
     end
 
     -- FIX: Check that the frame exists before continuing
-    local dragonFrame = _G["DragonUIUnitframeFrame"]
+    local dragonFrame = _G["DuckcraftUIUnitframeFrame"]
     if not dragonFrame or not dragonFrame.EliteIconContainer then
         return
     end
@@ -1105,7 +1105,7 @@ local function UpdateHealthBarColor(statusBar, unit)
 end
 
 -- Update mana bar color based on texture mode:
--- DragonUI textures: force white (1,1,1) because color is baked into the texture.
+-- DuckcraftUI textures: force white (1,1,1) because color is baked into the texture.
 -- Override textures: apply power colors from DB (user-customizable) or DF defaults.
 -- (vanilla textures are neutral/grayscale and need explicit coloring).
 local function UpdateManaBarColor(statusBar)
@@ -1114,8 +1114,8 @@ local function UpdateManaBarColor(statusBar)
     local useOverride = IsFatHealthbarActive()
     if useOverride then
         local config = GetPlayerConfig()
-        local textureSetting = config and config.manabar_texture or "dragonui"
-        if textureSetting ~= "dragonui" then
+        local textureSetting = config and config.manabar_texture or "duckcraftui"
+        if textureSetting ~= "duckcraftui" then
             -- Override texture: use DB color if available, else fall back to DF defaults
             local _, powerToken = UnitPowerType('player')
             local dbColors = config and config.power_colors
@@ -1124,7 +1124,7 @@ local function UpdateManaBarColor(statusBar)
             return
         end
     end
-    -- DragonUI textures (or normal mode): force white so baked color shows
+    -- DuckcraftUI textures (or normal mode): force white so baked color shows
     statusBar:SetStatusBarColor(1, 1, 1)
 end
 
@@ -1171,7 +1171,7 @@ local function UpdateTextSystemUnit()
     end
 end
 
--- Create DragonUI text elements for alternate mana bar
+-- Create DuckcraftUI text elements for alternate mana bar
 local function SetupAlternateManaTextElements()
     local alternateManaBar = _G.PlayerFrameAlternateManaBar
     if not alternateManaBar or not addon.TextSystem then
@@ -1188,7 +1188,7 @@ local function SetupAlternateManaTextElements()
     )
 end
 
--- Update alternate mana text using DragonUI TextSystem
+-- Update alternate mana text using DuckcraftUI TextSystem
 local function UpdateAlternateManaText()
     local alternateManaBar = _G.PlayerFrameAlternateManaBar
     if not alternateManaBar or not addon.TextSystem then
@@ -1244,7 +1244,7 @@ local function UpdateAlternateManaText()
     end
 end
 
--- Setup always visible behavior for DragonUI alternate mana text
+-- Setup always visible behavior for DuckcraftUI alternate mana text
 local function SetupAlternateManaAlwaysVisible()
     local alternateManaBar = _G.PlayerFrameAlternateManaBar
     if not alternateManaBar then
@@ -1252,13 +1252,13 @@ local function SetupAlternateManaAlwaysVisible()
     end
     
     -- Phase 3C: Disable hover mode via flag (can't unhook HookScript)
-    alternateManaBar.DragonUIHoverEnabled = false
+    alternateManaBar.DuckcraftUIHoverEnabled = false
     
     -- Show text immediately and keep it visible
     UpdateAlternateManaText()
 end
 
--- Hide DragonUI alternate mana text elements
+-- Hide DuckcraftUI alternate mana text elements
 local function HideAlternateManaTextElements()
     local alternateManaBar = _G.PlayerFrameAlternateManaBar
     if not alternateManaBar or not addon.TextSystem then
@@ -1275,7 +1275,7 @@ local function HideAlternateManaTextElements()
     )
 end
 
--- Setup hover-only behavior for DragonUI alternate mana text
+-- Setup hover-only behavior for DuckcraftUI alternate mana text
 local function SetupAlternateManaHoverBehavior()
     local alternateManaBar = _G.PlayerFrameAlternateManaBar
     if not alternateManaBar then
@@ -1287,22 +1287,22 @@ local function SetupAlternateManaHoverBehavior()
     
     -- Phase 3C: Use HookScript instead of SetScript on Blizzard frame
     -- Hook only once, use flag to enable/disable behavior
-    if not alternateManaBar.DragonUIHoverHooked then
+    if not alternateManaBar.DuckcraftUIHoverHooked then
         alternateManaBar:HookScript("OnEnter", function()
-            if alternateManaBar.DragonUIHoverEnabled then
+            if alternateManaBar.DuckcraftUIHoverEnabled then
                 UpdateAlternateManaText()
             end
         end)
         
         alternateManaBar:HookScript("OnLeave", function()
-            if alternateManaBar.DragonUIHoverEnabled then
+            if alternateManaBar.DuckcraftUIHoverEnabled then
                 HideAlternateManaTextElements()
             end
         end)
-        alternateManaBar.DragonUIHoverHooked = true
+        alternateManaBar.DuckcraftUIHoverHooked = true
     end
     
-    alternateManaBar.DragonUIHoverEnabled = true
+    alternateManaBar.DuckcraftUIHoverEnabled = true
 end
 
 -- Setup alternate mana bar text system based on configuration
@@ -1317,14 +1317,14 @@ local function SetupAlternateManaBarAlwaysVisible()
         return
     end
     
-    -- ALWAYS hide Blizzard text - we always use DragonUI system for druids
+    -- ALWAYS hide Blizzard text - we always use DuckcraftUI system for druids
     local blizzardText = alternateManaBar.TextString or _G.PlayerFrameAlternateManaBarText
     if blizzardText then
         blizzardText:Hide()
         blizzardText:SetAlpha(0)
     end
     
-    -- ALWAYS setup DragonUI text elements for druids
+    -- ALWAYS setup DuckcraftUI text elements for druids
     SetupAlternateManaTextElements()
     
     -- Get configuration to determine visibility behavior
@@ -1332,11 +1332,11 @@ local function SetupAlternateManaBarAlwaysVisible()
     local alwaysShow = config and config.alwaysShowAlternateManaText
     
     if alwaysShow then
-        -- Show DragonUI text always
+        -- Show DuckcraftUI text always
         UpdateAlternateManaText()
         SetupAlternateManaAlwaysVisible()
     else
-        -- Show DragonUI text only on hover (default behavior)
+        -- Show DuckcraftUI text only on hover (default behavior)
         SetupAlternateManaHoverBehavior()
     end
 end
@@ -1347,7 +1347,7 @@ end
 
 -- Update decorative dragon for player frame
 local function UpdatePlayerDragonDecoration()
-    local dragonFrame = _G["DragonUIUnitframeFrame"]
+    local dragonFrame = _G["DuckcraftUIUnitframeFrame"]
     if not dragonFrame then
         return
     end
@@ -1600,8 +1600,8 @@ local function UpdatePlayerDragonDecoration()
             end
 
             -- Hide combat glow in vehicle
-            if dragonFrame.DragonUICombatGlow then
-                dragonFrame.DragonUICombatGlow:Hide()
+            if dragonFrame.DuckcraftUICombatGlow then
+                dragonFrame.DuckcraftUICombatGlow:Hide()
             end
 
             -- Standard vehicle mana bar positioning
@@ -1632,11 +1632,11 @@ local function UpdatePlayerDragonDecoration()
             end
 
             -- Update combat and status glow textures to match fat/normal mode
-            if dragonFrame.DragonUICombatTexture then
-                dragonFrame.DragonUICombatTexture:SetTexture(baseTexture)
+            if dragonFrame.DuckcraftUICombatTexture then
+                dragonFrame.DuckcraftUICombatTexture:SetTexture(baseTexture)
             end
-            if dragonFrame.DragonUIStatusTexture then
-                dragonFrame.DragonUIStatusTexture:SetTexture(baseTexture)
+            if dragonFrame.DuckcraftUIStatusTexture then
+                dragonFrame.DuckcraftUIStatusTexture:SetTexture(baseTexture)
             end
 
             -- Show deco dot when no dragon decoration
@@ -1671,7 +1671,7 @@ local function UpdatePlayerDragonDecoration()
 
     -- Create dragon texture in high strata frame
     local dragon = dragonParent:CreateTexture(nil, "OVERLAY")
-    dragon:SetTexture("Interface\\AddOns\\DragonUI\\Textures\\uiunitframeboss2x")
+    dragon:SetTexture("Interface\\AddOns\\DuckcraftUI\\Textures\\uiunitframeboss2x")
     dragon:SetTexCoord(coords.texCoord[1], coords.texCoord[2], coords.texCoord[3], coords.texCoord[4])
     dragon:SetAllPoints(dragonParent)
 
@@ -1688,18 +1688,18 @@ local function UpdatePlayerDragonDecoration()
 
 end
 
--- Create custom DragonUI textures and elements
+-- Create custom DuckcraftUI textures and elements
 local function CreatePlayerFrameTextures()
-    local dragonFrame = _G["DragonUIUnitframeFrame"]
+    local dragonFrame = _G["DuckcraftUIUnitframeFrame"]
     if not dragonFrame then
-        dragonFrame = CreateFrame('FRAME', 'DragonUIUnitframeFrame', UIParent)
+        dragonFrame = CreateFrame('FRAME', 'DuckcraftUIUnitframeFrame', UIParent)
 
     end
 
     HideBlizzardGlows()
 
     if not dragonFrame.EliteIconContainer then
-        local iconContainer = CreateFrame("Frame", "DragonUI_EliteIconContainer", PlayerFrame)
+        local iconContainer = CreateFrame("Frame", "DuckcraftUI_EliteIconContainer", PlayerFrame)
         iconContainer:SetFrameStrata("MEDIUM")
         iconContainer:SetFrameLevel(PlayerFrame:GetFrameLevel() + 10)
         iconContainer:SetSize(200, 200)
@@ -1707,8 +1707,8 @@ local function CreatePlayerFrameTextures()
         dragonFrame.EliteIconContainer = iconContainer
     end
 
-    if not dragonFrame.DragonUICombatGlow then
-        local combatFlashFrame = CreateFrame("Frame", "DragonUICombatFlash", PlayerFrame)
+    if not dragonFrame.DuckcraftUICombatGlow then
+        local combatFlashFrame = CreateFrame("Frame", "DuckcraftUICombatFlash", PlayerFrame)
         combatFlashFrame:SetFrameStrata("LOW")
         combatFlashFrame:SetFrameLevel(900)
         combatFlashFrame:SetSize(192, 71)
@@ -1721,14 +1721,14 @@ local function CreatePlayerFrameTextures()
         combatTexture:SetBlendMode("ADD")
         combatTexture:SetVertexColor(1.0, 0.0, 0.0, 1.0)
 
-        dragonFrame.DragonUICombatGlow = combatFlashFrame
-        dragonFrame.DragonUICombatTexture = combatTexture
+        dragonFrame.DuckcraftUICombatGlow = combatFlashFrame
+        dragonFrame.DuckcraftUICombatTexture = combatTexture
 
     end
 
     -- CREATE NORMAL STATUS GLOW (rest glow for normal/fat mode, no elite)
-    if not dragonFrame.DragonUIStatusGlow then
-        local statusGlowFrame = CreateFrame("Frame", "DragonUIStatusGlow", PlayerFrame)
+    if not dragonFrame.DuckcraftUIStatusGlow then
+        local statusGlowFrame = CreateFrame("Frame", "DuckcraftUIStatusGlow", PlayerFrame)
         statusGlowFrame:SetFrameStrata("LOW")
         statusGlowFrame:SetFrameLevel(998)
         statusGlowFrame:SetSize(192, 71)
@@ -1741,14 +1741,14 @@ local function CreatePlayerFrameTextures()
         statusGlowTexture:SetBlendMode("ADD")
         statusGlowTexture:SetVertexColor(1.0, 0.82, 0.0, 0.6) -- Gold/yellow for resting
 
-        dragonFrame.DragonUIStatusGlow = statusGlowFrame
-        dragonFrame.DragonUIStatusTexture = statusGlowTexture
+        dragonFrame.DuckcraftUIStatusGlow = statusGlowFrame
+        dragonFrame.DuckcraftUIStatusTexture = statusGlowTexture
     end
 
     -- CREATE ELITE GLOW SYSTEM - Two glows using ELITE_GLOW_COORDINATES
     if not dragonFrame.EliteStatusGlow then
         -- Elite Status Glow (Yellow)
-        local statusFrame = CreateFrame("Frame", "DragonUIEliteStatusGlow", PlayerFrame)
+        local statusFrame = CreateFrame("Frame", "DuckcraftUIEliteStatusGlow", PlayerFrame)
         statusFrame:SetFrameStrata("LOW")
         statusFrame:SetFrameLevel(998)
         statusFrame:SetSize(ELITE_GLOW_COORDINATES.size[1], ELITE_GLOW_COORDINATES.size[2])
@@ -1765,7 +1765,7 @@ local function CreatePlayerFrameTextures()
         dragonFrame.EliteStatusTexture = statusTexture
 
         -- Elite Combat Glow (Red with pulse)
-        local combatFrame = CreateFrame("Frame", "DragonUIEliteCombatGlow", PlayerFrame)
+        local combatFrame = CreateFrame("Frame", "DuckcraftUIEliteCombatGlow", PlayerFrame)
         combatFrame:SetFrameStrata("LOW")
         combatFrame:SetFrameLevel(900)
         combatFrame:SetSize(ELITE_GLOW_COORDINATES.size[1], ELITE_GLOW_COORDINATES.size[2])
@@ -1788,7 +1788,7 @@ local function CreatePlayerFrameTextures()
     -- normal/fat/elite frames. Using dedicated frames avoids conflict with Blizzard's
     -- UIFrameFlash system which controls PlayerFrameFlash independently.
     if not dragonFrame.VehicleCombatFlash then
-        local vehicleCombatFrame = CreateFrame("Frame", "DragonUIVehicleCombatFlash", PlayerFrame)
+        local vehicleCombatFrame = CreateFrame("Frame", "DuckcraftUIVehicleCombatFlash", PlayerFrame)
         vehicleCombatFrame:SetFrameStrata("MEDIUM")
         vehicleCombatFrame:SetFrameLevel(PlayerFrame:GetFrameLevel() + 10)
         vehicleCombatFrame:SetSize(209, 89) -- Vehicle atlas dimensions
@@ -1807,7 +1807,7 @@ local function CreatePlayerFrameTextures()
     end
 
     if not dragonFrame.VehicleStatusGlow then
-        local vehicleStatusFrame = CreateFrame("Frame", "DragonUIVehicleStatusGlow", PlayerFrame)
+        local vehicleStatusFrame = CreateFrame("Frame", "DuckcraftUIVehicleStatusGlow", PlayerFrame)
         vehicleStatusFrame:SetFrameStrata("MEDIUM")
         vehicleStatusFrame:SetFrameLevel(PlayerFrame:GetFrameLevel() + 10)
         vehicleStatusFrame:SetSize(209, 89) -- Vehicle atlas dimensions
@@ -1827,7 +1827,7 @@ local function CreatePlayerFrameTextures()
 
     -- Create background texture
     if not dragonFrame.PlayerFrameBackground then
-        local background = PlayerFrame:CreateTexture('DragonUIPlayerFrameBackground')
+        local background = PlayerFrame:CreateTexture('DuckcraftUIPlayerFrameBackground')
         background:SetDrawLayer('BACKGROUND', 2)
         background:SetTexture(GetBaseTexture())
         background:SetTexCoord(0.7890625, 0.982421875, 0.001953125, 0.140625)
@@ -1838,7 +1838,7 @@ local function CreatePlayerFrameTextures()
 
     -- Create border texture
     if not dragonFrame.PlayerFrameBorder then
-        local border = PlayerFrameHealthBar:CreateTexture('DragonUIPlayerFrameBorder')
+        local border = PlayerFrameHealthBar:CreateTexture('DuckcraftUIPlayerFrameBorder')
         border:SetDrawLayer('OVERLAY', 5)
         border:SetTexture(GetBorderTexture())
         border:SetSize(PLAYER_BORDER_WIDTH, PLAYER_BORDER_HEIGHT)
@@ -1848,7 +1848,7 @@ local function CreatePlayerFrameTextures()
 
     -- Create decoration texture
     if not dragonFrame.PlayerFrameDeco then
-        local deco = PlayerFrame:CreateTexture('DragonUIPlayerFrameDeco')
+        local deco = PlayerFrame:CreateTexture('DuckcraftUIPlayerFrameDeco')
         deco:SetDrawLayer('OVERLAY', 5)
         deco:SetTexture(PLAYER_CORNER_TEXTURE)
         deco:SetTexCoord(unpack(PLAYER_CORNER_TEX_COORDS))
@@ -1869,7 +1869,7 @@ local function CreatePlayerFrameTextures()
 
     -- Create group indicator
     if not dragonFrame.PlayerGroupIndicator then
-        local groupIndicator = CreateFrame("Frame", "DragonUIPlayerGroupIndicator", PlayerFrame)
+        local groupIndicator = CreateFrame("Frame", "DuckcraftUIPlayerGroupIndicator", PlayerFrame)
 
         --  USE uiunitframe texture like RetailUI
         local bgTexture = groupIndicator:CreateTexture(nil, "BACKGROUND")
@@ -1984,7 +1984,7 @@ local function UpdatePlayerClassPortrait()
         PlayerPortrait,
         config.alternativeClassIcons
     ) then
-        local dragonFrame = _G["DragonUIUnitframeFrame"]
+        local dragonFrame = _G["DuckcraftUIUnitframeFrame"]
         if dragonFrame and dragonFrame.ClassPortraitOverlay then
             dragonFrame.ClassPortraitOverlay:Hide()
         end
@@ -1993,7 +1993,7 @@ local function UpdatePlayerClassPortrait()
 
     RestorePlayerPortraitTexture()
 
-    local dragonFrame = _G["DragonUIUnitframeFrame"]
+    local dragonFrame = _G["DuckcraftUIUnitframeFrame"]
     if dragonFrame and dragonFrame.ClassPortraitOverlay then
         dragonFrame.ClassPortraitOverlay:Hide()
     end
@@ -2004,7 +2004,7 @@ local function RefreshPlayerPortraitState(unit)
 
     UpdatePlayerClassPortrait()
 
-    local dragonFrame = _G["DragonUIUnitframeFrame"]
+    local dragonFrame = _G["DuckcraftUIUnitframeFrame"]
     if dragonFrame and dragonFrame.PortraitOverlayTexture
        and dragonFrame.PortraitOverlay
        and dragonFrame.PortraitOverlay:IsShown() then
@@ -2116,11 +2116,11 @@ local function ChangePlayerframe()
 
     -- Configure status and flash textures 
     -- In vehicle: hide our custom glow effects (vehicle frame doesn't use them)
-    local dragonFrame = _G["DragonUIUnitframeFrame"]
+    local dragonFrame = _G["DuckcraftUIUnitframeFrame"]
     local baseTexture = GetBaseTexture()
     if hasVehicleUI then
         -- Vehicle mode: suppress Blizzard's native flash/status completely.
-        -- DragonUI uses dedicated VehicleCombatFlash / VehicleStatusGlow frames
+        -- DuckcraftUI uses dedicated VehicleCombatFlash / VehicleStatusGlow frames
         -- (created in CreatePlayerFrameTextures) to avoid UIFrameFlash conflicts.
         if PlayerStatusTexture then
             PlayerStatusTexture:Hide()
@@ -2134,9 +2134,9 @@ local function ChangePlayerframe()
                 UIFrameFlashStop(PlayerFrameFlash)
             end
         end
-        -- Hide DragonUI normal-mode combat glow (wrong shape for vehicle frame)
-        if dragonFrame and dragonFrame.DragonUICombatGlow then
-            dragonFrame.DragonUICombatGlow:Hide()
+        -- Hide DuckcraftUI normal-mode combat glow (wrong shape for vehicle frame)
+        if dragonFrame and dragonFrame.DuckcraftUICombatGlow then
+            dragonFrame.DuckcraftUICombatGlow:Hide()
         end
         -- Position dedicated vehicle glow frames
         if dragonFrame and dragonFrame.VehicleCombatFlash then
@@ -2148,19 +2148,19 @@ local function ChangePlayerframe()
             dragonFrame.VehicleStatusGlow:SetPoint('TOPLEFT', PlayerFrame, 'TOPLEFT', 35, 0)
         end
     else
-        -- Normal/fat mode: update DragonUIStatusGlow texture to match current base texture
+        -- Normal/fat mode: update DuckcraftUIStatusGlow texture to match current base texture
         -- (PlayerStatusTexture is permanently suppressed by UpdateGlowVisibility)
-        if dragonFrame and dragonFrame.DragonUIStatusTexture then
-            dragonFrame.DragonUIStatusTexture:SetTexture(baseTexture)
+        if dragonFrame and dragonFrame.DuckcraftUIStatusTexture then
+            dragonFrame.DuckcraftUIStatusTexture:SetTexture(baseTexture)
         end
         -- Also update combat glow texture to match fat/normal
-        if dragonFrame and dragonFrame.DragonUICombatTexture then
-            dragonFrame.DragonUICombatTexture:SetTexture(baseTexture)
+        if dragonFrame and dragonFrame.DuckcraftUICombatTexture then
+            dragonFrame.DuckcraftUICombatTexture:SetTexture(baseTexture)
         end
     end
 
-    -- ALWAYS hide Blizzard's PlayerFrameFlash — DragonUI uses its own glow system
-    -- (DragonUICombatGlow in normal, VehicleCombatFlash in vehicle, EliteCombatGlow in elite)
+    -- ALWAYS hide Blizzard's PlayerFrameFlash — DuckcraftUI uses its own glow system
+    -- (DuckcraftUICombatGlow in normal, VehicleCombatFlash in vehicle, EliteCombatGlow in elite)
     if PlayerFrameFlash then
         PlayerFrameFlash:Hide()
         PlayerFrameFlash:SetAlpha(0)
@@ -2173,13 +2173,13 @@ local function ChangePlayerframe()
     -- (UpdateGlowVisibility blocks them in vehicle; positioning them at the wrong
     -- portrait offset would cause misaligned effects if they were ever shown)
     if not hasVehicleUI then
-        if dragonFrame and dragonFrame.DragonUICombatGlow then
-            dragonFrame.DragonUICombatGlow:ClearAllPoints()
-            dragonFrame.DragonUICombatGlow:SetPoint('TOPLEFT', PlayerPortrait, 'TOPLEFT', -9, 9)
+        if dragonFrame and dragonFrame.DuckcraftUICombatGlow then
+            dragonFrame.DuckcraftUICombatGlow:ClearAllPoints()
+            dragonFrame.DuckcraftUICombatGlow:SetPoint('TOPLEFT', PlayerPortrait, 'TOPLEFT', -9, 9)
         end
-        if dragonFrame and dragonFrame.DragonUIStatusGlow then
-            dragonFrame.DragonUIStatusGlow:ClearAllPoints()
-            dragonFrame.DragonUIStatusGlow:SetPoint('TOPLEFT', PlayerPortrait, 'TOPLEFT', -9, 9)
+        if dragonFrame and dragonFrame.DuckcraftUIStatusGlow then
+            dragonFrame.DuckcraftUIStatusGlow:ClearAllPoints()
+            dragonFrame.DuckcraftUIStatusGlow:SetPoint('TOPLEFT', PlayerPortrait, 'TOPLEFT', -9, 9)
         end
         if dragonFrame and dragonFrame.EliteStatusGlow then
             dragonFrame.EliteStatusGlow:ClearAllPoints()
@@ -2212,7 +2212,7 @@ local function ChangePlayerframe()
 end
 
 local function SetCombatFlashVisible(visible)
-    local dragonFrame = _G["DragonUIUnitframeFrame"]
+    local dragonFrame = _G["DuckcraftUIUnitframeFrame"]
 
     -- Update deco icon (swords in combat, dot in normal) — skip if deco doesn't exist
     -- or we're in vehicle (deco is hidden during vehicle anyway)
@@ -2246,7 +2246,7 @@ end
 -- Apply saved widget position to the player frame
 local function ApplyWidgetPosition()
     -- COMBAT GUARD: Do NOT touch ANY frame during combat.
-    -- Even our aux frame (DragonUI_PlayerFrame) generates taint when called from
+    -- Even our aux frame (DuckcraftUI_PlayerFrame) generates taint when called from
     -- a secure context (AnimationSystem, vehicle transitions). Defer everything.
     if InCombatLockdown() then
         deferredPositionUpdate = true
@@ -2291,7 +2291,7 @@ local function ApplyPlayerConfig()
     ApplyWidgetPosition()
 
     -- Setup text system
-    local dragonFrame = _G["DragonUIUnitframeFrame"]
+    local dragonFrame = _G["DuckcraftUIUnitframeFrame"]
     if dragonFrame and addon.TextSystem then
         if not Module.textSystem then
             -- Initialize with dynamic unit based on vehicle state
@@ -2357,7 +2357,7 @@ end
 -- ============================================================================
 -- Hook for automatic class color refresh on health bar updates
 local function SetupPlayerClassColorHooks()
-    if not _G.DragonUI_PlayerHealthHookSetup then
+    if not _G.DuckcraftUI_PlayerHealthHookSetup then
         -- Taint-safe hook: refresh color when Blizzard updates health bar
         hooksecurefunc("UnitFrameHealthBar_Update", function(statusbar, unit)
             if statusbar == PlayerFrameHealthBar and unit == "player" then
@@ -2365,7 +2365,7 @@ local function SetupPlayerClassColorHooks()
             end
         end)
 
-        _G.DragonUI_PlayerHealthHookSetup = true
+        _G.DuckcraftUI_PlayerHealthHookSetup = true
 
     end
 end
@@ -2493,7 +2493,7 @@ local function InitializePlayerFrame()
 
     -- Instance-level SetStatusBarColor defense (same pattern as small_frame.lua).
     -- Blizzard's HealthBar_OnValueChanged calls SetStatusBarColor(green) on every
-    -- health change through code paths that DragonUI's higher-level hooks don't
+    -- health change through code paths that DuckcraftUI's higher-level hooks don't
     -- intercept.  WeakAuras (and similar addons) trigger additional Blizzard UI
     -- refresh cycles asynchronously, making the race visible.  This hook catches
     -- ALL SetStatusBarColor calls regardless of code path and re-applies our color.
@@ -2511,7 +2511,7 @@ local function InitializePlayerFrame()
         PlayerFrameManaBar:HookScript('OnValueChanged', UpdateManaBarColor)
     end
 
-    -- TexCoord clipping for baked textures (critical for DragonUI dynamic cropping).
+    -- TexCoord clipping for baked textures (critical for DuckcraftUI dynamic cropping).
     -- Overlay anchoring uses the statusbar texture object, so clipping remains compatible.
     if PlayerFrameHealthBar then
         hooksecurefunc(PlayerFrameHealthBar, "SetValue", function(self)
@@ -2570,8 +2570,8 @@ local function InitializePlayerFrame()
         end
     end
 
-    -- Suppress Blizzard's PlayerFrameFlash permanently — DragonUI uses its own combat flash
-    -- (DragonUICombatGlow / VehicleCombatFlash / EliteCombatGlow depending on mode)
+    -- Suppress Blizzard's PlayerFrameFlash permanently — DuckcraftUI uses its own combat flash
+    -- (DuckcraftUICombatGlow / VehicleCombatFlash / EliteCombatGlow depending on mode)
     -- Clear the texture entirely so UIFrameFlash's OnUpdate alpha animation has nothing to render
     if PlayerFrameFlash then
         PlayerFrameFlash:SetTexture('')
@@ -2582,7 +2582,7 @@ local function InitializePlayerFrame()
         end
     end
 
-    if PlayerFrameFlash and not PlayerFrameFlash.__DragonUI_FlashHooked then
+    if PlayerFrameFlash and not PlayerFrameFlash.__DuckcraftUI_FlashHooked then
         hooksecurefunc(PlayerFrameFlash, 'Show', function(self)
             self:Hide()
             self:SetAlpha(0)
@@ -2591,19 +2591,19 @@ local function InitializePlayerFrame()
                 UIFrameFlashStop(self)
             end
         end)
-        PlayerFrameFlash.__DragonUI_FlashHooked = true
+        PlayerFrameFlash.__DuckcraftUI_FlashHooked = true
     end
 
     -- Always suppress Blizzard's PlayerStatusTexture (resting glow)
-    -- DragonUI provides custom glow system (EliteStatusGlow / VehicleStatusGlow)
+    -- DuckcraftUI provides custom glow system (EliteStatusGlow / VehicleStatusGlow)
     -- and the status glow state is tracked via statusGlowVisible
     if PlayerStatusTexture and PlayerStatusTexture.HookScript then
         PlayerStatusTexture:HookScript('OnShow', function(self)
-            if not self.DragonUI_ShowGuard then
-                self.DragonUI_ShowGuard = true
+            if not self.DuckcraftUI_ShowGuard then
+                self.DuckcraftUI_ShowGuard = true
                 self:Hide()
                 self:SetAlpha(0)
-                self.DragonUI_ShowGuard = nil
+                self.DuckcraftUI_ShowGuard = nil
             end
         end)
     end
@@ -2677,7 +2677,7 @@ local function SetupPlayerEvents()
 
 
         ADDON_LOADED = function(addonName)
-            if addonName == "DragonUI" then
+            if addonName == "DuckcraftUI" then
                 InitializePlayerFrame()
             end
         end,
@@ -2955,16 +2955,16 @@ hooksecurefunc(PlayerFrame, "SetPoint", function(self, point, relativeTo, relati
     -- Skip if in combat (cannot modify secure frames)
     if InCombatLockdown() then return end
     -- Skip if this is our own call (prevent infinite loop)
-    if self.DragonUI_SettingPoint then return end
+    if self.DuckcraftUI_SettingPoint then return end
     
     -- Only intercept Blizzard auto-repositioning (vehicle transitions, level-up, etc.)
     -- Blizzard anchors PlayerFrame to UIParent with TOPLEFT or CENTER
     if point and relativeTo == UIParent and (point == "TOPLEFT" or point == "CENTER") then
         -- Immediately re-apply our position in the same frame (no defer = no flicker)
-        self.DragonUI_SettingPoint = true
+        self.DuckcraftUI_SettingPoint = true
         local ok, err = pcall(ApplyWidgetPosition)
         if not ok and addon.Debug then addon:Debug("ApplyWidgetPosition error:", err) end
-        self.DragonUI_SettingPoint = nil
+        self.DuckcraftUI_SettingPoint = nil
     end
 end)
 

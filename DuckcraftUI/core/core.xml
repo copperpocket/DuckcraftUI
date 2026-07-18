@@ -1,9 +1,9 @@
 <Ui xmlns="http://www.blizzard.com/wow/ui/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.blizzard.com/wow/ui/
 ..\FrameXML\UI.xsd">
     
-    <!-- DragonUI Core Files -->
+    <!-- DuckcraftUI Core Files -->
     <!-- Load order: api (utilities + module helpers) -> movers -> commands -->
-    <!-- Note: fonts.lua loads earlier via DragonUI.xml (before config.lua) -->
+    <!-- Note: fonts.lua loads earlier via DuckcraftUI.xml (before config.lua) -->
     
     <Script file="api.lua"/>
     <Script file="movers.lua"/>

@@ -1,7 +1,7 @@
 local addon = select(2, ...)
 
 -- ============================================================================
--- DARK MODE MODULE FOR DRAGONUI
+-- DARK MODE MODULE FOR DUCKCRAFTUI
 -- Surgical darkening of UI chrome: ONLY borders, backgrounds, and frame art.
 -- Never darkens ability icons, portraits, or interactive content.
 -- Supports 3 intensity presets: Light, Medium, Dark.
@@ -107,23 +107,23 @@ end
 
 local function DarkenTexture(texture, tint)
     if not texture then return end
-    if not texture.__DragonUI_OrigColor then
-        texture.__DragonUI_OrigColor = { texture:GetVertexColor() }
+    if not texture.__DuckcraftUI_OrigColor then
+        texture.__DuckcraftUI_OrigColor = { texture:GetVertexColor() }
     end
-    texture.__DragonUI_SettingDark = true
+    texture.__DuckcraftUI_SettingDark = true
     texture:SetVertexColor(tint[1], tint[2], tint[3])
-    texture.__DragonUI_SettingDark = nil
+    texture.__DuckcraftUI_SettingDark = nil
     DarkModeModule.darkenedTextures[texture] = true
 end
 
 local function RestoreTexture(texture)
     if not texture then return end
-    if texture.__DragonUI_OrigColor then
-        local c = texture.__DragonUI_OrigColor
-        texture.__DragonUI_SettingDark = true
+    if texture.__DuckcraftUI_OrigColor then
+        local c = texture.__DuckcraftUI_OrigColor
+        texture.__DuckcraftUI_SettingDark = true
         texture:SetVertexColor(c[1], c[2], c[3], c[4] or 1)
-        texture.__DragonUI_SettingDark = nil
-        texture.__DragonUI_OrigColor = nil
+        texture.__DuckcraftUI_SettingDark = nil
+        texture.__DuckcraftUI_OrigColor = nil
     end
     DarkModeModule.darkenedTextures[texture] = nil
 end
@@ -164,7 +164,7 @@ local function DarkenActionButtonBorders(tint)
                 if normal and normal.GetObjectType and normal:GetObjectType() == "Texture" then
                     DarkenTexture(normal, tint)
                 end
-                -- Darken background slot texture (created by DragonUI buttons module)
+                -- Darken background slot texture (created by DuckcraftUI buttons module)
                 if button.background and button.background.GetObjectType and button.background:GetObjectType() == "Texture" then
                     DarkenTexture(button.background, tint)
                 end
@@ -233,8 +233,8 @@ local function DarkenXPRepBorders(tint)
 
     -- DragonflightUI custom XP/Rep bar borders (overlay only, not fill/background)
     -- Use addon table references first (set by mainbars), fall back to _G
-    local dfXpBar = addon.DfuiXpBar or _G["DragonUI_XPBar"]
-    local dfRepBar = addon.DfuiRepBar or _G["DragonUI_RepBar"]
+    local dfXpBar = addon.DfuiXpBar or _G["DuckcraftUI_XPBar"]
+    local dfRepBar = addon.DfuiRepBar or _G["DuckcraftUI_RepBar"]
     if dfXpBar and dfXpBar.Border then
         DarkenTexture(dfXpBar.Border, tint)
     end
@@ -273,7 +273,7 @@ local function DarkenMainBarArt(tint)
     DarkenGlobal("MainMenuBarLeftEndCap", tint)
     DarkenGlobal("MainMenuBarRightEndCap", tint)
 
-    -- DragonUI custom mainbar art frame (pUiMainBarArt)
+    -- DuckcraftUI custom mainbar art frame (pUiMainBarArt)
     local pUiMainBarArt = _G["pUiMainBarArt"]
     if pUiMainBarArt and pUiMainBarArt.GetRegions then
         local regions = { pUiMainBarArt:GetRegions() }
@@ -284,7 +284,7 @@ local function DarkenMainBarArt(tint)
         end
     end
 
-    -- DragonUI custom main bar textures (on pUiMainBar itself, marked as dividers)
+    -- DuckcraftUI custom main bar textures (on pUiMainBar itself, marked as dividers)
     local pUiMainBar = _G["pUiMainBar"]
     if pUiMainBar then
         if pUiMainBar.GetRegions then
@@ -292,7 +292,7 @@ local function DarkenMainBarArt(tint)
             for _, region in ipairs(regions) do
                 if region and region.GetObjectType and region:GetObjectType() == "Texture" then
                     -- Only darken if it's a divider or background, not a button icon
-                    if region._isDragonUIDivider then
+                    if region._isDuckcraftUIDivider then
                         DarkenTexture(region, tint)
                     end
                 end
@@ -323,7 +323,7 @@ local function DarkenMainBarArt(tint)
         end
     end
 
-    -- DragonUI stance bar frame textures
+    -- DuckcraftUI stance bar frame textures
     local pUiStanceBar = _G["pUiStanceBar"]
     if pUiStanceBar and pUiStanceBar.GetRegions then
         local regions = { pUiStanceBar:GetRegions() }
@@ -334,7 +334,7 @@ local function DarkenMainBarArt(tint)
         end
     end
 
-    -- DragonUI pet bar frame textures
+    -- DuckcraftUI pet bar frame textures
     local pUiPetBar = _G["pUiPetBar"]
     if pUiPetBar and pUiPetBar.GetRegions then
         local regions = { pUiPetBar:GetRegions() }
@@ -397,14 +397,14 @@ local function DarkenUnitFrameBorders(tint)
     local playerStatus = _G["PlayerStatusTexture"]
     if playerStatus then DarkenTexture(playerStatus, tint) end
 
-    -- DragonUI custom player frame border/background/decoration
-    local dragonFrame = _G["DragonUIUnitframeFrame"]
+    -- DuckcraftUI custom player frame border/background/decoration
+    local dragonFrame = _G["DuckcraftUIUnitframeFrame"]
     if dragonFrame then
-        -- Main DragonUI border (the actual visible border)
+        -- Main DuckcraftUI border (the actual visible border)
         if dragonFrame.PlayerFrameBorder then
             DarkenTexture(dragonFrame.PlayerFrameBorder, tint)
         end
-        local borderGlobal = _G["DragonUIPlayerFrameBorder"]
+        local borderGlobal = _G["DuckcraftUIPlayerFrameBorder"]
         if borderGlobal and borderGlobal ~= dragonFrame.PlayerFrameBorder then
             DarkenTexture(borderGlobal, tint)
         end
@@ -412,7 +412,7 @@ local function DarkenUnitFrameBorders(tint)
         if dragonFrame.PlayerFrameBackground then
             DarkenTexture(dragonFrame.PlayerFrameBackground, tint)
         end
-        local bgGlobal = _G["DragonUIPlayerFrameBackground"]
+        local bgGlobal = _G["DuckcraftUIPlayerFrameBackground"]
         if bgGlobal and bgGlobal ~= dragonFrame.PlayerFrameBackground then
             DarkenTexture(bgGlobal, tint)
         end
@@ -438,18 +438,18 @@ local function DarkenUnitFrameBorders(tint)
     DarkenFrameBorderTextures(_G["TargetFrame"])
     local targetTex = _G["TargetFrameTexture"]
     if targetTex then DarkenTexture(targetTex, tint) end
-    -- DragonUI custom target border/background (target_style factory puts the
+    -- DuckcraftUI custom target border/background (target_style factory puts the
     -- border on a child frame, so DarkenFrameBorderTextures misses it)
-    local dragonTargetBorder = _G["DragonUI_TargetBorder"]
-    if dragonTargetBorder then DarkenTexture(dragonTargetBorder, tint) end
-    local dragonTargetBG = _G["DragonUI_TargetBG"]
-    if dragonTargetBG then DarkenTexture(dragonTargetBG, tint) end
-    local dragonTargetElite = _G["DragonUI_TargetElite"]
-    if dragonTargetElite then DarkenTexture(dragonTargetElite, tint) end
+    local duckcraftTargetBorder = _G["DuckcraftUI_TargetBorder"]
+    if duckcraftTargetBorder then DarkenTexture(duckcraftTargetBorder, tint) end
+    local duckcraftTargetBG = _G["DuckcraftUI_TargetBG"]
+    if duckcraftTargetBG then DarkenTexture(duckcraftTargetBG, tint) end
+    local duckcraftTargetElite = _G["DuckcraftUI_TargetElite"]
+    if duckcraftTargetElite then DarkenTexture(duckcraftTargetElite, tint) end
 
     DarkenFrameBorderTextures(_G["TargetFrameToT"])
 
-    -- DragonUI custom ToT border/background (created by small_frame factory)
+    -- DuckcraftUI custom ToT border/background (created by small_frame factory)
     local totBorder = _G["ToTBorder"]
     if totBorder then DarkenTexture(totBorder, tint) end
     local totBg = _G["ToTBG"]
@@ -459,17 +459,17 @@ local function DarkenUnitFrameBorders(tint)
     DarkenFrameBorderTextures(_G["FocusFrame"])
     local focusTex = _G["FocusFrameTexture"]
     if focusTex then DarkenTexture(focusTex, tint) end
-    -- DragonUI custom focus border/background (same child-frame issue as target)
-    local dragonFocusBorder = _G["DragonUI_FocusBorder"]
+    -- DuckcraftUI custom focus border/background (same child-frame issue as target)
+    local dragonFocusBorder = _G["DuckcraftUI_FocusBorder"]
     if dragonFocusBorder then DarkenTexture(dragonFocusBorder, tint) end
-    local dragonFocusBG = _G["DragonUI_FocusBG"]
+    local dragonFocusBG = _G["DuckcraftUI_FocusBG"]
     if dragonFocusBG then DarkenTexture(dragonFocusBG, tint) end
-    local dragonFocusElite = _G["DragonUI_FocusElite"]
+    local dragonFocusElite = _G["DuckcraftUI_FocusElite"]
     if dragonFocusElite then DarkenTexture(dragonFocusElite, tint) end
 
     DarkenFrameBorderTextures(_G["FocusFrameToT"])
 
-    -- DragonUI custom ToF border/background (created by small_frame factory)
+    -- DuckcraftUI custom ToF border/background (created by small_frame factory)
     local tofBorder = _G["ToFBorder"]
     if tofBorder then DarkenTexture(tofBorder, tint) end
     local tofBg = _G["ToFBG"]
@@ -480,10 +480,10 @@ local function DarkenUnitFrameBorders(tint)
     local petTex = _G["PetFrameTexture"]
     if petTex then DarkenTexture(petTex, tint) end
 
-    -- DragonUI custom pet frame border/background
-    local petBorder = _G["DragonUIPetFrameBorder"]
+    -- DuckcraftUI custom pet frame border/background
+    local petBorder = _G["DuckcraftUIPetFrameBorder"]
     if petBorder then DarkenTexture(petBorder, tint) end
-    local petBg = _G["DragonUIPetFrameBackground"]
+    local petBg = _G["DuckcraftUIPetFrameBackground"]
     if petBg then DarkenTexture(petBg, tint) end
 
     -- Party frames
@@ -492,8 +492,8 @@ local function DarkenUnitFrameBorders(tint)
         local partyTex = _G["PartyMemberFrame" .. i .. "Texture"]
         if partyTex then DarkenTexture(partyTex, tint) end
         local frame = _G["PartyMemberFrame" .. i]
-        if frame and frame.DragonUI_BorderFrame and frame.DragonUI_BorderFrame.texture then
-            DarkenTexture(frame.DragonUI_BorderFrame.texture, tint)
+        if frame and frame.DuckcraftUI_BorderFrame and frame.DuckcraftUI_BorderFrame.texture then
+            DarkenTexture(frame.DuckcraftUI_BorderFrame.texture, tint)
         end
         DarkenFrameBorderTextures(_G["PartyMemberFrame" .. i .. "PetFrame"])
     end
@@ -503,7 +503,7 @@ end
 -- MINIMAP: darken border textures only
 -- -----------------------------------------------------------------------
 local function DarkenMinimapBorders(tint)
-    -- DragonUI custom circular border (Minimap.Circle) — this IS the visible border
+    -- DuckcraftUI custom circular border (Minimap.Circle) — this IS the visible border
     local minimapFrame = _G["Minimap"]
     if minimapFrame and minimapFrame.Circle then
         DarkenTexture(minimapFrame.Circle, tint)
@@ -513,7 +513,7 @@ local function DarkenMinimapBorders(tint)
     local border = _G["MinimapBorder"]
     if border then DarkenTexture(border, tint) end
 
-    -- Top border (DragonUI custom zone text bar)
+    -- Top border (DuckcraftUI custom zone text bar)
     local borderTop = _G["MinimapBorderTop"]
     if borderTop then DarkenTexture(borderTop, tint) end
 
@@ -534,7 +534,7 @@ end
 
 -- -----------------------------------------------------------------------
 -- BAG BUTTONS: darken ONLY border/chrome textures, not bag icons.
--- DragonUI bags use customBorder (overlay) and background textures.
+-- DuckcraftUI bags use customBorder (overlay) and background textures.
 -- -----------------------------------------------------------------------
 local function DarkenBagBorders(tint)
     -- Individual bag slots (CharacterBag0-3Slot) have:
@@ -559,7 +559,7 @@ local function DarkenBagBorders(tint)
     -- overlay using bag-border-2x (the ring used on regular bag slots) and darken that.
     local keyring = _G["KeyRingButton"]
     if keyring then
-        if not keyring.__DragonUI_DarkBorder then
+        if not keyring.__DuckcraftUI_DarkBorder then
             local border = keyring:CreateTexture(nil, "OVERLAY", nil, 7)
             -- Anchor to the NormalTexture which defines the visible border area
             local normalTex = keyring:GetNormalTexture()
@@ -571,14 +571,14 @@ local function DarkenBagBorders(tint)
             -- Use bag-border-2x: the border ring atlas (same one used on regular bag slots)
             border:set_atlas("bag-border-2x")
             border:Hide()
-            keyring.__DragonUI_DarkBorder = border
+            keyring.__DuckcraftUI_DarkBorder = border
         end
-        local border = keyring.__DragonUI_DarkBorder
+        local border = keyring.__DuckcraftUI_DarkBorder
         border:SetVertexColor(tint[1], tint[2], tint[3])
         border:Show()
         DarkModeModule.darkenedTextures[border] = true
-        if not border.__DragonUI_OrigColor then
-            border.__DragonUI_OrigColor = { 1, 1, 1, 1 }
+        if not border.__DuckcraftUI_OrigColor then
+            border.__DuckcraftUI_OrigColor = { 1, 1, 1, 1 }
         end
     end
 
@@ -594,31 +594,31 @@ local function DarkenBackpackCutout(tint)
     if not backpack then return end
 
     -- Create the cutout overlay once, reuse on subsequent calls
-    if not backpack.__DragonUI_DarkCutout then
+    if not backpack.__DuckcraftUI_DarkCutout then
         local cutout = backpack:CreateTexture(nil, "ARTWORK", nil, 7)
-        cutout:SetTexture("Interface\\AddOns\\DragonUI\\assets\\bagslotCutout")
+        cutout:SetTexture("Interface\\AddOns\\DuckcraftUI\\assets\\bagslotCutout")
         local bw, bh = backpack:GetWidth(), backpack:GetHeight()
         cutout:SetWidth(bw + 1)
         cutout:SetHeight(bh + 1)
         cutout:SetPoint("CENTER", backpack, "CENTER", 0.1, 0.1)
         cutout:Hide()
-        backpack.__DragonUI_DarkCutout = cutout
+        backpack.__DuckcraftUI_DarkCutout = cutout
     end
 
-    local cutout = backpack.__DragonUI_DarkCutout
+    local cutout = backpack.__DuckcraftUI_DarkCutout
     cutout:SetVertexColor(tint[1], tint[2], tint[3])
     cutout:Show()
     -- Track it for clean restore
     DarkModeModule.darkenedTextures[cutout] = true
     -- Store a flag so RestoreTexture knows to hide it
-    if not cutout.__DragonUI_OrigColor then
-        cutout.__DragonUI_OrigColor = { 1, 1, 1, 1 }
+    if not cutout.__DuckcraftUI_OrigColor then
+        cutout.__DuckcraftUI_OrigColor = { 1, 1, 1, 1 }
     end
 end
 
 -- -----------------------------------------------------------------------
--- MICRO MENU: darken ONLY DragonUIBackground textures (the button chrome),
--- NEVER the normal/pushed textures (those are the icons in DragonUI).
+-- MICRO MENU: darken ONLY DuckcraftUIBackground textures (the button chrome),
+-- NEVER the normal/pushed textures (those are the icons in DuckcraftUI).
 -- -----------------------------------------------------------------------
 local function DarkenMicroMenuBorders(tint)
     local microNames = {
@@ -636,13 +636,13 @@ local function DarkenMicroMenuBorders(tint)
     for _, name in ipairs(microNames) do
         local btn = _G[name]
         if btn then
-            -- DragonUI replaces normal/pushed with icon art.
-            -- The actual background/chrome is stored in DragonUIBackground fields.
-            if btn.DragonUIBackground then
-                DarkenTexture(btn.DragonUIBackground, tint)
+            -- DuckcraftUI replaces normal/pushed with icon art.
+            -- The actual background/chrome is stored in DuckcraftUIBackground fields.
+            if btn.DuckcraftUIBackground then
+                DarkenTexture(btn.DuckcraftUIBackground, tint)
             end
-            if btn.DragonUIBackgroundPushed then
-                DarkenTexture(btn.DragonUIBackgroundPushed, tint)
+            if btn.DuckcraftUIBackgroundPushed then
+                DarkenTexture(btn.DuckcraftUIBackgroundPushed, tint)
             end
             -- DO NOT touch GetNormalTexture/GetPushedTexture — those are icons
         end
@@ -658,7 +658,7 @@ local function DarkenAddonButtonBorders(tint)
     for _, parent in ipairs(parents) do
         if parent and parent.GetChildren then
             for _, child in ipairs({ parent:GetChildren() }) do
-                if child.DragonUI_Skinned and child.circle then
+                if child.DuckcraftUI_Skinned and child.circle then
                     DarkenTexture(child.circle, tint)
                 end
             end
@@ -693,11 +693,11 @@ local function DarkenCastbarBorders(tint)
         end
     end
 
-    -- DragonUI custom castbars (player, target, focus)
+    -- DuckcraftUI custom castbars (player, target, focus)
     local dragonCastbars = {
-        "DragonUIPlayerCastbar",
-        "DragonUITargetCastbar",
-        "DragonUIFocusCastbar",
+        "DuckcraftUIPlayerCastbar",
+        "DuckcraftUITargetCastbar",
+        "DuckcraftUIFocusCastbar",
     }
     for _, name in ipairs(dragonCastbars) do
         local bar = _G[name]
@@ -752,14 +752,14 @@ local function ReDarkenButton(button)
     if normal and normal.GetObjectType and normal:GetObjectType() == "Texture" then
         DarkenTexture(normal, tint)
         -- Re-install vertex color guard if texture was replaced (e.g. SetNormalTexture call)
-        if not normal.__DragonUI_VCGuard then
+        if not normal.__DuckcraftUI_VCGuard then
             local ok = pcall(hooksecurefunc, normal, "SetVertexColor", GuardSetVertexColor)
             if ok then
-                normal.__DragonUI_VCGuard = true
+                normal.__DuckcraftUI_VCGuard = true
             end
         end
     end
-    -- Re-darken background slot texture (created by DragonUI buttons module)
+    -- Re-darken background slot texture (created by DuckcraftUI buttons module)
     if button.background and button.background.GetObjectType and button.background:GetObjectType() == "Texture" then
         DarkenTexture(button.background, tint)
     end
@@ -817,14 +817,14 @@ RestoreDarkMode = function()
 
     -- Hide the backpack cutout overlay
     local backpack = _G["MainMenuBarBackpackButton"]
-    if backpack and backpack.__DragonUI_DarkCutout then
-        backpack.__DragonUI_DarkCutout:Hide()
+    if backpack and backpack.__DuckcraftUI_DarkCutout then
+        backpack.__DuckcraftUI_DarkCutout:Hide()
     end
 
     -- Hide the keyring border overlay
     local keyring = _G["KeyRingButton"]
-    if keyring and keyring.__DragonUI_DarkBorder then
-        keyring.__DragonUI_DarkBorder:Hide()
+    if keyring and keyring.__DuckcraftUI_DarkBorder then
+        keyring.__DuckcraftUI_DarkBorder:Hide()
     end
 
     DarkModeModule.applied = false
@@ -919,33 +919,33 @@ end
 -- -----------------------------------------------------------------------
 local function GuardSetVertexColor(self)
     if not DarkModeModule.applied then return end
-    if self.__DragonUI_SettingDark then return end
-    self.__DragonUI_SettingDark = true
+    if self.__DuckcraftUI_SettingDark then return end
+    self.__DuckcraftUI_SettingDark = true
     local tint = GetTintValues()
     self:SetVertexColor(tint[1], tint[2], tint[3])
-    self.__DragonUI_SettingDark = nil
+    self.__DuckcraftUI_SettingDark = nil
 end
 
 local function GuardNameBackgroundVertexColor(self)
     if not DarkModeModule.applied then return end
-    if self.__DragonUI_SettingDark then return end
+    if self.__DuckcraftUI_SettingDark then return end
     if not IsTargetFocusNameBackgroundTexture(self) then return end
     if (TARGET_FOCUS_NAME_BG_DARKEN_FACTOR or 0) <= 0 then return end
 
     local ufTint = GetUFTintValues()
     local nameTint = GetTargetFocusNameBackgroundTint(ufTint)
-    self.__DragonUI_SettingDark = true
+    self.__DuckcraftUI_SettingDark = true
     self:SetVertexColor(nameTint[1], nameTint[2], nameTint[3])
-    self.__DragonUI_SettingDark = nil
+    self.__DuckcraftUI_SettingDark = nil
 end
 
 local function InstallNameBackgroundVertexGuards()
     local names = { "TargetFrameNameBackground", "FocusFrameNameBackground" }
     for _, name in ipairs(names) do
         local tex = _G[name]
-        if tex and not tex.__DragonUI_NameBGVCGuard then
+        if tex and not tex.__DuckcraftUI_NameBGVCGuard then
             hooksecurefunc(tex, "SetVertexColor", GuardNameBackgroundVertexColor)
-            tex.__DragonUI_NameBGVCGuard = true
+            tex.__DuckcraftUI_NameBGVCGuard = true
         end
     end
 end
@@ -965,9 +965,9 @@ local function InstallVertexColorGuards()
                 local btn = _G[prefix .. i]
                 if btn and btn.GetNormalTexture then normal = btn:GetNormalTexture() end
             end
-            if normal and not normal.__DragonUI_VCGuard then
+            if normal and not normal.__DuckcraftUI_VCGuard then
                 hooksecurefunc(normal, "SetVertexColor", GuardSetVertexColor)
-                normal.__DragonUI_VCGuard = true
+                normal.__DuckcraftUI_VCGuard = true
             end
         end
     end
@@ -979,9 +979,9 @@ local function InstallVertexColorGuards()
             local btn = _G["ShapeshiftButton" .. i]
             if btn and btn.GetNormalTexture then normal = btn:GetNormalTexture() end
         end
-        if normal and not normal.__DragonUI_VCGuard then
+        if normal and not normal.__DuckcraftUI_VCGuard then
             hooksecurefunc(normal, "SetVertexColor", GuardSetVertexColor)
-            normal.__DragonUI_VCGuard = true
+            normal.__DuckcraftUI_VCGuard = true
         end
     end
 
@@ -993,9 +993,9 @@ local function InstallVertexColorGuards()
             local btn = _G["PetActionButton" .. i]
             if btn and btn.GetNormalTexture then normal = btn:GetNormalTexture() end
         end
-        if normal and not normal.__DragonUI_VCGuard then
+        if normal and not normal.__DuckcraftUI_VCGuard then
             hooksecurefunc(normal, "SetVertexColor", GuardSetVertexColor)
-            normal.__DragonUI_VCGuard = true
+            normal.__DuckcraftUI_VCGuard = true
         end
     end
 
@@ -1010,7 +1010,7 @@ eventFrame:RegisterEvent("ADDON_LOADED")
 eventFrame:RegisterEvent("PLAYER_ENTERING_WORLD")
 
 eventFrame:SetScript("OnEvent", function(self, event, arg1)
-    if event == "ADDON_LOADED" and arg1 == "DragonUI" then
+    if event == "ADDON_LOADED" and arg1 == "DuckcraftUI" then
         if not IsModuleEnabled() then return end
 
         addon:After(0.5, function()
@@ -1066,7 +1066,7 @@ eventFrame:SetScript("OnEvent", function(self, event, arg1)
         end
 
         -- Hook TargetFrame_Update / FocusFrame_Update so dark mode re-applies
-        -- to custom DragonUI border/background textures after Blizzard refreshes.
+        -- to custom DuckcraftUI border/background textures after Blizzard refreshes.
         -- Throttled to avoid excessive re-darkening on rapid fire events.
         if not DarkModeModule.hooks.targetFocusHooked then
             local lastUFRefresh = 0

@@ -1,7 +1,7 @@
     local addon = select(2, ...)
 
     -- ============================================================================
-    -- CHAT MODS MODULE FOR DRAGONUI
+    -- CHAT MODS MODULE FOR DUCKCRAFTUI
     -- Ported from KPack ChatMods by bkader
     -- Features: hide chat buttons, editbox positioning, mousewheel scroll,
     -- tell target (/tt), URL detection & copy, link hover tooltips,
@@ -145,7 +145,7 @@ local function StripButtonFrameBackground(buttonFrame)
         buttonFrame:SetBackdropBorderColor(0, 0, 0, 0)
     end
 
-    buttonFrame.DragonUIBackgroundStripped = true
+    buttonFrame.DuckcraftUIBackgroundStripped = true
 end
 
 local function SetChatHoverButtonsAlpha(i, alpha, entry)
@@ -219,10 +219,10 @@ end
 
             SetChatHoverButtonsAlpha(i, tabAlpha)
 
-            if cf and cf._dragonUIBgFrame and cf._dragonUIBgFrame:IsShown() then
+            if cf and cf._duckcraftUIBgFrame and cf._duckcraftUIBgFrame:IsShown() then
                 local bgAlpha = styleIdleAlpha
-                if IsAlphaChanged(cf._dragonUIBgFrame:GetAlpha(), bgAlpha) then
-                    cf._dragonUIBgFrame:SetAlpha(bgAlpha)
+                if IsAlphaChanged(cf._duckcraftUIBgFrame:GetAlpha(), bgAlpha) then
+                    cf._duckcraftUIBgFrame:SetAlpha(bgAlpha)
                 end
             end
 
@@ -249,10 +249,10 @@ local function OnChatHoverInteraction()
 end
 
 local function AttachChatHoverRefreshHooks(frame)
-    if not frame or frame.DragonUIHoverRefreshHooked then return end
+    if not frame or frame.DuckcraftUIHoverRefreshHooked then return end
     frame:HookScript("OnEnter", OnChatHoverInteraction)
     frame:HookScript("OnLeave", OnChatHoverInteraction)
-    frame.DragonUIHoverRefreshHooked = true
+    frame.DuckcraftUIHoverRefreshHooked = true
 end
 
 StopChatButtonsHoverUpdater = function()
@@ -328,10 +328,10 @@ local function EnsureChatButtonsHoverUpdater()
 
             -- Sync style background frame with tab fade.
             local cf = entry.cf
-            if cf and cf._dragonUIBgFrame and cf._dragonUIBgFrame:IsShown() then
+            if cf and cf._duckcraftUIBgFrame and cf._duckcraftUIBgFrame:IsShown() then
                 local bgAlpha = idleAlpha
                 if forceUpdate or entry.lastBgAlpha == nil or IsAlphaChanged(entry.lastBgAlpha, bgAlpha) then
-                    cf._dragonUIBgFrame:SetAlpha(bgAlpha)
+                    cf._duckcraftUIBgFrame:SetAlpha(bgAlpha)
                     entry.lastBgAlpha = bgAlpha
                     wroteVisualState = true
                 end
@@ -479,12 +479,12 @@ local function ApplyChatFrameTweaks()
             local bf = _G["ChatFrame" .. i .. "ButtonFrame"]
             if bf then
                 StripButtonFrameBackground(bf)
-                if not bf.DragonUIBackgroundHooked then
+                if not bf.DuckcraftUIBackgroundHooked then
                     bf:HookScript("OnShow", function(self)
                         StripButtonFrameBackground(self)
                         OnChatHoverInteraction()
                     end)
-                    bf.DragonUIBackgroundHooked = true
+                    bf.DuckcraftUIBackgroundHooked = true
                 end
                 local entry = {
                     index = i,
@@ -510,10 +510,10 @@ local function ApplyChatFrameTweaks()
             AttachChatHoverRefreshHooks(tab)
             AttachChatHoverRefreshHooks(bf)
             AttachChatHoverRefreshHooks(eb)
-            if eb and not eb.DragonUIFocusRefreshHooked then
+            if eb and not eb.DuckcraftUIFocusRefreshHooked then
                 eb:HookScript("OnEditFocusGained", OnChatHoverInteraction)
                 eb:HookScript("OnEditFocusLost", OnChatHoverInteraction)
-                eb.DragonUIFocusRefreshHooked = true
+                eb.DuckcraftUIFocusRefreshHooked = true
             end
         end
     end
@@ -576,19 +576,19 @@ local function ApplyChatStyle()
             cf:SetBackdrop(nil)
 
             if not def then
-                if cf._dragonUIBgFrame then
-                    cf._dragonUIBgFrame:Hide()
+                if cf._duckcraftUIBgFrame then
+                    cf._duckcraftUIBgFrame:Hide()
                 end
             else
                 -- Create a dedicated backdrop frame as a child of cf.
                 -- It sits at level-1 (behind cf's text) with cf's backdrop
                 -- cleared above, so it's fully visible.
-                if not cf._dragonUIBgFrame then
+                if not cf._duckcraftUIBgFrame then
                     local bg = CreateFrame("Frame", nil, cf)
                     bg:SetFrameLevel(cf:GetFrameLevel() - 1)
-                    cf._dragonUIBgFrame = bg
+                    cf._duckcraftUIBgFrame = bg
                 end
-                local bg = cf._dragonUIBgFrame
+                local bg = cf._duckcraftUIBgFrame
                 -- Always update anchor in case extend constants changed.
                 bg:ClearAllPoints()
                 bg:SetPoint("TOPLEFT",     cf, "TOPLEFT",     -CHATBG_LEFT_PAD,   CHATBG_TOP_EXTEND)
@@ -856,8 +856,8 @@ local function ApplyURLDetection()
     end
 
     _G.ChatFrame_OnHyperlinkShow = function(self, link, text, button)
-        if not StaticPopupDialogs["DRAGONUI_URLCOPY_DIALOG"] then
-            StaticPopupDialogs["DRAGONUI_URLCOPY_DIALOG"] = {
+        if not StaticPopupDialogs["DUCKCRAFTUI_URLCOPY_DIALOG"] then
+            StaticPopupDialogs["DUCKCRAFTUI_URLCOPY_DIALOG"] = {
                 text = "URL",
                 button2 = CLOSE or "Close",
                 hasEditBox = 1,
@@ -886,7 +886,7 @@ local function ApplyURLDetection()
 
         if link and link:sub(1, 3) == "url" then
             currentLink = link:sub(5)
-            StaticPopup_Show("DRAGONUI_URLCOPY_DIALOG")
+            StaticPopup_Show("DUCKCRAFTUI_URLCOPY_DIALOG")
             return
         end
 
@@ -901,7 +901,7 @@ end
 local copyFrame
 
 local function CreateCopyFrame()
-    copyFrame = CreateFrame("Frame", "DragonUI_ChatCopyFrame", UIParent)
+    copyFrame = CreateFrame("Frame", "DuckcraftUI_ChatCopyFrame", UIParent)
     copyFrame:SetBackdrop({
         bgFile = "Interface\\DialogFrame\\UI-DialogBox-Background",
         edgeFile = "Interface\\DialogFrame\\UI-DialogBox-Border",
@@ -915,11 +915,11 @@ local function CreateCopyFrame()
     copyFrame:Hide()
     copyFrame:SetFrameStrata("DIALOG")
 
-    local scrollArea = CreateFrame("ScrollFrame", "DragonUI_ChatCopyScroll", copyFrame, "UIPanelScrollFrameTemplate")
+    local scrollArea = CreateFrame("ScrollFrame", "DuckcraftUI_ChatCopyScroll", copyFrame, "UIPanelScrollFrameTemplate")
     scrollArea:SetPoint("TOPLEFT", copyFrame, "TOPLEFT", 8, -30)
     scrollArea:SetPoint("BOTTOMRIGHT", copyFrame, "BOTTOMRIGHT", -30, 8)
 
-    local editBox = CreateFrame("EditBox", "DragonUI_ChatCopyBox", copyFrame)
+    local editBox = CreateFrame("EditBox", "DuckcraftUI_ChatCopyBox", copyFrame)
     editBox:SetMultiLine(true)
     editBox:SetMaxLetters(99999)
     editBox:EnableMouse(true)
@@ -933,9 +933,9 @@ local function CreateCopyFrame()
     end)
     scrollArea:SetScrollChild(editBox)
 
-    local close = CreateFrame("Button", "DragonUI_ChatCopyClose", copyFrame, "UIPanelCloseButton")
+    local close = CreateFrame("Button", "DuckcraftUI_ChatCopyClose", copyFrame, "UIPanelCloseButton")
     close:SetPoint("TOPRIGHT", copyFrame, "TOPRIGHT")
-    tinsert(UISpecialFrames, "DragonUI_ChatCopyFrame")
+    tinsert(UISpecialFrames, "DuckcraftUI_ChatCopyFrame")
 end
 
 local function ChatCopyFunc(frame)
@@ -957,9 +957,9 @@ local function ChatCopyFunc(frame)
 
     local text = table_concat(lines, "\n", 1, ct - 1)
     FCF_SetChatWindowFontSize(cf, cf, size)
-    DragonUI_ChatCopyFrame:Show()
-    DragonUI_ChatCopyBox:SetText(text)
-    DragonUI_ChatCopyBox:HighlightText(0)
+    DuckcraftUI_ChatCopyFrame:Show()
+    DuckcraftUI_ChatCopyBox:SetText(text)
+    DuckcraftUI_ChatCopyBox:HighlightText(0)
 end
 
 local function ChatCopyHint(frame)
@@ -989,7 +989,7 @@ local function ApplyChatCopy()
             local info = UIDropDownMenu_CreateInfo()
             info.text = copyLabel
             info.notCheckable = 1
-            info.value = "DRAGONUI_COPY_TEXT"
+            info.value = "DUCKCRAFTUI_COPY_TEXT"
             info.func = function()
                 ChatCopyFunc(tab)
             end
@@ -1001,13 +1001,13 @@ local function ApplyChatCopy()
     for i = 1, CHAT_FRAME_LIMIT do
         local tab = _G[format("ChatFrame%dTab", i)]
         if tab then
-            if not tab.DragonUIChatCopyDoubleClickHooked then
+            if not tab.DuckcraftUIChatCopyDoubleClickHooked then
                 tab:HookScript("OnDoubleClick", ChatCopyFunc)
-                tab.DragonUIChatCopyDoubleClickHooked = true
+                tab.DuckcraftUIChatCopyDoubleClickHooked = true
             end
-            if not tab.DragonUIChatCopyHintHooked then
+            if not tab.DuckcraftUIChatCopyHintHooked then
                 tab:HookScript("OnEnter", ChatCopyHint)
-                tab.DragonUIChatCopyHintHooked = true
+                tab.DuckcraftUIChatCopyHintHooked = true
             end
 
             -- Keep hover wake-up robust even if other addons rewire tab scripts.
@@ -1061,9 +1061,9 @@ local function ApplyChatModsSystem()
     end
 
     -- Tell Target slash command
-    SlashCmdList["DRAGONUI_TELLTARGET"] = TellTarget
-    SLASH_DRAGONUI_TELLTARGET1 = "/tt"
-    SLASH_DRAGONUI_TELLTARGET2 = "/wt"
+    SlashCmdList["DUCKCRAFTUI_TELLTARGET"] = TellTarget
+    SLASH_DUCKCRAFTUI_TELLTARGET1 = "/tt"
+    SLASH_DUCKCRAFTUI_TELLTARGET2 = "/wt"
 
     -- Mousewheel scroll hook
     if not ChatModsModule.hooks.mouseScroll then
@@ -1099,6 +1099,14 @@ local function ApplyChatModsSystem()
     StartChatButtonsHoverUpdater(true)
 end
 
+local function CheckChannelGlobals()
+    for _, k in ipairs({"CHAT_CHANNEL_GET"}) do
+        if type(_G[k]) ~= "string" then
+            print("|cffff0000DuckcraftUI:|r", k, "is", type(_G[k]))
+        end
+    end
+end
+
 local function RestoreChatModsSystem()
     if not ChatModsModule.applied then return end
 
@@ -1115,8 +1123,8 @@ local function RestoreChatModsSystem()
     for i = 1, CHAT_FRAME_LIMIT do
         local cf = _G["ChatFrame" .. i]
         if cf then
-            if cf._dragonUIBgFrame then
-                cf._dragonUIBgFrame:Hide()
+            if cf._duckcraftUIBgFrame then
+                cf._duckcraftUIBgFrame:Hide()
             end
         end
         local eb = _G["ChatFrame" .. i .. "EditBox"]
@@ -1161,6 +1169,7 @@ local function OnProfileChanged()
     if IsModuleEnabled() then
         if not ChatModsModule.applied then
             ApplyChatModsSystem()
+            CheckChannelGlobals()
         end
         ApplyEditBoxPosition()
         ApplyChatStyle()
@@ -1216,7 +1225,7 @@ eventFrame:RegisterEvent("ADDON_LOADED")
 eventFrame:RegisterEvent("PLAYER_ENTERING_WORLD")
 
 eventFrame:SetScript("OnEvent", function(self, event, arg1)
-    if event == "ADDON_LOADED" and arg1 == "DragonUI" then
+    if event == "ADDON_LOADED" and arg1 == "DuckcraftUI" then
         if not IsModuleEnabled() then return end
 
         -- Register profile callbacks

@@ -8,7 +8,7 @@ local pairs = pairs;
 local _G = getfenv(0);
 
 -- ============================================================================
--- STANCE MODULE FOR DRAGONUI
+-- STANCE MODULE FOR DUCKCRAFTUI
 -- ============================================================================
 
 -- Module state tracking
@@ -237,10 +237,10 @@ local function CreateStanceFrames()
         if not isDragging then
             -- Pixel-perfect editor controls move the overlay directly.
             -- Convert that overlay movement into stance DB coordinates.
-            if self.DragonUI_WasAdjustedByEditor or self.DragonUI_WasDragged then
+            if self.DuckcraftUI_WasAdjustedByEditor or self.DuckcraftUI_WasDragged then
                 self:SyncManualOverlayDeltaToStanceConfig()
-                self.DragonUI_WasAdjustedByEditor = nil
-                self.DragonUI_WasDragged = nil
+                self.DuckcraftUI_WasAdjustedByEditor = nil
+                self.DuckcraftUI_WasDragged = nil
             end
             return
         end
@@ -419,6 +419,11 @@ local function stancebutton_setup()
 		end
 	end
 	stancebutton_updatestate();
+
+    if addon.RefreshStanceVisibility then
+        addon.RefreshStanceVisibility()
+    end
+
 end
 
 -- ============================================================================
@@ -444,6 +449,280 @@ local function OnEvent(self,event,...)
 end
 
 -- ============================================================================
+-- STANCE BAR VISIBILITY / FADE
+-- Fades ONLY the anchor (pUiStanceHolder). Alpha cascades to pUiStanceBar and
+-- all ShapeshiftButtons, so we must NOT also set button alpha (double-fade).
+-- Alpha-only: safe under combat lockdown; never Show/Hide the secure frame here.
+-- Config lives at addon.db.profile.additional.stance.visibility
+-- ============================================================================
+
+local stanceVisibilityState = {
+    hovered     = false,
+    inCombat    = InCombatLockdown(),
+    alpha       = 1,
+    startAlpha  = 1,
+    targetAlpha = 1,
+    elapsed     = 0,
+    fading      = false,
+}
+
+local function GetStanceVisibilityConfig()
+    if addon.db and addon.db.profile and addon.db.profile.additional
+        and addon.db.profile.additional.stance then
+        return addon.db.profile.additional.stance.visibility
+    end
+    return nil
+end
+
+-- Scale-correct hover test: work in raw screen pixels so per-button SetScale()
+-- does not throw the math off (buff module assumes UIParent scale; stance
+-- buttons are scaled, so we multiply by each region's effective scale).
+local function IsCursorOverStanceBar()
+    if not anchor then return false end
+
+    local cursorX, cursorY = GetCursorPosition()  -- already in pixels
+    local minL, minB, maxR, maxT
+    local found = false
+
+    for index = 1, NUM_SHAPESHIFT_SLOTS do
+        local button = _G['ShapeshiftButton' .. index]
+        if button and button:IsShown() then
+            local s = button:GetEffectiveScale()
+            local l, r = button:GetLeft(), button:GetRight()
+            local b, t = button:GetBottom(), button:GetTop()
+            if l and r and b and t then
+                l, r, b, t = l * s, r * s, b * s, t * s
+                if not found then
+                    minL, minB, maxR, maxT = l, b, r, t
+                    found = true
+                else
+                    if l < minL then minL = l end
+                    if b < minB then minB = b end
+                    if r > maxR then maxR = r end
+                    if t > maxT then maxT = t end
+                end
+            end
+        end
+    end
+
+    if not found then
+        -- Fallback to the anchor bounds when no buttons are visible.
+        local s = anchor:GetEffectiveScale()
+        local l, r = anchor:GetLeft(), anchor:GetRight()
+        local b, t = anchor:GetBottom(), anchor:GetTop()
+        if not (l and r and b and t) then return false end
+        minL, minB, maxR, maxT = l * s, b * s, r * s, t * s
+    end
+
+    return cursorX >= minL and cursorX <= maxR
+        and cursorY >= minB and cursorY <= maxT
+end
+
+local function ShouldShowStanceBar()
+    local config = GetStanceVisibilityConfig()
+
+    -- No custom visibility configured: behave like the normal UI (fully shown).
+    if not config then return true end
+
+    -- Not hidden by default: normal behavior.
+    if not config.hidden then return true end
+
+    -- Hidden by default: reveal only when a checked condition is satisfied.
+    if config.show_on_hover and stanceVisibilityState.hovered then
+        return true
+    end
+    if config.show_in_combat and stanceVisibilityState.inCombat then
+        return true
+    end
+    if config.show_with_target and UnitExists("target") then
+        return true
+    end
+    if config.show_on_health then
+        local health = UnitHealth("player")
+        local maxHealth = UnitHealthMax("player")
+        if maxHealth and maxHealth > 0 and health and health < maxHealth then
+            return true
+        end
+    end
+    if config.show_on_power then
+        local power, maxPower
+        if UnitPower and UnitPowerMax then
+            power, maxPower = UnitPower("player"), UnitPowerMax("player")
+        elseif UnitMana and UnitManaMax then
+            power, maxPower = UnitMana("player"), UnitManaMax("player")
+        end
+        if maxPower and maxPower > 0 and power and power < maxPower then
+            return true
+        end
+    end
+
+    return false
+end
+
+local function GetStanceFadeDuration()
+    local config = GetStanceVisibilityConfig()
+    return tonumber(config and config.fade_duration) or 0
+end
+
+-- Single control point: fade ONLY the anchor. Cascade handles the rest.
+local function ApplyStanceAlpha(alpha)
+    if anchor then
+        anchor:SetAlpha(alpha)
+    end
+end
+
+local function StartStanceFade(shouldShow)
+    local state = stanceVisibilityState
+    local targetAlpha = shouldShow and 1 or 0
+    local duration = GetStanceFadeDuration()
+
+    local currentAlpha
+    if state.fading then
+        currentAlpha = state.alpha
+    else
+        currentAlpha = (anchor and anchor:GetAlpha()) or 1
+    end
+    currentAlpha = math.max(0, math.min(1, currentAlpha))
+
+    if duration <= 0 or math.abs(currentAlpha - targetAlpha) < 0.001 then
+        state.alpha       = targetAlpha
+        state.startAlpha  = targetAlpha
+        state.targetAlpha = targetAlpha
+        state.elapsed     = 0
+        state.fading      = false
+        ApplyStanceAlpha(targetAlpha)
+        return
+    end
+
+    state.alpha       = currentAlpha
+    state.startAlpha  = currentAlpha
+    state.targetAlpha = targetAlpha
+    state.elapsed     = 0
+    state.fading      = true
+    ApplyStanceAlpha(currentAlpha)
+end
+
+-- Deferred hide (fade_delay) frame.
+local stanceHideDelay = CreateFrame("Frame")
+stanceHideDelay:Hide()
+stanceHideDelay._elapsed = 0
+stanceHideDelay._target = 0
+stanceHideDelay:SetScript("OnUpdate", function(self, e)
+    self._elapsed = self._elapsed + e
+    if self._elapsed < self._target then return end
+    self:Hide()
+    if not ShouldShowStanceBar() then
+        StartStanceFade(false)
+    end
+end)
+
+local function RefreshStanceVisibilityInternal()
+    if not IsModuleEnabled() then return end
+    if not anchor then return end
+
+    if ShouldShowStanceBar() then
+        stanceHideDelay:Hide()
+        stanceHideDelay._elapsed = 0
+        StartStanceFade(true)
+    else
+        local config = GetStanceVisibilityConfig()
+        local delay = tonumber(config and config.fade_delay) or 0
+        if delay <= 0 then
+            stanceHideDelay:Hide()
+            StartStanceFade(false)
+        elseif not stanceHideDelay:IsShown() then
+            stanceHideDelay._elapsed = 0
+            stanceHideDelay._target = delay
+            stanceHideDelay:Show()
+        end
+    end
+end
+
+-- Public refresh hook (called by the options manifest, same as buffs).
+function addon.RefreshStanceVisibility()
+    if not IsModuleEnabled() then return end
+    RefreshStanceVisibilityInternal()
+end
+
+-- Tween engine.
+local stanceFadeFrame = CreateFrame("Frame")
+stanceFadeFrame:Show()
+stanceFadeFrame:SetScript("OnUpdate", function(_, elapsed)
+    local state = stanceVisibilityState
+    if not state.fading then return end
+
+    local duration = GetStanceFadeDuration()
+    if duration <= 0 then
+        state.alpha  = state.targetAlpha
+        state.fading = false
+    else
+        state.elapsed = state.elapsed + elapsed
+        local progress = state.elapsed / duration
+        if progress >= 1 then
+            state.alpha  = state.targetAlpha
+            state.fading = false
+        else
+            local eased = progress * progress * (3 - 2 * progress)  -- smoothstep
+            state.alpha = state.startAlpha
+                + (state.targetAlpha - state.startAlpha) * eased
+        end
+    end
+    ApplyStanceAlpha(state.alpha)
+end)
+
+-- Hover poll (only active when show_on_hover is enabled).
+local stanceHoverFrame = CreateFrame("Frame")
+local stanceHoverElapsed = 0
+stanceHoverFrame:SetScript("OnUpdate", function(_, elapsed)
+    stanceHoverElapsed = stanceHoverElapsed + elapsed
+    if stanceHoverElapsed < 0.05 then return end
+    stanceHoverElapsed = 0
+
+    local config = GetStanceVisibilityConfig()
+    if not config or not config.show_on_hover then
+        if stanceVisibilityState.hovered then
+            stanceVisibilityState.hovered = false
+            RefreshStanceVisibilityInternal()
+        end
+        return
+    end
+
+    local hovered = IsCursorOverStanceBar()
+    if hovered ~= stanceVisibilityState.hovered then
+        stanceVisibilityState.hovered = hovered
+        RefreshStanceVisibilityInternal()
+    end
+end)
+
+-- Condition drivers (combat / target / health / power).
+local stanceVisibilityEvents = CreateFrame("Frame")
+stanceVisibilityEvents:RegisterEvent("PLAYER_TARGET_CHANGED")
+stanceVisibilityEvents:RegisterEvent("PLAYER_REGEN_DISABLED")
+stanceVisibilityEvents:RegisterEvent("PLAYER_REGEN_ENABLED")
+stanceVisibilityEvents:RegisterEvent("UNIT_HEALTH")
+stanceVisibilityEvents:RegisterEvent("UNIT_MAXHEALTH")
+stanceVisibilityEvents:RegisterEvent("UNIT_HEALTH_FREQUENT")
+stanceVisibilityEvents:RegisterEvent("UNIT_MANA")
+stanceVisibilityEvents:RegisterEvent("UNIT_MAXMANA")
+stanceVisibilityEvents:RegisterEvent("UNIT_RAGE")
+stanceVisibilityEvents:RegisterEvent("UNIT_FOCUS")
+stanceVisibilityEvents:RegisterEvent("UNIT_ENERGY")
+stanceVisibilityEvents:RegisterEvent("UNIT_RUNIC_POWER")
+stanceVisibilityEvents:RegisterEvent("UNIT_POWER_UPDATE")   -- harmless if never fired on 3.3.5a
+stanceVisibilityEvents:RegisterEvent("UNIT_MAXPOWER")
+stanceVisibilityEvents:RegisterEvent("UNIT_DISPLAYPOWER")
+stanceVisibilityEvents:SetScript("OnEvent", function(_, event, unit)
+    if event:sub(1, 5) == "UNIT_" and unit ~= "player" then return end
+    if event == "PLAYER_REGEN_DISABLED" then
+        stanceVisibilityState.inCombat = true
+    elseif event == "PLAYER_REGEN_ENABLED" then
+        stanceVisibilityState.inCombat = false
+    end
+    RefreshStanceVisibilityInternal()
+end)
+
+
+-- ============================================================================
 -- INITIALIZATION FUNCTIONS
 -- ============================================================================
 
@@ -465,6 +744,11 @@ local function InitializeStanceBar()
     end
     
     stanceBarInitialized = true
+
+    if addon.RefreshStanceVisibility then
+        addon.RefreshStanceVisibility()
+    end
+
 end
 
 -- ============================================================================
@@ -569,8 +853,8 @@ local function ApplyStanceSystem()
                     editorOverlay:SyncManualOverlayDeltaToStanceConfig()
                 end
                 if editorOverlay then
-                    editorOverlay.DragonUI_WasAdjustedByEditor = nil
-                    editorOverlay.DragonUI_WasDragged = nil
+                    editorOverlay.DuckcraftUI_WasAdjustedByEditor = nil
+                    editorOverlay.DuckcraftUI_WasDragged = nil
                 end
             end,
             
@@ -744,7 +1028,7 @@ local initFrame = CreateFrame("Frame")
 initFrame:RegisterEvent("ADDON_LOADED")
 initFrame:RegisterEvent("PLAYER_LOGIN")
 initFrame:SetScript("OnEvent", function(self, event, addonName)
-    if event == "ADDON_LOADED" and addonName == "DragonUI" then
+    if event == "ADDON_LOADED" and addonName == "DuckcraftUI" then
         -- Just mark as loaded, don't initialize yet
         self.addonLoaded = true
     elseif event == "PLAYER_LOGIN" and self.addonLoaded then

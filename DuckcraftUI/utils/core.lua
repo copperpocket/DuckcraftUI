@@ -1,5 +1,5 @@
 -- ============================================================================
--- DragonUI - Core Utilities
+-- DuckcraftUI - Core Utilities
 -- Base runtime setup: event frame, noop, class detection, API tables.
 -- ============================================================================
 

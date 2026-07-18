@@ -1,5 +1,5 @@
 --[[
-  DragonUI - Small Frame Factory (small_frame.lua)
+  DuckcraftUI - Small Frame Factory (small_frame.lua)
 
   Parameterized factory for compact companion unit frames (ToT, FoT).
   Each call to UF.SmallFrame.Create(opts) returns an independent module
@@ -23,7 +23,7 @@ UF.SmallFrame = UF.SmallFrame or {}
 --   parentUnit        : string  "target" or "focus"
 --   unitEvent         : string  "PLAYER_TARGET_CHANGED" or "PLAYER_FOCUS_CHANGED"
 --   unitTargetFilters : table   {"target", "player"} or {"focus"}
---   namePrefix        : string  "DragonUI_ToT" or "DragonUI_FoT"
+--   namePrefix        : string  "DuckcraftUI_ToT" or "DuckcraftUI_FoT"
 --   frames            : table   { main, healthBar, manaBar, portrait, nameText,
 --                                 blizzTexture, blizzBackground, debuff1, parent }
 --   defaultAnchor       : string  (default "BOTTOMRIGHT")
@@ -222,7 +222,7 @@ function UF.SmallFrame.Create(opts)
         -- ----------------------------------------------------------------
         -- Health bar hook
         -- ----------------------------------------------------------------
-        if not frames.healthBar.DragonUI_Setup then
+        if not frames.healthBar.DuckcraftUI_Setup then
             local healthTexture = frames.healthBar:GetStatusBarTexture()
             if healthTexture then
                 healthTexture:SetDrawLayer("ARTWORK", 1)
@@ -281,13 +281,13 @@ function UF.SmallFrame.Create(opts)
                 end
             end)
 
-            frames.healthBar.DragonUI_Setup = true
+            frames.healthBar.DuckcraftUI_Setup = true
         end
 
         -- ----------------------------------------------------------------
         -- Power bar hook
         -- ----------------------------------------------------------------
-        if not frames.manaBar.DragonUI_Setup then
+        if not frames.manaBar.DuckcraftUI_Setup then
             local powerTexture = frames.manaBar:GetStatusBarTexture()
             if powerTexture then
                 powerTexture:SetDrawLayer("ARTWORK", 1)
@@ -330,7 +330,7 @@ function UF.SmallFrame.Create(opts)
                 texture:SetVertexColor(1, 1, 1)
             end)
 
-            frames.manaBar.DragonUI_Setup = true
+            frames.manaBar.DuckcraftUI_Setup = true
         end
     end
 
@@ -383,7 +383,7 @@ function UF.SmallFrame.Create(opts)
         end
 
         -- Hook Show() to restore custom textures when Blizzard shows the frame
-        if frames.main and not frames.main.DragonUI_ShowHook then
+        if frames.main and not frames.main.DuckcraftUI_ShowHook then
             hooksecurefunc(frames.main, "Show", function(self)
                 if IsEnabled() and ShouldShow() then
                     if frameElements.background then
@@ -395,7 +395,7 @@ function UF.SmallFrame.Create(opts)
                     UpdateClassification()
                 end
             end)
-            frames.main.DragonUI_ShowHook = true
+            frames.main.DuckcraftUI_ShowHook = true
         end
 
         -- Hook UnitFramePortrait_Update to reapply styles on portrait changes
@@ -647,7 +647,7 @@ function UF.SmallFrame.Create(opts)
         -- ----------------------------------------------------------------
         if event == "ADDON_LOADED" then
             local name = ...
-            if name == "DragonUI" then
+            if name == "DuckcraftUI" then
                 -- Apply widget position from DB (addon.db is now available)
                 Module:ApplyWidgetPosition()
 
@@ -968,7 +968,7 @@ function UF.SmallFrame.Create(opts)
 
     -- Track if the user actually dragged this frame in editor mode
     Module.anchorFrame:HookScript("OnDragStop", function(self)
-        self.DragonUI_WasDragged = true
+        self.DuckcraftUI_WasDragged = true
 
         -- Detach and persist immediately on drag stop so ToT does not get
         -- re-attached by Blizzard updates before editor mode is closed.
@@ -1016,7 +1016,7 @@ function UF.SmallFrame.Create(opts)
         end,
         onHide = function()
             -- Detach if the user dragged OR adjusted via pixel-perfect controls.
-            if Module.anchorFrame.DragonUI_WasDragged or Module.anchorFrame.DragonUI_WasAdjustedByEditor then
+            if Module.anchorFrame.DuckcraftUI_WasDragged or Module.anchorFrame.DuckcraftUI_WasAdjustedByEditor then
                 local config = GetConfig()
                 if config then
                     config.override = true
@@ -1025,8 +1025,8 @@ function UF.SmallFrame.Create(opts)
                 PersistDetachedAnchorFromCurrentPosition()
 
                 Module:UpdateWidgets()
-                Module.anchorFrame.DragonUI_WasDragged = nil
-                Module.anchorFrame.DragonUI_WasAdjustedByEditor = nil
+                Module.anchorFrame.DuckcraftUI_WasDragged = nil
+                Module.anchorFrame.DuckcraftUI_WasAdjustedByEditor = nil
             end
         end,
         module = Module

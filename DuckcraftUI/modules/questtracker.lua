@@ -2,7 +2,7 @@ local addon = select(2, ...);
 local L = addon.L
 
 -- =============================================================================
--- DRAGONUI QUEST TRACKER MODULE 
+-- DUCKCRAFTUI QUEST TRACKER MODULE 
 -- =============================================================================
 
 local QuestTrackerModule = {
@@ -33,7 +33,7 @@ local function IsModuleEnabled()
 end
 
 -- =============================================================================
--- CONFIG SYSTEM (DragonUI style using database)
+-- CONFIG SYSTEM (DuckcraftUI style using database)
 -- =============================================================================
 local function GetQuestTrackerConfig()
     if not (addon.db and addon.db.profile and addon.db.profile.questtracker) then
@@ -250,7 +250,7 @@ local function UpdateQuestTrackerPosition()
 end
 
 -- =============================================================================
--- DRAGONUI REFRESH FUNCTION
+-- DUCKCRAFTUI REFRESH FUNCTION
 -- =============================================================================
 function addon.RefreshQuestTracker()
     if not IsModuleEnabled() then return end
@@ -275,7 +275,7 @@ function QuestTrackerModule:Initialize()
         return
     end
 
-    self.questTrackerFrame = CreateFrame('Frame', 'DragonUI_QuestTrackerFrame', UIParent)
+    self.questTrackerFrame = CreateFrame('Frame', 'DuckcraftUI_QuestTrackerFrame', UIParent)
     self.questTrackerFrame:SetSize(230, 32)  -- Anchor frame: minimal height, WatchFrame manages its own size
     self.questTrackerFrame:SetFrameLevel(100)
     self.questTrackerFrame:SetFrameStrata('FULLSCREEN')
@@ -583,7 +583,7 @@ function QuestTrackerModule:ShowEditorTest()
                 frame:ClearAllPoints()
                 frame:SetPoint(point, UIParent, point, x, y)
                 frame:SetUserPlaced(false)
-                -- Save position to DragonUI database
+                -- Save position to DuckcraftUI database
                 if addon.db and addon.db.profile then
                     if not addon.db.profile.questtracker then
                         addon.db.profile.questtracker = {}
@@ -685,7 +685,7 @@ addon.package:RegisterEvents(OnQuestLogUpdate, 'QUEST_LOG_UPDATE')
 
 -- Profile change handler
 if addon.core and addon.core.RegisterMessage then
-    addon.core.RegisterMessage(addon, "DRAGONUI_PROFILE_CHANGED", function()
+    addon.core.RegisterMessage(addon, "DUCKCRAFTUI_PROFILE_CHANGED", function()
         addon.RefreshQuestTracker()
     end)
 end

@@ -2,7 +2,7 @@ local addon = select(2, ...)
 local L = addon.L
 
 -- ============================================================================
--- TOOLTIP MODULE FOR DRAGONUI
+-- TOOLTIP MODULE FOR DUCKCRAFTUI
 -- Enhances GameTooltip with class colors, health bars, target-of-target,
 -- and cleaner styling inspired by Dragonflight tooltips.
 -- ============================================================================
@@ -83,12 +83,12 @@ local function StyleHealthBar()
     bar:SetPoint("BOTTOMRIGHT", GameTooltip, "BOTTOMRIGHT", -9, HEALTHBAR_BOTTOM_PAD)
 
     -- Add dark background behind the bar
-    if not bar.__DragonUI_bg then
+    if not bar.__DuckcraftUI_bg then
         local bg = bar:CreateTexture(nil, "BACKGROUND")
         bg:SetAllPoints()
         bg:SetTexture("Interface\\TargetingFrame\\UI-StatusBar")
         bg:SetVertexColor(0.15, 0.15, 0.15, 0.8)
-        bar.__DragonUI_bg = bg
+        bar.__DuckcraftUI_bg = bg
     end
 
     TooltipModule.healthBarStyled = true
@@ -100,14 +100,14 @@ end
 local function AdjustTooltipForHealthBar(tooltip)
     if not tooltip or not GameTooltipStatusBar then return end
     if not GameTooltipStatusBar:IsShown() then return end
-    if tooltip.__DragonUI_adjustPending then return end
+    if tooltip.__DuckcraftUI_adjustPending then return end
 
-    tooltip.__DragonUI_adjustPending = true
+    tooltip.__DuckcraftUI_adjustPending = true
     local orig = tooltip:GetScript("OnUpdate")
     tooltip:SetScript("OnUpdate", function(self, elapsed)
         -- Restore original OnUpdate first
         self:SetScript("OnUpdate", orig)
-        self.__DragonUI_adjustPending = false
+        self.__DuckcraftUI_adjustPending = false
         -- Now extend height — Blizzard's layout is done at this point
         local extra = 0
         if (self:NumLines() or 0) <= 1 then
@@ -494,7 +494,7 @@ eventFrame:RegisterEvent("ADDON_LOADED")
 eventFrame:RegisterEvent("PLAYER_ENTERING_WORLD")
 
 eventFrame:SetScript("OnEvent", function(self, event, arg1)
-    if event == "ADDON_LOADED" and arg1 == "DragonUI" then
+    if event == "ADDON_LOADED" and arg1 == "DuckcraftUI" then
         EnsureTooltipAnchorHook()
         EnsureTooltipWidget()
         ApplyTooltipWidgetPosition()

@@ -1,9 +1,9 @@
 ## Interface: 30300
-## Title: |cff1784d1DragonUI|r
+## Title: |cff1784d1DuckcraftUI|r
 ## Notes: |cffcaf7faDragonflight-style UI for 3.3.5a with mixed third-party licensing|r
-## Version: 2.5
-## Author: NeticSoul
-## SavedVariables: DragonUIDB
+## Version: 0.10
+## Author: Copperpocket
+## SavedVariables: DuckcraftUIDB
 ## OptionalDeps: Blizzard_TimeManager, Blizzard_PartyUI
 ## X-License: MIT for project-authored code; bundled dependencies retain their own licenses
 
@@ -29,10 +29,10 @@ libs\LibItemSearch-1.0\LibItemSearch-1.0.lua
 libs\LibHealComm-4.0\LibHealComm-4.0.xml
 libs\AbsorbsMonitor-1.0\AbsorbsMonitor-1.0.xml
 
-# Note: AceConfig-3.0, AceGUI-3.0, AceDBOptions-3.0 moved to DragonUI_Options
+# Note: AceConfig-3.0, AceGUI-3.0, AceDBOptions-3.0 moved to DuckcraftUI_Options
 
-# Localization (must load after AceLocale and before DragonUI.xml)
+# Localization (must load after AceLocale and before DuckcraftUI.xml)
 Locales\Load_Locales.xml
 
-DragonUI.xml
+DuckcraftUI.xml
 

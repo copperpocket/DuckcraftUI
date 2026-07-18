@@ -1,7 +1,7 @@
 -- ============================================================================
--- DragonUI - Centralized Font System
+-- DuckcraftUI - Centralized Font System
 -- Single source of truth for locale-aware font selection.
--- Loaded early (via DragonUI.xml) so config.lua, database.lua, and all modules
+-- Loaded early (via DuckcraftUI.xml) so config.lua, database.lua, and all modules
 -- can reference addon.Fonts instead of hardcoding font paths.
 -- ============================================================================
 --
@@ -51,13 +51,13 @@ Fonts.PRIMARY = LOCALE_SYSTEM_FONTS[_locale] or "Fonts\\FRIZQT__.TTF"
 -- falls back to the locale system font on CJK/Cyrillic.
 Fonts.ACTIONBAR = _needsSystemFont
     and LOCALE_SYSTEM_FONTS[_locale]
-    or [[Interface\AddOns\DragonUI\assets\expressway.ttf]]
+    or [[Interface\AddOns\DuckcraftUI\assets\expressway.ttf]]
 
 --- Narrow UI font (options panel, editor mode labels).
 -- PTSansNarrow.ttf on Latin locales, locale system font on CJK/Cyrillic.
 Fonts.NARROW = _needsSystemFont
     and LOCALE_SYSTEM_FONTS[_locale]
-    or [[Interface\AddOns\DragonUI_Options\fonts\PTSansNarrow.ttf]]
+    or [[Interface\AddOns\DuckcraftUI_Options\fonts\PTSansNarrow.ttf]]
 
 --- ARIALN replacement: used where database defaults previously hardcoded ARIALN.
 -- On Latin locales ARIALN is fine; on CJK/Cyrillic we substitute the system font.

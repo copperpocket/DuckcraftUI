@@ -1,12 +1,12 @@
 --[[
 ================================================================================
-DragonUI Options Panel - Modules Tab
+DuckcraftUI Options Panel - Modules Tab
 ================================================================================
 Module enable/disable toggles organized by category.
 ================================================================================
 ]]
 
-local addon = DragonUI
+local addon = DuckcraftUI
 if not addon then return end
 
 local C = addon.PanelControls
@@ -68,14 +68,14 @@ local function BuildModulesTab(scroll)
 
     C:AddToggle(castSection, {
         label = LO["Player Castbar"],
-        desc = LO["Enable DragonUI player castbar styling."],
+        desc = LO["Enable DuckcraftUI player castbar styling."],
         dbPath = "castbar.enabled",
         callback = function() if addon.RefreshCastbar then addon.RefreshCastbar() end end,
     })
 
     C:AddToggle(castSection, {
         label = LO["Target Castbar"],
-        desc = LO["Enable DragonUI target castbar styling."],
+        desc = LO["Enable DuckcraftUI target castbar styling."],
         getFunc = function()
             local t = addon.db.profile.castbar and addon.db.profile.castbar.target
             if not t then return true end
@@ -92,7 +92,7 @@ local function BuildModulesTab(scroll)
 
     C:AddToggle(castSection, {
         label = LO["Focus Castbar"],
-        desc = LO["Enable DragonUI focus castbar styling."],
+        desc = LO["Enable DuckcraftUI focus castbar styling."],
         dbPath = "castbar.focus.enabled",
         callback = function() if addon.RefreshFocusCastbar then addon.RefreshFocusCastbar() end end,
     })
@@ -162,7 +162,7 @@ local function BuildModulesTab(scroll)
 
     ModuleToggle(uiSection, {
         label = LO["Quest Tracker"],
-        desc = LO["DragonUI quest tracker positioning and styling."],
+        desc = LO["DuckcraftUI quest tracker positioning and styling."],
         moduleName = "questtracker",
     })
 

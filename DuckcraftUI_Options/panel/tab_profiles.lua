@@ -1,13 +1,13 @@
 --[[
 ================================================================================
-DragonUI Options Panel - Profiles Tab
+DuckcraftUI Options Panel - Profiles Tab
 ================================================================================
 Profile management using AceDB-3.0 API directly.
 Provides: select profile, copy, delete, reset.
 ================================================================================
 ]]
 
-local addon = DragonUI
+local addon = DuckcraftUI
 if not addon then return end
 
 local L = addon.L
@@ -59,7 +59,7 @@ local function BuildProfilesTab(scroll)
         setFunc = function(val)
             db:SetProfile(val)
             Panel:SelectTab("profiles")
-            StaticPopup_Show("DRAGONUI_RELOAD_UI")
+            StaticPopup_Show("DUCKCRAFTUI_RELOAD_UI")
         end,
         values = GetProfileList(),
     })
@@ -73,7 +73,7 @@ local function BuildProfilesTab(scroll)
             db:SetProfile(text)
             widget:SetText("")
             Panel:SelectTab("profiles")
-            StaticPopup_Show("DRAGONUI_RELOAD_UI")
+            StaticPopup_Show("DUCKCRAFTUI_RELOAD_UI")
         end
     end)
     selectSection:AddChild(newName)
@@ -91,9 +91,9 @@ local function BuildProfilesTab(scroll)
         setFunc = function(val)
             if val then
                 db:CopyProfile(val)
-                print("|cFF00FF00[DragonUI]|r " .. LO["Copied profile: "] .. val)
+                print("|cFF00FF00[DuckcraftUI]|r " .. LO["Copied profile: "] .. val)
                 Panel:SelectTab("profiles")
-                StaticPopup_Show("DRAGONUI_RELOAD_UI")
+                StaticPopup_Show("DUCKCRAFTUI_RELOAD_UI")
             end
         end,
         values = GetProfileList(),
@@ -123,7 +123,7 @@ local function BuildProfilesTab(scroll)
         getFunc = function() return nil end,
         setFunc = function(val)
             if val then
-                local dialog = StaticPopup_Show("DRAGONUI_DELETE_PROFILE", val)
+                local dialog = StaticPopup_Show("DUCKCRAFTUI_DELETE_PROFILE", val)
                 if dialog then
                     dialog.data = val
                 end
@@ -144,7 +144,7 @@ local function BuildProfilesTab(scroll)
         width = 160,
         callback = function()
             -- Show confirmation dialog before resetting
-            StaticPopupDialogs["DRAGONUI_RESET_PROFILE"] = StaticPopupDialogs["DRAGONUI_RESET_PROFILE"] or {
+            StaticPopupDialogs["DUCKCRAFTUI_RESET_PROFILE"] = StaticPopupDialogs["DUCKCRAFTUI_RESET_PROFILE"] or {
                 text = LO["All changes will be lost and the UI will be reloaded.\nAre you sure you want to reset your profile?"],
                 button1 = LO["Yes"],
                 button2 = LO["No"],
@@ -159,7 +159,7 @@ local function BuildProfilesTab(scroll)
                     -- Ask about presets only if there were any
                     if savedPresets and next(savedPresets) then
                         addon.db.profile.presets = savedPresets
-                        StaticPopupDialogs["DRAGONUI_RESET_PRESETS"] = StaticPopupDialogs["DRAGONUI_RESET_PRESETS"] or {
+                        StaticPopupDialogs["DUCKCRAFTUI_RESET_PRESETS"] = StaticPopupDialogs["DUCKCRAFTUI_RESET_PRESETS"] or {
                             text = LO["Also delete all saved layout presets?"],
                             button1 = LO["Yes"],
                             button2 = LO["No"],
@@ -167,11 +167,11 @@ local function BuildProfilesTab(scroll)
                                 if addon.db and addon.db.profile then
                                     addon.db.profile.presets = {}
                                 end
-                                print("|cFF00FF00[DragonUI]|r " .. LO["Profile reset to defaults."])
+                                print("|cFF00FF00[DuckcraftUI]|r " .. LO["Profile reset to defaults."])
                                 ReloadUI()
                             end,
                             OnCancel = function()
-                                print("|cFF00FF00[DragonUI]|r " .. LO["Profile reset to defaults."] .. " " .. (LO["Presets kept."] or "Presets kept."))
+                                print("|cFF00FF00[DuckcraftUI]|r " .. LO["Profile reset to defaults."] .. " " .. (LO["Presets kept."] or "Presets kept."))
                                 ReloadUI()
                             end,
                             timeout = 0,
@@ -179,9 +179,9 @@ local function BuildProfilesTab(scroll)
                             hideOnEscape = false,
                             preferredIndex = 3,
                         }
-                        StaticPopup_Show("DRAGONUI_RESET_PRESETS")
+                        StaticPopup_Show("DUCKCRAFTUI_RESET_PRESETS")
                     else
-                        print("|cFF00FF00[DragonUI]|r " .. LO["Profile reset to defaults."])
+                        print("|cFF00FF00[DuckcraftUI]|r " .. LO["Profile reset to defaults."])
                         ReloadUI()
                     end
                 end,
@@ -190,7 +190,7 @@ local function BuildProfilesTab(scroll)
                 hideOnEscape = true,
                 preferredIndex = 3,
             }
-            StaticPopup_Show("DRAGONUI_RESET_PROFILE")
+            StaticPopup_Show("DUCKCRAFTUI_RESET_PROFILE")
         end,
     })
 end

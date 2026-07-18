@@ -1,5 +1,5 @@
 -- ============================================================================
--- DragonUI - Multicast (Totem/Possess) Bar Module
+-- DuckcraftUI - Multicast (Totem/Possess) Bar Module
 -- Handles Shaman totem bar and possession bar positioning and styling.
 -- ============================================================================
 
@@ -206,12 +206,12 @@ local function CreateMulticastFrames()
     if MulticastModule.frames.anchor then return end
     
     -- Create simple anchor frame
-    anchor = CreateFrame('Frame', 'DragonUI_TotemAnchor', UIParent)
+    anchor = CreateFrame('Frame', 'DuckcraftUI_TotemAnchor', UIParent)
     anchor:SetSize(37, 37)
     MulticastModule.frames.anchor = anchor
     
     -- Create totem bar frame
-    totembar = CreateFrame('Frame', 'DragonUI_TotemBar', anchor, 'SecureHandlerStateTemplate')
+    totembar = CreateFrame('Frame', 'DuckcraftUI_TotemBar', anchor, 'SecureHandlerStateTemplate')
     totembar:SetAllPoints(anchor)
     MulticastModule.frames.totembar = totembar
     
@@ -555,10 +555,10 @@ local function RegisterEvents()
     -- Note: PLAYER_REGEN_ENABLED is handled by SetupShamanMulticast if needed for deferred setup
     
     eventFrame:SetScript("OnEvent", function(self, event, addonName)
-        if event == "ADDON_LOADED" and addonName == "DragonUI" then
+        if event == "ADDON_LOADED" and addonName == "DuckcraftUI" then
             -- Initialize multicast system as early as possible
             if addon.core and addon.core.RegisterMessage then
-                addon.core.RegisterMessage(addon, "DRAGONUI_READY", ApplyMulticastSystem)
+                addon.core.RegisterMessage(addon, "DUCKCRAFTUI_READY", ApplyMulticastSystem)
             end
             
             -- Register profile callbacks

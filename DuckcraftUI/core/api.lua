@@ -1,8 +1,8 @@
 --[[
 ================================================================================
-DragonUI - API Functions
+DuckcraftUI - API Functions
 ================================================================================
-This file contains utility functions used throughout DragonUI.
+This file contains utility functions used throughout DuckcraftUI.
 These are general-purpose functions that can be used by any module.
 ================================================================================
 ]]
@@ -11,7 +11,7 @@ local addon = select(2, ...)
 local L = addon.L
 
 addon.DB_SCHEMA_VERSION = 1
-addon.RELEASE_VERSION = GetAddOnMetadata("DragonUI", "Version") or "2.4.0"
+addon.RELEASE_VERSION = GetAddOnMetadata("DuckcraftUI", "Version") or "2.4.0"
 
 -- ============================================================================
 -- TABLE UTILITIES
@@ -69,7 +69,7 @@ end
 addon.frames = addon.frames or {}
 
 -- Editor mode texture base path
-local EDITMODE_TEXTURE_BASE = 'Interface\\AddOns\\DragonUI\\Textures\\Editmode\\'
+local EDITMODE_TEXTURE_BASE = 'Interface\\AddOns\\DuckcraftUI\\Textures\\Editmode\\'
 
 -- Nineslice texture coordinates
 local NINESLICE_COORDS = {
@@ -230,7 +230,7 @@ local editorPanel, selectedEditorFrame
 
 -- Create a UI frame with editor mode support
 function addon.CreateUIFrame(width, height, frameName)
-    local frame = CreateFrame("Frame", 'DragonUI_' .. frameName, UIParent)
+    local frame = CreateFrame("Frame", 'DuckcraftUI_' .. frameName, UIParent)
     frame:SetSize(width, height)
 
     frame:RegisterForDrag("LeftButton")
@@ -548,8 +548,8 @@ local function ApplyTypedCoordinates()
     -- Position is relative to UIParent CENTER (matches what we display)
     selectedEditorFrame:ClearAllPoints()
     selectedEditorFrame:SetPoint("CENTER", UIParent, "CENTER", newX, newY)
-    selectedEditorFrame.DragonUI_WasAdjustedByEditor = true
-    selectedEditorFrame.DragonUI_WasDragged = true
+    selectedEditorFrame.DuckcraftUI_WasAdjustedByEditor = true
+    selectedEditorFrame.DuckcraftUI_WasDragged = true
     -- Auto-save
     if addon.EditableFrames then
         for _, frameData in pairs(addon.EditableFrames) do
@@ -581,8 +581,8 @@ local function NudgeSelectedFrame(dx, dy)
 
     selectedEditorFrame:ClearAllPoints()
     selectedEditorFrame:SetPoint("CENTER", UIParent, "CENTER", relX, relY)
-    selectedEditorFrame.DragonUI_WasAdjustedByEditor = true
-    selectedEditorFrame.DragonUI_WasDragged = true
+    selectedEditorFrame.DuckcraftUI_WasAdjustedByEditor = true
+    selectedEditorFrame.DuckcraftUI_WasDragged = true
     -- Auto-save position
     if addon.EditableFrames then
         for _, frameData in pairs(addon.EditableFrames) do
@@ -699,11 +699,11 @@ local function UpdateEditorPanelResetButton()
 
     local action = GetDetachedResetActionForSelection()
     if action then
-        editorPanel.resetSelectedButton._dragonuiAction = action
+        editorPanel.resetSelectedButton._duckcraftuiAction = action
         editorPanel.resetSelectedButton:Show()
         SetEditorPanelExpanded(true)
     else
-        editorPanel.resetSelectedButton._dragonuiAction = nil
+        editorPanel.resetSelectedButton._duckcraftuiAction = nil
         editorPanel.resetSelectedButton:Hide()
         SetEditorPanelExpanded(false)
     end
@@ -797,7 +797,7 @@ end
 local function CreateEditorControlPanel()
     if editorPanel then return editorPanel end
 
-    local panel = CreateFrame("Frame", "DragonUI_EditorPanel", UIParent)
+    local panel = CreateFrame("Frame", "DuckcraftUI_EditorPanel", UIParent)
     panel:SetSize(180, 80)
     panel:SetPoint("TOP", UIParent, "TOP", 0, -10)
     panel:SetFrameStrata("TOOLTIP")
@@ -925,8 +925,8 @@ local function CreateEditorControlPanel()
         end
 
         if selectedEditorFrame then
-            selectedEditorFrame.DragonUI_WasDragged = nil
-            selectedEditorFrame.DragonUI_WasAdjustedByEditor = nil
+            selectedEditorFrame.DuckcraftUI_WasDragged = nil
+            selectedEditorFrame.DuckcraftUI_WasAdjustedByEditor = nil
         end
 
         action()
@@ -1058,7 +1058,7 @@ function addon:ShowAllEditableFrames()
         end
     end
     local L = addon.L
-    print("|cFF00FF00[DragonUI]|r " .. (L and L["All editable frames shown for editing"] or "All editable frames shown for editing"))
+    print("|cFF00FF00[DuckcraftUI]|r " .. (L and L["All editable frames shown for editing"] or "All editable frames shown for editing"))
 
     -- Show editor control panel
     CreateEditorControlPanel()
@@ -1102,7 +1102,7 @@ function addon:HideAllEditableFrames(refresh)
         end
     end
     local L = addon.L
-    print("|cFF00FF00[DragonUI]|r " .. (L and L["All editable frames hidden, positions saved"] or "All editable frames hidden, positions saved"))
+    print("|cFF00FF00[DuckcraftUI]|r " .. (L and L["All editable frames hidden, positions saved"] or "All editable frames hidden, positions saved"))
 end
 
 -- Check if a frame should be visible
@@ -1126,7 +1126,7 @@ end
 -- ============================================================================
 -- MODULE REGISTRY SYSTEM
 -- ============================================================================
--- Central registry for all DragonUI modules.
+-- Central registry for all DuckcraftUI modules.
 -- Provides: auto-discovery, status reporting, batch enable/disable operations.
 -- Modules self-register during load, making the system extensible.
 
@@ -1549,7 +1549,7 @@ function MR:DisableAll()
     end
 end
 
--- Print status of all registered modules (for /dragonui status)
+-- Print status of all registered modules (for /duckcraftui status)
 function MR:PrintStatus()
     local L = addon.L
 
@@ -1609,7 +1609,7 @@ local CQ = addon.CombatQueue
 local function InitializeCombatQueueFrame()
     if CQ.eventFrame then return end
     
-    CQ.eventFrame = CreateFrame("Frame", "DragonUI_CombatQueueFrame", UIParent)
+    CQ.eventFrame = CreateFrame("Frame", "DuckcraftUI_CombatQueueFrame", UIParent)
     CQ.eventFrame:Hide()
     CQ.eventFrame:SetScript("OnEvent", function(self, event)
         if event == "PLAYER_REGEN_ENABLED" then
@@ -1849,17 +1849,17 @@ end
 
 -- Print a formatted message
 function addon:Print(...)
-    print("|cFF00FF00[DragonUI]|r", ...)
+    print("|cFF00FF00[DuckcraftUI]|r", ...)
 end
 
 -- Print a debug message (only in debug mode)
 function addon:Debug(...)
     if addon.debugMode then
-        print("|cFFFFFF00[DragonUI Debug]|r", ...)
+        print("|cFFFFFF00[DuckcraftUI Debug]|r", ...)
     end
 end
 
 -- Print an error message
 function addon:Error(...)
-    print("|cFFFF0000[DragonUI Error]|r", ...)
+    print("|cFFFF0000[DuckcraftUI Error]|r", ...)
 end

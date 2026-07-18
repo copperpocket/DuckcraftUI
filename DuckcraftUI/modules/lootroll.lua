@@ -2,7 +2,7 @@ local addon = select(2, ...)
 local L = addon.L
 
 -- =============================================================================
--- DRAGONUI LOOT ROLL MODULE
+-- DUCKCRAFTUI LOOT ROLL MODULE
 -- Moves GroupLootContainer (the parent of all roll frames) to a custom position.
 -- Uses the same approach as DragonflightUI: reposition the container, not the
 -- individual GroupLootFrame1-4.  This keeps Blizzard's internal frame stacking
@@ -131,7 +131,7 @@ function LootRollModule:Initialize()
     if self.initialized then return end
 
     -- Create invisible anchor frame the user drags in editor mode
-    local anchor = CreateFrame("Frame", "DragonUI_LootRollAnchor", UIParent)
+    local anchor = CreateFrame("Frame", "DuckcraftUI_LootRollAnchor", UIParent)
     local refFrame = GroupLootContainer or _G["GroupLootFrame1"]
     local w = refFrame and refFrame:GetWidth() or 240
     local h = refFrame and refFrame:GetHeight() or 28
@@ -344,7 +344,7 @@ end, "PLAYER_ENTERING_WORLD")
 
 -- Profile change handler
 if addon.core and addon.core.RegisterMessage then
-    addon.core.RegisterMessage(addon, "DRAGONUI_PROFILE_CHANGED", function()
+    addon.core.RegisterMessage(addon, "DUCKCRAFTUI_PROFILE_CHANGED", function()
         if LootRollModule.initialized then
             UpdateAnchorPosition()
             AttachContainer()

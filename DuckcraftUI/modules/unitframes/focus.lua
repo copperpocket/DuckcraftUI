@@ -1,5 +1,5 @@
 --[[
-  DragonUI - Focus Frame Module (focus.lua)
+  DuckcraftUI - Focus Frame Module (focus.lua)
 
   Focus-specific configuration and hooks passed to the
   UF.TargetStyle closure factory defined in target_style.lua.

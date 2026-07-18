@@ -1,10 +1,10 @@
 -- ============================================================================
--- DragonUI - Atlas Texture Definitions
+-- DuckcraftUI - Atlas Texture Definitions
 -- Original texture atlas system by Dmitriy (RetailUI), MIT License.
 -- Maps sprite names to texture coordinates for the custom UI assets.
 -- ============================================================================
 
-local addonPath = 'Interface\\AddOns\\DragonUI\\'
+local addonPath = 'Interface\\AddOns\\DuckcraftUI\\'
 
 local UnitFrameAsset = { path = addonPath .. 'Textures\\UI\\UnitFrame.blp', width = 1024, height = 512 }
 local CastingBarAsset = { path = addonPath .. 'Textures\\UI\\CastingBar.blp', width = 512, height = 256 }

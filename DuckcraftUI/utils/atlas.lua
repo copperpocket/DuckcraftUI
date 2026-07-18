@@ -1,5 +1,5 @@
 -- ============================================================================
--- DragonUI - Atlas Definitions (Legacy)
+-- DuckcraftUI - Atlas Definitions (Legacy)
 -- Texture atlas lookup table mapping sprite names to texture coordinates.
 -- ============================================================================
 

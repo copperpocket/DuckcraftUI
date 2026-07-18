@@ -1,7 +1,7 @@
 local addon = select(2, ...)
 
 -- ============================================================================
--- COMBUCTOR MODULE FOR DRAGONUI
+-- COMBUCTOR MODULE FOR DUCKCRAFTUI
 -- Ported from KPack Combuctor by bkader
 -- All-in-one bag replacement with item filtering, search, bank integration.
 -- ============================================================================
@@ -894,7 +894,7 @@ do
         end
 
         local itemID = self:GetNextItemSlotID()
-        local item = self:Bind(CreateFrame("Button", format("DragonUI_CombuctorItem%d", itemID), nil, "ContainerFrameItemButtonTemplate"))
+        local item = self:Bind(CreateFrame("Button", format("DuckcraftUI_CombuctorItem%d", itemID), nil, "ContainerFrameItemButtonTemplate"))
 
         local name = item:GetName()
         item:SetID(itemID)
@@ -1654,7 +1654,7 @@ do
     local bagId = 1
 
     function Bag:New()
-        local bag = self:Bind(CreateFrame("Button", format("DragonUI_CombuctorBag%d", bagId)))
+        local bag = self:Bind(CreateFrame("Button", format("DuckcraftUI_CombuctorBag%d", bagId)))
         local name = bag:GetName()
         bag:SetSize(SIZE, SIZE)
 
@@ -1897,7 +1897,7 @@ do
 
     local moneyId = 1
     function MoneyFrame:New(parent)
-        local f = self:Bind(CreateFrame("Frame", format("DragonUI_CombuctorMoney%d", moneyId), parent, "SmallMoneyFrameTemplate"))
+        local f = self:Bind(CreateFrame("Frame", format("DuckcraftUI_CombuctorMoney%d", moneyId), parent, "SmallMoneyFrameTemplate"))
         f:SetScript("OnShow", self.OnShow)
         f:SetFrameLevel(f:GetFrameLevel() + 4)
         moneyId = moneyId + 1
@@ -2028,7 +2028,7 @@ do
     local SideTab = mod:NewClass("CheckButton")
 
     function SideTab:New(parent, id)
-        local tab = self:Bind(CreateFrame("CheckButton", format("%sSideTab%d", parent:GetParent():GetName(), id), parent, "DragonUI_CombuctorSideTabButtonTemplate"))
+        local tab = self:Bind(CreateFrame("CheckButton", format("%sSideTab%d", parent:GetParent():GetName(), id), parent, "DuckcraftUI_CombuctorSideTabButtonTemplate"))
         tab.border = _G[tab:GetName() .. "Border"]
         return tab
     end
@@ -2160,7 +2160,7 @@ do
     local BottomTab = mod:NewClass("Button")
 
     function BottomTab:New(parent, id)
-        local tab = self:Bind(CreateFrame("Button", parent:GetName() .. "Tab" .. id, parent, "DragonUI_CombuctorFrameTabButtonTemplate"))
+        local tab = self:Bind(CreateFrame("Button", parent:GetName() .. "Tab" .. id, parent, "DuckcraftUI_CombuctorFrameTabButtonTemplate"))
         tab:SetID(id)
         tab:SetScript("OnClick", function(self)
             parent:GetParent():SetSubCategory(self.set.name)
@@ -2307,7 +2307,7 @@ do
 
     local lastID = 1
     function InventoryFrame:New(titleText, settings, isBank, key)
-        local f = self:Bind(CreateFrame("Frame", format("DragonUI_CombuctorFrame%d", lastID), UIParent, "DragonUI_CombuctorInventoryTemplate"))
+        local f = self:Bind(CreateFrame("Frame", format("DuckcraftUI_CombuctorFrame%d", lastID), UIParent, "DuckcraftUI_CombuctorInventoryTemplate"))
         f:SetScript("OnShow", self.OnShow)
         f:SetScript("OnHide", self.OnHide)
 
@@ -2812,7 +2812,7 @@ local function ApplyCombuctorSystem()
     CombuctorModule.frames.autoEventFrame = autoEventFrame
 
     -- Slash commands
-    SlashCmdList["DRAGONUI_COMBUCTOR"] = function(msg)
+    SlashCmdList["DUCKCRAFTUI_COMBUCTOR"] = function(msg)
         msg = msg and msg:lower() or ""
         if msg == "bank" then
             mod:Toggle(BANK_CONTAINER)
@@ -2822,8 +2822,8 @@ local function ApplyCombuctorSystem()
             mod:Toggle(BACKPACK_CONTAINER)
         end
     end
-    SLASH_DRAGONUI_COMBUCTOR1 = "/cbt"
-    SLASH_DRAGONUI_COMBUCTOR2 = "/combuctor"
+    SLASH_DUCKCRAFTUI_COMBUCTOR1 = "/cbt"
+    SLASH_DUCKCRAFTUI_COMBUCTOR2 = "/combuctor"
 
     CombuctorModule.applied = true
 end
@@ -2926,7 +2926,7 @@ initFrame:RegisterEvent("ADDON_LOADED")
 initFrame:RegisterEvent("PLAYER_ENTERING_WORLD")
 
 initFrame:SetScript("OnEvent", function(self, event, arg1)
-    if event == "ADDON_LOADED" and arg1 == "DragonUI" then
+    if event == "ADDON_LOADED" and arg1 == "DuckcraftUI" then
         if not IsModuleEnabled() then return end
 
         addon:After(0.5, function()

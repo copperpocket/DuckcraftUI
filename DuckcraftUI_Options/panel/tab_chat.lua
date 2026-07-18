@@ -1,12 +1,12 @@
 --[[
 ================================================================================
-DragonUI Options Panel - Chat Tab
+DuckcraftUI Options Panel - Chat Tab
 ================================================================================
 Chat Mods options: editbox position, tab opacity, URL detection, chat copy.
 ================================================================================
 ]]
 
-local addon = DragonUI
+local addon = DuckcraftUI
 if not addon then return end
 
 local L = addon.L
@@ -75,7 +75,7 @@ local function BuildChatTab(scroll)
         values = {
             none     = LO["None"],
             dark     = LO["Dark"],
-            dragon   = LO["DragonUI Style"],
+            dragon   = LO["DuckcraftUI Style"],
             midnight = LO["Midnight"],
         },
         dbPath = "modules.chatmods.chatStyle",
@@ -92,7 +92,7 @@ local function BuildChatTab(scroll)
         values = {
             none     = LO["None"],
             dark     = LO["Dark"],
-            dragon   = LO["DragonUI Style"],
+            dragon   = LO["DuckcraftUI Style"],
             midnight = LO["Midnight"],
         },
         dbPath = "modules.chatmods.editboxStyle",

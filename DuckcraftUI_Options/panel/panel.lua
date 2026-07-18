@@ -1,13 +1,13 @@
 --[[
 ================================================================================
-DragonUI Options Panel - Main Frame
+DuckcraftUI Options Panel - Main Frame
 ================================================================================
 Custom dark-themed options panel. Built with raw frames, not AceGUI containers.
 Individual controls still use AceGUI widgets (skinned by controls.lua).
 ================================================================================
 ]]
 
-local addon = DragonUI
+local addon = DuckcraftUI
 if not addon then return end
 
 local L = addon.L
@@ -44,7 +44,7 @@ local T = {
     textWhite = { 1, 1, 1, 1 },
     textDim   = { 0.55, 0.55, 0.55, 1 },
     contentBg = { 0.09, 0.09, 0.11, 1 },
-    font      = (addon.Fonts and addon.Fonts.NARROW) or "Interface\\AddOns\\DragonUI_Options\\fonts\\PTSansNarrow.ttf",
+    font      = (addon.Fonts and addon.Fonts.NARROW) or "Interface\\AddOns\\DuckcraftUI_Options\\fonts\\PTSansNarrow.ttf",
 }
 
 -- ============================================================================
@@ -115,7 +115,7 @@ end
 
 local function CreatePanel()
     -- Main frame
-    local f = CreateFrame("Frame", "DragonUIOptionsPanel", UIParent)
+    local f = CreateFrame("Frame", "DuckcraftUIOptionsPanel", UIParent)
     f:SetFrameStrata("DIALOG")
     f:SetWidth(920)
     f:SetHeight(650)
@@ -150,7 +150,7 @@ local function CreatePanel()
     local titleText = titleBar:CreateFontString(nil, "OVERLAY")
     SetSafeFont(titleText, 15, "OUTLINE")
     titleText:SetPoint("LEFT", 12, 0)
-    titleText:SetText("|cff1784d1" .. LO["DragonUI"] .. "|r |cffaaaaaa2.5|r")
+    titleText:SetText("|cff1784d1" .. LO["DuckcraftUI"] .. "|r |cffaaaaaa2.5|r")
 
     -- Editor Mode button (in title bar) - styled pill button with neon green border
     local editorBtn = CreateFrame("Button", nil, titleBar)
@@ -270,7 +270,7 @@ local function CreatePanel()
     SetSafeFont(statusText, 11, "")
     statusText:SetPoint("BOTTOM", f, "BOTTOM", 0, 4)
     statusText:SetTextColor(0.4, 0.4, 0.4, 1)
-    statusText:SetText(LO["Commands: /dragonui, /dui, /pi — /dragonui edit (editor) — /dragonui help"])
+    statusText:SetText(LO["Commands: /duckcraftui, /dui, /pi — /duckcraftui edit (editor) — /duckcraftui help"])
 
     -- Resize grip (bottom-right corner)
     local resizeGrip = CreateFrame("Frame", nil, f)
@@ -322,7 +322,7 @@ local function CreatePanel()
     end)
 
     -- ESC to close
-    tinsert(UISpecialFrames, "DragonUIOptionsPanel")
+    tinsert(UISpecialFrames, "DuckcraftUIOptionsPanel")
 
     return f
 end
@@ -489,7 +489,7 @@ end
 
 function Panel:Open(selectTab)
     if InCombatLockdown() then
-        print("|cFFFF0000[DragonUI]|r " .. LO["Cannot open options during combat."])
+        print("|cFFFF0000[DuckcraftUI]|r " .. LO["Cannot open options during combat."])
         return
     end
 

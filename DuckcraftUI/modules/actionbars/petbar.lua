@@ -1,7 +1,7 @@
 local addon = select(2, ...);
 
 -- ============================================================================
--- PETBAR MODULE FOR DRAGONUI
+-- PETBAR MODULE FOR DUCKCRAFTUI
 -- ============================================================================
 
 
@@ -17,7 +17,7 @@ local CreateFrame = CreateFrame;
 local UIParent = UIParent;
 local hooksecurefunc = hooksecurefunc;
 
--- DragonUI Configuration Functions
+-- DuckcraftUI Configuration Functions
 local function GetModuleConfig()
     return addon:GetModuleConfig("petbar")
 end
@@ -30,7 +30,7 @@ local function GetPetbarConfig()
     return addon.db and addon.db.profile and addon.db.profile.additional and addon.db.profile.additional.pet
 end
 
--- DragonUI Module state tracking
+-- DuckcraftUI Module state tracking
 local PetbarModule = {
     initialized = false,
     applied = false,
@@ -51,7 +51,7 @@ if addon.RegisterModule then
 end
 
 -- ============================================================================
--- DYNAMIC CONFIG SYSTEM (reads from DragonUI database)
+-- DYNAMIC CONFIG SYSTEM (reads from DuckcraftUI database)
 -- ============================================================================
 
 local function GetDynamicConfig()
@@ -116,7 +116,7 @@ local function CreateAnchorFrame()
     local petbarWidth = (btnsize * numButtons) + (space * (numButtons - 1))
     local petbarHeight = btnsize
     
-    -- Always create using DragonUI widgets system for proper editor mode support
+    -- Always create using DuckcraftUI widgets system for proper editor mode support
     local anchor = addon.CreateUIFrame(petbarWidth, petbarHeight, "petbar")
     PetbarModule.anchor = anchor
     
@@ -207,7 +207,7 @@ local function CreatePetbarFrame()
     if not anchor then return end
     
     local config = GetDynamicConfig()
-    local petbar = CreateFrame('Frame', 'DragonUI_PetBar', UIParent, 'SecureHandlerStateTemplate')
+    local petbar = CreateFrame('Frame', 'DuckcraftUI_PetBar', UIParent, 'SecureHandlerStateTemplate')
     petbar:SetAllPoints(anchor)
     petbar:SetScale(config.scale or 1.0)
     PetbarModule.petbar = petbar
@@ -319,7 +319,7 @@ local function petbutton_position()
             button:Show()
             petbar:SetAttribute('addchild', button)
             
-            -- Apply DragonUI button styling if buttons module available
+            -- Apply DuckcraftUI button styling if buttons module available
             if addon.petbuttons_template then
                 addon.petbuttons_template()
             end
@@ -415,7 +415,7 @@ local function RegisterBottomBarHooks()
 end
 
 -- ============================================================================
--- DRAGONUI MODULE SYSTEM (Apply/Restore pattern)
+-- DUCKCRAFTUI MODULE SYSTEM (Apply/Restore pattern)
 -- ============================================================================
 
 -- Function to update editor frame registration (must be defined before use)
@@ -481,7 +481,7 @@ local function RestorePetbarSystem()
     -- Never tear down petbar while editor mode is active (overlay must stay visible)
     if addon.EditorMode and addon.EditorMode:IsActive() then return end
 
-    -- Hide DragonUI frames
+    -- Hide DuckcraftUI frames
     if PetbarModule.anchor then PetbarModule.anchor:Hide() end
     if PetbarModule.petbar then PetbarModule.petbar:Hide() end
 
@@ -520,7 +520,7 @@ local function RestorePetbarSystem()
 end
 
 -- ============================================================================
--- DRAGONUI WIDGETS INTEGRATION (Editor Mode Support)
+-- DUCKCRAFTUI WIDGETS INTEGRATION (Editor Mode Support)
 -- ============================================================================
 
 local function ShowPetbarTest()
@@ -575,13 +575,13 @@ local function HidePetbarTest()
 end
 
 -- ============================================================================
--- DRAGONUI INTEGRATION AND INTERFACE
+-- DUCKCRAFTUI INTEGRATION AND INTERFACE
 -- ============================================================================
 
 -- Export petbar position update for dual-bar offset system
 addon.UpdatePetbarPosition = UpdateAnchorPosition
 
--- Global functions for DragonUI system
+-- Global functions for DuckcraftUI system
 function addon.RefreshPetbarSystem()
     -- Skip refresh during editor mode (prevents overlay from disappearing)
     if addon.EditorMode and addon.EditorMode:IsActive() then return end
@@ -635,7 +635,7 @@ local initFrame = CreateFrame("Frame")
 initFrame:RegisterEvent("ADDON_LOADED")
 initFrame:RegisterEvent("PLAYER_LOGIN")
 initFrame:SetScript("OnEvent", function(self, event, addonName)
-    if event == "ADDON_LOADED" and addonName == "DragonUI" then
+    if event == "ADDON_LOADED" and addonName == "DuckcraftUI" then
         self.addonLoaded = true
         
         -- Register petbar for editor mode (frame will be updated later)
@@ -649,7 +649,7 @@ initFrame:SetScript("OnEvent", function(self, event, addonName)
             })
         end
         
-        -- Set up profile callbacks (DragonUI modular system)
+        -- Set up profile callbacks (DuckcraftUI modular system)
         if addon.db then
             addon.db.RegisterCallback(addon, "OnProfileChanged", function()
                 addon.RefreshPetbarSystem()

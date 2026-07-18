@@ -1,12 +1,12 @@
 --[[
 ================================================================================
-DragonUI Options Panel - Micro Menu Tab
+DuckcraftUI Options Panel - Micro Menu Tab
 ================================================================================
 Micro menu, bags, XP/rep bars, additional bars.
 ================================================================================
 ]]
 
-local addon = DragonUI
+local addon = DuckcraftUI
 if not addon then return end
 
 local L = addon.L
@@ -77,7 +77,7 @@ local function BuildMicromenuTab(scroll)
         desc = LO["Show a colored bar below the Help button indicating connection quality (green/yellow/red). Requires UI reload."],
         dbPath = "micromenu.show_latency_indicator",
         callback = function()
-            StaticPopup_Show("DRAGONUI_RELOAD_UI")
+            StaticPopup_Show("DUCKCRAFTUI_RELOAD_UI")
         end,
     })
 end

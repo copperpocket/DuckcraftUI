@@ -1,5 +1,5 @@
 -- ============================================================================
--- DragonUI - Text Formatting Utilities
+-- DuckcraftUI - Text Formatting Utilities
 -- Keybind text abbreviation, number formatting, and display helpers.
 -- ============================================================================
 

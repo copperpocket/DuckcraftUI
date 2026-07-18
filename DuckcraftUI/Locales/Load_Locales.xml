@@ -1,5 +1,5 @@
 <Ui xmlns="http://www.blizzard.com/wow/ui/">
-	<!-- DragonUI Core Locales -->
+	<!-- DuckcraftUI Core Locales -->
 	<!-- English MUST load first (default locale) -->
 	<Script file="enUS.lua"/>
 

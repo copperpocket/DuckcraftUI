@@ -1,4 +1,4 @@
--- Adapted from Blizzard's retail FrameXML NineSlice system for DragonUI.
+-- Adapted from Blizzard's retail FrameXML NineSlice system for DuckcraftUI.
 local addon = select(2,...);
 local C_Texture = addon.c_texture;
 

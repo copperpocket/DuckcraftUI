@@ -129,7 +129,7 @@ function LibKeyBound:Initialize()
 			LibKeyBound:Deactivate()
 		end)
 
-		-- Reset bindings button (DragonUI addition)
+		-- Reset bindings button (DuckcraftUI addition)
 		local resetBindings = CreateFrame('CheckButton', 'KeyboundDialogReset', f, 'OptionsButtonTemplate')
 		-- Make button wider
 		resetBindings:SetWidth(120)
@@ -172,7 +172,7 @@ function LibKeyBound:Initialize()
 		self.dialog = f
 	end
 
-	-- DragonUI: Create confirmation popup for reset functionality
+	-- DuckcraftUI: Create confirmation popup for reset functionality
 	StaticPopupDialogs["LIBKEYBOUND_RESET_KEYBINDS"] = {
 		text = L.ResetKeybindsConfirm,
 		button1 = OKAY,

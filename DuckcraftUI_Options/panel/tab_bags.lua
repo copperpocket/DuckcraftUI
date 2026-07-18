@@ -1,12 +1,12 @@
 --[[
 ================================================================================
-DragonUI Options Panel - Bags Tab
+DuckcraftUI Options Panel - Bags Tab
 ================================================================================
 Combuctor settings: enable/disable, category tabs, left/right side filter.
 ================================================================================
 ]]
 
-local addon = DragonUI
+local addon = DuckcraftUI
 if not addon then return end
 
 local L = addon.L

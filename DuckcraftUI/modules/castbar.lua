@@ -2,7 +2,7 @@
 local L = addon.L
 
 -- ============================================================================
--- CASTBAR MODULE FOR DRAGONUI
+-- CASTBAR MODULE FOR DUCKCRAFTUI
 -- Original code by Neticsoul
 -- ============================================================================
 
@@ -19,7 +19,7 @@ local GetSpellTexture, GetSpellInfo = GetSpellTexture, GetSpellInfo
 -- CONSTANTS AND TEXTURES
 -- ============================================================================
 
-local TEXTURE_PATH = "Interface\\AddOns\\DragonUI\\Textures\\CastbarOriginal\\"
+local TEXTURE_PATH = "Interface\\AddOns\\DuckcraftUI\\Textures\\CastbarOriginal\\"
 local TEXTURES = {
     atlas = TEXTURE_PATH .. "uicastingbar2x",
     atlasSmall = TEXTURE_PATH .. "uicastingbar",
@@ -200,7 +200,7 @@ local function HasCompanionUnit(unitType)
             return false
         end
 
-        -- Blizzard/DragonUI behavior: no ToT should be treated as visible when target is self.
+        -- Blizzard/DuckcraftUI behavior: no ToT should be treated as visible when target is self.
         if UnitIsUnit and UnitIsUnit("target", "player") then
             return false
         end
@@ -422,8 +422,8 @@ end
 -- ============================================================================
 
 -- Phase 2: Hidden parent frame to suppress Blizzard castbars without SetScript taint
-local DragonUI_HiddenCastbarParent = CreateFrame("Frame")
-DragonUI_HiddenCastbarParent:Hide()
+local DuckcraftUI_HiddenCastbarParent = CreateFrame("Frame")
+DuckcraftUI_HiddenCastbarParent:Hide()
 
 -- Store original parents for restore
 local blizzardCastbarOriginalParents = {}
@@ -454,20 +454,20 @@ local function HideBlizzardCastbar(unitType)
     -- Keep target/focus under Blizzard's parent so vanilla position logic still runs.
     -- Player castbar can still be reparented to avoid interference with the custom bar.
     if unitType == "player" and not InCombatLockdown() then
-        frame:SetParent(DragonUI_HiddenCastbarParent)
+        frame:SetParent(DuckcraftUI_HiddenCastbarParent)
     end
     
     frame:Hide()
     frame:SetAlpha(0)
     
     -- Backup: HookScript (not SetScript) for extra safety if parent gets changed
-    if not frame._dragonUIHooked then
+    if not frame._duckcraftUIHooked then
         frame:HookScript("OnShow", function(self)
             if CastbarModule.blizzardHidden[unitType] then
                 self:Hide()
             end
         end)
-        frame._dragonUIHooked = true
+        frame._duckcraftUIHooked = true
     end
     
     CastbarModule.blizzardHidden[unitType] = true
@@ -938,7 +938,7 @@ local function CreateCastbar(unitType)
         return
     end
     
-    local frameName = 'DragonUI' .. unitType:sub(1, 1):upper() .. unitType:sub(2) .. 'Castbar'
+    local frameName = 'DuckcraftUI' .. unitType:sub(1, 1):upper() .. unitType:sub(2) .. 'Castbar'
     local frames = CastbarModule.frames[unitType]
     
     -- Create unified container frame
@@ -2349,7 +2349,7 @@ local function HandleCastbarEditorHide(unitType)
         return
     end
 
-    if anchorFrame.DragonUI_WasDragged or anchorFrame.DragonUI_WasAdjustedByEditor then
+    if anchorFrame.DuckcraftUI_WasDragged or anchorFrame.DuckcraftUI_WasAdjustedByEditor then
         local cfg = GetConfig(unitType)
         if cfg then
             cfg.override = true
@@ -2357,8 +2357,8 @@ local function HandleCastbarEditorHide(unitType)
 
         PersistCastbarAnchorPosition(unitType)
 
-        anchorFrame.DragonUI_WasDragged = nil
-        anchorFrame.DragonUI_WasAdjustedByEditor = nil
+        anchorFrame.DuckcraftUI_WasDragged = nil
+        anchorFrame.DuckcraftUI_WasAdjustedByEditor = nil
     end
 
     ApplyCastbarWidgetPosition(unitType)
@@ -2456,7 +2456,7 @@ local function InitializeCastbarForEditor()
         end)
 
         CastbarModule.targetAnchor:HookScript("OnDragStop", function(self)
-            self.DragonUI_WasDragged = true
+            self.DuckcraftUI_WasDragged = true
 
             local cfg = GetConfig("target")
             if cfg then
@@ -2478,7 +2478,7 @@ local function InitializeCastbarForEditor()
         end)
 
         CastbarModule.focusAnchor:HookScript("OnDragStop", function(self)
-            self.DragonUI_WasDragged = true
+            self.DuckcraftUI_WasDragged = true
 
             local cfg = GetConfig("focus")
             if cfg then
@@ -2726,7 +2726,7 @@ function addon.ResetFocusCastbarPosition()
 end
 
 -- Initialize event frame
-local eventFrame = CreateFrame('Frame', 'DragonUICastbarEventHandler')
+local eventFrame = CreateFrame('Frame', 'DuckcraftUICastbarEventHandler')
 local events = {
     'PLAYER_ENTERING_WORLD',
     'UNIT_SPELLCAST_SENT',
@@ -2759,7 +2759,7 @@ SetupBlizzardLayoutHooks()
 local readyFrame = CreateFrame("Frame")
 readyFrame:RegisterEvent("ADDON_LOADED")
 readyFrame:SetScript("OnEvent", function(self, event, addonName)
-    if addonName == "DragonUI" then
+    if addonName == "DuckcraftUI" then
         if CastbarModule.UpdateWidgets then
             CastbarModule:UpdateWidgets()
         end

@@ -21,5 +21,5 @@
 	<!-- All modules -->
 	<Include file="modules\modules.xml"/>
 	
-	<!-- Options are now in DragonUI_Options addon (loaded on demand) -->
+	<!-- Options are now in DuckcraftUI_Options addon (loaded on demand) -->
 </Ui>

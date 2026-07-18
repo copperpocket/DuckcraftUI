@@ -1,5 +1,5 @@
 -- ============================================================================
--- DragonUI - Configuration Layer
+-- DuckcraftUI - Configuration Layer
 -- Metatable-based config wrapper that routes to database or static values.
 -- Initialized early so core/ files and modules can use localization.
 -- ============================================================================
@@ -7,9 +7,9 @@
 local addon = select(2,...);
 
 -- Localization (must load before any core/ file that references addon.L)
-addon.L = LibStub("AceLocale-3.0"):GetLocale("DragonUI")
+addon.L = LibStub("AceLocale-3.0"):GetLocale("DuckcraftUI")
 
-addon._dir = [[Interface\AddOns\DragonUI\assets\]];
+addon._dir = [[Interface\AddOns\DuckcraftUI\assets\]];
 
 -- Use centralized font system (loaded via core/fonts.lua before this file)
 local _actionbarFont = addon.Fonts.ACTIONBAR

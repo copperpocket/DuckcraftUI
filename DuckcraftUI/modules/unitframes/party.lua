@@ -1,5 +1,5 @@
 -- ===============================================================
--- DRAGONUI PARTY FRAMES MODULE
+-- DUCKCRAFTUI PARTY FRAMES MODULE
 -- ===============================================================
 local addon = select(2, ...)
 local UF = addon.UF
@@ -541,7 +541,7 @@ local function SetupHealthBarClipping(frame)
     end
 
     local healthbar = _G[frame:GetName() .. 'HealthBar']
-    if not healthbar or healthbar.DragonUI_ClippingSetup then
+    if not healthbar or healthbar.DuckcraftUI_ClippingSetup then
         return
     end
 
@@ -558,7 +558,7 @@ local function SetupHealthBarClipping(frame)
         end
 
         -- If disconnected, show full bar in gray (Blizzard native behavior)
-        if frame.DragonUI_Disconnected then
+        if frame.DuckcraftUI_Disconnected then
             texture:SetTexCoord(0, 1, 0, 1)
             self:SetStatusBarColor(0.5, 0.5, 0.5, 1)
             return
@@ -581,7 +581,7 @@ local function SetupHealthBarClipping(frame)
         end
     end)
 
-    healthbar.DragonUI_ClippingSetup = true
+    healthbar.DuckcraftUI_ClippingSetup = true
 end
 
 -- Setup dynamic texture clipping for mana bars
@@ -591,7 +591,7 @@ local function SetupManaBarClipping(frame)
     end
 
     local manabar = _G[frame:GetName() .. 'ManaBar']
-    if not manabar or manabar.DragonUI_ClippingSetup then
+    if not manabar or manabar.DuckcraftUI_ClippingSetup then
         return
     end
 
@@ -606,7 +606,7 @@ local function SetupManaBarClipping(frame)
         end
 
         -- If disconnected, mana bar is hidden (alpha=0), skip all processing
-        if frame.DragonUI_Disconnected then
+        if frame.DuckcraftUI_Disconnected then
             return
         end
 
@@ -628,7 +628,7 @@ local function SetupManaBarClipping(frame)
         texture:SetVertexColor(1, 1, 1, 1)
     end)
 
-    manabar.DragonUI_ClippingSetup = true
+    manabar.DuckcraftUI_ClippingSetup = true
 end
 
 -- ===============================================================
@@ -647,29 +647,29 @@ local function HideBlizzardTexts(frame)
     -- A recursion guard flag prevents infinite loop since our SetAlpha(0) also triggers the hook
     if healthText then
         healthText:SetAlpha(0)
-        if not healthText.DragonUI_AlphaHooked then
+        if not healthText.DuckcraftUI_AlphaHooked then
             hooksecurefunc(healthText, "SetAlpha", function(self, alpha)
-                if not self.DragonUI_AlphaGuard and alpha ~= 0 then
-                    self.DragonUI_AlphaGuard = true
+                if not self.DuckcraftUI_AlphaGuard and alpha ~= 0 then
+                    self.DuckcraftUI_AlphaGuard = true
                     self:SetAlpha(0)
-                    self.DragonUI_AlphaGuard = nil
+                    self.DuckcraftUI_AlphaGuard = nil
                 end
             end)
-            healthText.DragonUI_AlphaHooked = true
+            healthText.DuckcraftUI_AlphaHooked = true
         end
     end
     
     if manaText then
         manaText:SetAlpha(0)
-        if not manaText.DragonUI_AlphaHooked then
+        if not manaText.DuckcraftUI_AlphaHooked then
             hooksecurefunc(manaText, "SetAlpha", function(self, alpha)
-                if not self.DragonUI_AlphaGuard and alpha ~= 0 then
-                    self.DragonUI_AlphaGuard = true
+                if not self.DuckcraftUI_AlphaGuard and alpha ~= 0 then
+                    self.DuckcraftUI_AlphaGuard = true
                     self:SetAlpha(0)
-                    self.DragonUI_AlphaGuard = nil
+                    self.DuckcraftUI_AlphaGuard = nil
                 end
             end)
-            manaText.DragonUI_AlphaHooked = true
+            manaText.DuckcraftUI_AlphaHooked = true
         end
     end
 end
@@ -742,16 +742,16 @@ UpdateHealthText = function(statusBar, forceShow)
     
     -- Don't show health numbers when player is disconnected
     if not UnitIsConnected(partyUnit) then
-        if frame.DragonUI_HealthText then frame.DragonUI_HealthText:Hide() end
-        if frame.DragonUI_HealthTextLeft then frame.DragonUI_HealthTextLeft:Hide() end
-        if frame.DragonUI_HealthTextRight then frame.DragonUI_HealthTextRight:Hide() end
+        if frame.DuckcraftUI_HealthText then frame.DuckcraftUI_HealthText:Hide() end
+        if frame.DuckcraftUI_HealthTextLeft then frame.DuckcraftUI_HealthTextLeft:Hide() end
+        if frame.DuckcraftUI_HealthTextRight then frame.DuckcraftUI_HealthTextRight:Hide() end
         return
     end
     
     -- Ensure our custom text exists
     CreateCustomTexts(frame)
     
-    local healthText = frame.DragonUI_HealthText
+    local healthText = frame.DuckcraftUI_HealthText
     if not healthText then return end
     
     local settings = GetSettings()
@@ -776,8 +776,8 @@ UpdateHealthText = function(statusBar, forceShow)
     if not shouldShow then
         -- Hide ALL text elements (including both format)
         if healthText then healthText:Hide() end
-        if frame.DragonUI_HealthTextLeft then frame.DragonUI_HealthTextLeft:Hide() end
-        if frame.DragonUI_HealthTextRight then frame.DragonUI_HealthTextRight:Hide() end
+        if frame.DuckcraftUI_HealthTextLeft then frame.DuckcraftUI_HealthTextLeft:Hide() end
+        if frame.DuckcraftUI_HealthTextRight then frame.DuckcraftUI_HealthTextRight:Hide() end
         return
     end
     
@@ -792,19 +792,19 @@ UpdateHealthText = function(statusBar, forceShow)
         -- Dual system: table for "both", string for other formats
         if textFormat == "both" and type(finalText) == "table" then
             -- Dual format: use left and right, hide center
-            if frame.DragonUI_HealthText then frame.DragonUI_HealthText:Hide() end
-            if EnsurePartyTextFont(frame.DragonUI_HealthTextLeft) then
-                frame.DragonUI_HealthTextLeft:SetText(finalText.left or "")
-                frame.DragonUI_HealthTextLeft:Show()
+            if frame.DuckcraftUI_HealthText then frame.DuckcraftUI_HealthText:Hide() end
+            if EnsurePartyTextFont(frame.DuckcraftUI_HealthTextLeft) then
+                frame.DuckcraftUI_HealthTextLeft:SetText(finalText.left or "")
+                frame.DuckcraftUI_HealthTextLeft:Show()
             end
-            if EnsurePartyTextFont(frame.DragonUI_HealthTextRight) then
-                frame.DragonUI_HealthTextRight:SetText(finalText.right or "")
-                frame.DragonUI_HealthTextRight:Show()
+            if EnsurePartyTextFont(frame.DuckcraftUI_HealthTextRight) then
+                frame.DuckcraftUI_HealthTextRight:SetText(finalText.right or "")
+                frame.DuckcraftUI_HealthTextRight:Show()
             end
         else
             -- Simple format: use center, hide left and right
-            if frame.DragonUI_HealthTextLeft then frame.DragonUI_HealthTextLeft:Hide() end
-            if frame.DragonUI_HealthTextRight then frame.DragonUI_HealthTextRight:Hide() end
+            if frame.DuckcraftUI_HealthTextLeft then frame.DuckcraftUI_HealthTextLeft:Hide() end
+            if frame.DuckcraftUI_HealthTextRight then frame.DuckcraftUI_HealthTextRight:Hide() end
             if EnsurePartyTextFont(healthText) then
                 healthText:SetText(finalText or "")
                 healthText:Show()
@@ -813,8 +813,8 @@ UpdateHealthText = function(statusBar, forceShow)
     else
         -- Hide all texts if no valid data
         if healthText then healthText:Hide() end
-        if frame.DragonUI_HealthTextLeft then frame.DragonUI_HealthTextLeft:Hide() end
-        if frame.DragonUI_HealthTextRight then frame.DragonUI_HealthTextRight:Hide() end
+        if frame.DuckcraftUI_HealthTextLeft then frame.DuckcraftUI_HealthTextLeft:Hide() end
+        if frame.DuckcraftUI_HealthTextRight then frame.DuckcraftUI_HealthTextRight:Hide() end
     end
 end
 
@@ -832,15 +832,15 @@ UpdateManaText = function(statusBar, forceShow)
     -- Don't show mana numbers when player is disconnected
     local frame = statusBar:GetParent()
     if not UnitIsConnected(partyUnit) then
-        if frame.DragonUI_ManaText then frame.DragonUI_ManaText:Hide() end
-        if frame.DragonUI_ManaTextLeft then frame.DragonUI_ManaTextLeft:Hide() end
-        if frame.DragonUI_ManaTextRight then frame.DragonUI_ManaTextRight:Hide() end
+        if frame.DuckcraftUI_ManaText then frame.DuckcraftUI_ManaText:Hide() end
+        if frame.DuckcraftUI_ManaTextLeft then frame.DuckcraftUI_ManaTextLeft:Hide() end
+        if frame.DuckcraftUI_ManaTextRight then frame.DuckcraftUI_ManaTextRight:Hide() end
         return
     end
     
     -- Create custom text if it doesn't exist - look in the frame, not statusbar!
     CreateCustomTexts(frame)
-    local customText = frame.DragonUI_ManaText
+    local customText = frame.DuckcraftUI_ManaText
     
     if not customText then return end
     
@@ -866,8 +866,8 @@ UpdateManaText = function(statusBar, forceShow)
     if not shouldShow then
         -- Hide ALL text elements (including both format)
         if customText then customText:Hide() end
-        if frame.DragonUI_ManaTextLeft then frame.DragonUI_ManaTextLeft:Hide() end
-        if frame.DragonUI_ManaTextRight then frame.DragonUI_ManaTextRight:Hide() end
+        if frame.DuckcraftUI_ManaTextLeft then frame.DuckcraftUI_ManaTextLeft:Hide() end
+        if frame.DuckcraftUI_ManaTextRight then frame.DuckcraftUI_ManaTextRight:Hide() end
         return
     end
     
@@ -883,18 +883,18 @@ UpdateManaText = function(statusBar, forceShow)
         if textFormat == "both" and type(finalText) == "table" then
             -- Dual format: use left and right, hide center
             if customText then customText:Hide() end
-            if EnsurePartyTextFont(frame.DragonUI_ManaTextLeft) then
-                frame.DragonUI_ManaTextLeft:SetText(finalText.left or "")
-                frame.DragonUI_ManaTextLeft:Show()
+            if EnsurePartyTextFont(frame.DuckcraftUI_ManaTextLeft) then
+                frame.DuckcraftUI_ManaTextLeft:SetText(finalText.left or "")
+                frame.DuckcraftUI_ManaTextLeft:Show()
             end
-            if EnsurePartyTextFont(frame.DragonUI_ManaTextRight) then
-                frame.DragonUI_ManaTextRight:SetText(finalText.right or "")
-                frame.DragonUI_ManaTextRight:Show()
+            if EnsurePartyTextFont(frame.DuckcraftUI_ManaTextRight) then
+                frame.DuckcraftUI_ManaTextRight:SetText(finalText.right or "")
+                frame.DuckcraftUI_ManaTextRight:Show()
             end
         else
             -- Simple format: use center, hide left and right
-            if frame.DragonUI_ManaTextLeft then frame.DragonUI_ManaTextLeft:Hide() end
-            if frame.DragonUI_ManaTextRight then frame.DragonUI_ManaTextRight:Hide() end
+            if frame.DuckcraftUI_ManaTextLeft then frame.DuckcraftUI_ManaTextLeft:Hide() end
+            if frame.DuckcraftUI_ManaTextRight then frame.DuckcraftUI_ManaTextRight:Hide() end
             if EnsurePartyTextFont(customText) then
                 customText:SetText(finalText or "")
                 customText:Show()
@@ -903,37 +903,37 @@ UpdateManaText = function(statusBar, forceShow)
     else
         -- Hide all texts if no valid data
         if customText then customText:Hide() end
-        if frame.DragonUI_ManaTextLeft then frame.DragonUI_ManaTextLeft:Hide() end
-        if frame.DragonUI_ManaTextRight then frame.DragonUI_ManaTextRight:Hide() end
+        if frame.DuckcraftUI_ManaTextLeft then frame.DuckcraftUI_ManaTextLeft:Hide() end
+        if frame.DuckcraftUI_ManaTextRight then frame.DuckcraftUI_ManaTextRight:Hide() end
     end
 end
 
 -- Create invisible hover frames for independent health/mana text display
 local function CreateHoverFrames(frame, frameIndex)
-    if not frame or frame.DragonUI_HoverFrames then return end
+    if not frame or frame.DuckcraftUI_HoverFrames then return end
     
     local healthBar = _G[frame:GetName() .. 'HealthBar']
     local manaBar = _G[frame:GetName() .. 'ManaBar']
     
     -- Create hover frame for health bar
-    if healthBar and not frame.DragonUI_HealthHover then
-        frame.DragonUI_HealthHover = CreateFrame("Frame", nil, frame.DragonUI_TextFrame)
-        frame.DragonUI_HealthHover:SetFrameLevel(frame.DragonUI_TextFrame:GetFrameLevel() + 1)
-        frame.DragonUI_HealthHover:SetAllPoints(healthBar)
-        frame.DragonUI_HealthHover:EnableMouse(true)
-        frame.DragonUI_HealthHover:SetScript("OnEnter", function()
+    if healthBar and not frame.DuckcraftUI_HealthHover then
+        frame.DuckcraftUI_HealthHover = CreateFrame("Frame", nil, frame.DuckcraftUI_TextFrame)
+        frame.DuckcraftUI_HealthHover:SetFrameLevel(frame.DuckcraftUI_TextFrame:GetFrameLevel() + 1)
+        frame.DuckcraftUI_HealthHover:SetAllPoints(healthBar)
+        frame.DuckcraftUI_HealthHover:EnableMouse(true)
+        frame.DuckcraftUI_HealthHover:SetScript("OnEnter", function()
             hoverStates[frameIndex].health = true
             HideBlizzardTexts(frame)
             UpdateHealthText(healthBar, true) -- Only show health text
             -- Only hide mana text if it's NOT set to always show
             local settings = GetSettings()
             if not (settings and settings.showManaTextAlways) then
-                if frame.DragonUI_ManaText then frame.DragonUI_ManaText:Hide() end
-                if frame.DragonUI_ManaTextLeft then frame.DragonUI_ManaTextLeft:Hide() end
-                if frame.DragonUI_ManaTextRight then frame.DragonUI_ManaTextRight:Hide() end
+                if frame.DuckcraftUI_ManaText then frame.DuckcraftUI_ManaText:Hide() end
+                if frame.DuckcraftUI_ManaTextLeft then frame.DuckcraftUI_ManaTextLeft:Hide() end
+                if frame.DuckcraftUI_ManaTextRight then frame.DuckcraftUI_ManaTextRight:Hide() end
             end
         end)
-        frame.DragonUI_HealthHover:SetScript("OnLeave", function()
+        frame.DuckcraftUI_HealthHover:SetScript("OnLeave", function()
             hoverStates[frameIndex].health = false
             HideBlizzardTexts(frame)
             -- Return to normal visibility for both texts
@@ -943,24 +943,24 @@ local function CreateHoverFrames(frame, frameIndex)
     end
     
     -- Create hover frame for mana bar
-    if manaBar and not frame.DragonUI_ManaHover then
-        frame.DragonUI_ManaHover = CreateFrame("Frame", nil, frame.DragonUI_TextFrame)
-        frame.DragonUI_ManaHover:SetFrameLevel(frame.DragonUI_TextFrame:GetFrameLevel() + 1)
-        frame.DragonUI_ManaHover:SetAllPoints(manaBar)
-        frame.DragonUI_ManaHover:EnableMouse(true)
-        frame.DragonUI_ManaHover:SetScript("OnEnter", function()
+    if manaBar and not frame.DuckcraftUI_ManaHover then
+        frame.DuckcraftUI_ManaHover = CreateFrame("Frame", nil, frame.DuckcraftUI_TextFrame)
+        frame.DuckcraftUI_ManaHover:SetFrameLevel(frame.DuckcraftUI_TextFrame:GetFrameLevel() + 1)
+        frame.DuckcraftUI_ManaHover:SetAllPoints(manaBar)
+        frame.DuckcraftUI_ManaHover:EnableMouse(true)
+        frame.DuckcraftUI_ManaHover:SetScript("OnEnter", function()
             hoverStates[frameIndex].mana = true
             HideBlizzardTexts(frame)
             UpdateManaText(manaBar, true) -- Only show mana text
             -- Only hide health text if it's NOT set to always show
             local settings = GetSettings()
             if not (settings and settings.showHealthTextAlways) then
-                if frame.DragonUI_HealthText then frame.DragonUI_HealthText:Hide() end
-                if frame.DragonUI_HealthTextLeft then frame.DragonUI_HealthTextLeft:Hide() end
-                if frame.DragonUI_HealthTextRight then frame.DragonUI_HealthTextRight:Hide() end
+                if frame.DuckcraftUI_HealthText then frame.DuckcraftUI_HealthText:Hide() end
+                if frame.DuckcraftUI_HealthTextLeft then frame.DuckcraftUI_HealthTextLeft:Hide() end
+                if frame.DuckcraftUI_HealthTextRight then frame.DuckcraftUI_HealthTextRight:Hide() end
             end
         end)
-        frame.DragonUI_ManaHover:SetScript("OnLeave", function()
+        frame.DuckcraftUI_ManaHover:SetScript("OnLeave", function()
             hoverStates[frameIndex].mana = false
             HideBlizzardTexts(frame)
             -- Return to normal visibility for both texts
@@ -969,20 +969,20 @@ local function CreateHoverFrames(frame, frameIndex)
         end)
     end
     
-    frame.DragonUI_HoverFrames = true
+    frame.DuckcraftUI_HoverFrames = true
 end
 
 -- Create our own text elements for party frames
 CreateCustomTexts = function(frame)
     if not frame then return end
 
-    if frame.DragonUI_CustomTexts then
-        EnsurePartyTextFont(frame.DragonUI_HealthText)
-        EnsurePartyTextFont(frame.DragonUI_HealthTextLeft)
-        EnsurePartyTextFont(frame.DragonUI_HealthTextRight)
-        EnsurePartyTextFont(frame.DragonUI_ManaText)
-        EnsurePartyTextFont(frame.DragonUI_ManaTextLeft)
-        EnsurePartyTextFont(frame.DragonUI_ManaTextRight)
+    if frame.DuckcraftUI_CustomTexts then
+        EnsurePartyTextFont(frame.DuckcraftUI_HealthText)
+        EnsurePartyTextFont(frame.DuckcraftUI_HealthTextLeft)
+        EnsurePartyTextFont(frame.DuckcraftUI_HealthTextRight)
+        EnsurePartyTextFont(frame.DuckcraftUI_ManaText)
+        EnsurePartyTextFont(frame.DuckcraftUI_ManaTextLeft)
+        EnsurePartyTextFont(frame.DuckcraftUI_ManaTextRight)
         return
     end
 
@@ -1003,80 +1003,80 @@ CreateCustomTexts = function(frame)
     end
     
     -- Create text frame with proper layering (above border)
-    if not frame.DragonUI_TextFrame then
-        frame.DragonUI_TextFrame = CreateFrame("Frame", nil, frame)
-        frame.DragonUI_TextFrame:SetFrameLevel(frame:GetFrameLevel() + 4) -- Above border and bars
-        frame.DragonUI_TextFrame:SetAllPoints(frame)
+    if not frame.DuckcraftUI_TextFrame then
+        frame.DuckcraftUI_TextFrame = CreateFrame("Frame", nil, frame)
+        frame.DuckcraftUI_TextFrame:SetFrameLevel(frame:GetFrameLevel() + 4) -- Above border and bars
+        frame.DuckcraftUI_TextFrame:SetAllPoints(frame)
     end
 
     -- Create custom health text elements (dual system for "both" format)
     local healthBar = _G[frame:GetName() .. 'HealthBar']
     if healthBar then
         -- Center text for simple formats (numeric, percentage, formatted)
-        if not frame.DragonUI_HealthText then
-            frame.DragonUI_HealthText = frame.DragonUI_TextFrame:CreateFontString(nil, "OVERLAY", "TextStatusBarText")
-            frame.DragonUI_HealthText:SetPoint("CENTER", healthBar, "CENTER", 2, 0)
-            frame.DragonUI_HealthText:SetJustifyH("CENTER")
-            frame.DragonUI_HealthText:SetDrawLayer("OVERLAY", 1) -- Above everything
+        if not frame.DuckcraftUI_HealthText then
+            frame.DuckcraftUI_HealthText = frame.DuckcraftUI_TextFrame:CreateFontString(nil, "OVERLAY", "TextStatusBarText")
+            frame.DuckcraftUI_HealthText:SetPoint("CENTER", healthBar, "CENTER", 2, 0)
+            frame.DuckcraftUI_HealthText:SetJustifyH("CENTER")
+            frame.DuckcraftUI_HealthText:SetDrawLayer("OVERLAY", 1) -- Above everything
         end
-        ApplyPartyTextVisualStyle(frame.DragonUI_HealthText)
-        EnsurePartyTextFont(frame.DragonUI_HealthText)
+        ApplyPartyTextVisualStyle(frame.DuckcraftUI_HealthText)
+        EnsurePartyTextFont(frame.DuckcraftUI_HealthText)
         -- Left text for "both" format (percentage)
-        if not frame.DragonUI_HealthTextLeft then
-            frame.DragonUI_HealthTextLeft = frame.DragonUI_TextFrame:CreateFontString(nil, "OVERLAY", "TextStatusBarText")
-            frame.DragonUI_HealthTextLeft:SetPoint("RIGHT", healthBar, "RIGHT", -37, 0)
-            frame.DragonUI_HealthTextLeft:SetJustifyH("LEFT")
-            frame.DragonUI_HealthTextLeft:SetDrawLayer("OVERLAY", 1) -- Above everything
+        if not frame.DuckcraftUI_HealthTextLeft then
+            frame.DuckcraftUI_HealthTextLeft = frame.DuckcraftUI_TextFrame:CreateFontString(nil, "OVERLAY", "TextStatusBarText")
+            frame.DuckcraftUI_HealthTextLeft:SetPoint("RIGHT", healthBar, "RIGHT", -37, 0)
+            frame.DuckcraftUI_HealthTextLeft:SetJustifyH("LEFT")
+            frame.DuckcraftUI_HealthTextLeft:SetDrawLayer("OVERLAY", 1) -- Above everything
         end
-        ApplyPartyTextVisualStyle(frame.DragonUI_HealthTextLeft)
-        EnsurePartyTextFont(frame.DragonUI_HealthTextLeft)
+        ApplyPartyTextVisualStyle(frame.DuckcraftUI_HealthTextLeft)
+        EnsurePartyTextFont(frame.DuckcraftUI_HealthTextLeft)
         -- Right text for "both" format (numbers)
-        if not frame.DragonUI_HealthTextRight then
-            frame.DragonUI_HealthTextRight = frame.DragonUI_TextFrame:CreateFontString(nil, "OVERLAY", "TextStatusBarText")
-            frame.DragonUI_HealthTextRight:SetPoint("RIGHT", healthBar, "RIGHT", -1, 0)
-            frame.DragonUI_HealthTextRight:SetJustifyH("RIGHT")
-            frame.DragonUI_HealthTextRight:SetDrawLayer("OVERLAY", 1) -- Above everything
+        if not frame.DuckcraftUI_HealthTextRight then
+            frame.DuckcraftUI_HealthTextRight = frame.DuckcraftUI_TextFrame:CreateFontString(nil, "OVERLAY", "TextStatusBarText")
+            frame.DuckcraftUI_HealthTextRight:SetPoint("RIGHT", healthBar, "RIGHT", -1, 0)
+            frame.DuckcraftUI_HealthTextRight:SetJustifyH("RIGHT")
+            frame.DuckcraftUI_HealthTextRight:SetDrawLayer("OVERLAY", 1) -- Above everything
         end
-        ApplyPartyTextVisualStyle(frame.DragonUI_HealthTextRight)
-        EnsurePartyTextFont(frame.DragonUI_HealthTextRight)
+        ApplyPartyTextVisualStyle(frame.DuckcraftUI_HealthTextRight)
+        EnsurePartyTextFont(frame.DuckcraftUI_HealthTextRight)
     end
 
     -- Create custom mana text elements (dual system for "both" format)
     local manaBar = _G[frame:GetName() .. 'ManaBar']
     if manaBar then
         -- Center text for simple formats
-        if not frame.DragonUI_ManaText then
-            frame.DragonUI_ManaText = frame.DragonUI_TextFrame:CreateFontString(nil, "OVERLAY", "TextStatusBarText")
-            frame.DragonUI_ManaText:SetPoint("CENTER", manaBar, "CENTER", 3.5, 0)
-            frame.DragonUI_ManaText:SetJustifyH("CENTER")
-            frame.DragonUI_ManaText:SetDrawLayer("OVERLAY", 1) -- Above everything
+        if not frame.DuckcraftUI_ManaText then
+            frame.DuckcraftUI_ManaText = frame.DuckcraftUI_TextFrame:CreateFontString(nil, "OVERLAY", "TextStatusBarText")
+            frame.DuckcraftUI_ManaText:SetPoint("CENTER", manaBar, "CENTER", 3.5, 0)
+            frame.DuckcraftUI_ManaText:SetJustifyH("CENTER")
+            frame.DuckcraftUI_ManaText:SetDrawLayer("OVERLAY", 1) -- Above everything
         end
-        ApplyPartyTextVisualStyle(frame.DragonUI_ManaText)
-        EnsurePartyTextFont(frame.DragonUI_ManaText)
+        ApplyPartyTextVisualStyle(frame.DuckcraftUI_ManaText)
+        EnsurePartyTextFont(frame.DuckcraftUI_ManaText)
         -- Left text for "both" format (percentage)
-        if not frame.DragonUI_ManaTextLeft then
-            frame.DragonUI_ManaTextLeft = frame.DragonUI_TextFrame:CreateFontString(nil, "OVERLAY", "TextStatusBarText")
-            frame.DragonUI_ManaTextLeft:SetPoint("RIGHT", manaBar, "RIGHT", -37, 0)
-            frame.DragonUI_ManaTextLeft:SetJustifyH("LEFT")
-            frame.DragonUI_ManaTextLeft:SetDrawLayer("OVERLAY", 1) -- Above everything
+        if not frame.DuckcraftUI_ManaTextLeft then
+            frame.DuckcraftUI_ManaTextLeft = frame.DuckcraftUI_TextFrame:CreateFontString(nil, "OVERLAY", "TextStatusBarText")
+            frame.DuckcraftUI_ManaTextLeft:SetPoint("RIGHT", manaBar, "RIGHT", -37, 0)
+            frame.DuckcraftUI_ManaTextLeft:SetJustifyH("LEFT")
+            frame.DuckcraftUI_ManaTextLeft:SetDrawLayer("OVERLAY", 1) -- Above everything
         end
-        ApplyPartyTextVisualStyle(frame.DragonUI_ManaTextLeft)
-        EnsurePartyTextFont(frame.DragonUI_ManaTextLeft)
+        ApplyPartyTextVisualStyle(frame.DuckcraftUI_ManaTextLeft)
+        EnsurePartyTextFont(frame.DuckcraftUI_ManaTextLeft)
         -- Right text for "both" format (numbers)
-        if not frame.DragonUI_ManaTextRight then
-            frame.DragonUI_ManaTextRight = frame.DragonUI_TextFrame:CreateFontString(nil, "OVERLAY", "TextStatusBarText")
-            frame.DragonUI_ManaTextRight:SetPoint("RIGHT", manaBar, "RIGHT", -1, 0)
-            frame.DragonUI_ManaTextRight:SetJustifyH("RIGHT")
-            frame.DragonUI_ManaTextRight:SetDrawLayer("OVERLAY", 1) -- Above everything
+        if not frame.DuckcraftUI_ManaTextRight then
+            frame.DuckcraftUI_ManaTextRight = frame.DuckcraftUI_TextFrame:CreateFontString(nil, "OVERLAY", "TextStatusBarText")
+            frame.DuckcraftUI_ManaTextRight:SetPoint("RIGHT", manaBar, "RIGHT", -1, 0)
+            frame.DuckcraftUI_ManaTextRight:SetJustifyH("RIGHT")
+            frame.DuckcraftUI_ManaTextRight:SetDrawLayer("OVERLAY", 1) -- Above everything
         end
-        ApplyPartyTextVisualStyle(frame.DragonUI_ManaTextRight)
-        EnsurePartyTextFont(frame.DragonUI_ManaTextRight)
+        ApplyPartyTextVisualStyle(frame.DuckcraftUI_ManaTextRight)
+        EnsurePartyTextFont(frame.DuckcraftUI_ManaTextRight)
     end
     
     -- Create invisible dummy frames for independent hover (taint-free)
     CreateHoverFrames(frame, frameIndex)
     
-    frame.DragonUI_CustomTexts = true
+    frame.DuckcraftUI_CustomTexts = true
 end
 
 -- (UpdateHealthText and UpdateManaText functions moved above before CreateHoverFrames)
@@ -1160,9 +1160,9 @@ local function StylePartyFrames()
             local bg = _G[frame:GetName() .. 'Background']
             if bg then
                 bg:Hide()
-                if not bg.DragonUI_ShowHooked then
+                if not bg.DuckcraftUI_ShowHooked then
                     hooksecurefunc(bg, "Show", function(self) self:Hide() end)
-                    bg.DragonUI_ShowHooked = true
+                    bg.DuckcraftUI_ShowHooked = true
                 end
             end
 
@@ -1171,9 +1171,9 @@ local function StylePartyFrames()
             if texture then
                 texture:SetTexture()
                 texture:Hide()
-                if not texture.DragonUI_ShowHooked then
+                if not texture.DuckcraftUI_ShowHooked then
                     hooksecurefunc(texture, "Show", function(self) self:Hide() end)
-                    texture.DragonUI_ShowHooked = true
+                    texture.DuckcraftUI_ShowHooked = true
                 end
             end
 
@@ -1182,15 +1182,15 @@ local function StylePartyFrames()
             if vehicleTex then
                 vehicleTex:SetTexture()
                 vehicleTex:Hide()
-                if not vehicleTex.DragonUI_ShowHooked then
+                if not vehicleTex.DuckcraftUI_ShowHooked then
                     hooksecurefunc(vehicleTex, "Show", function(self) self:Hide() end)
-                    vehicleTex.DragonUI_ShowHooked = true
+                    vehicleTex.DuckcraftUI_ShowHooked = true
                 end
             end
 
             -- Lock portrait position so Blizzard vehicle transitions can't move it
             local portrait = _G[frame:GetName() .. 'Portrait']
-            if portrait and not portrait.DragonUI_SetPointHooked then
+            if portrait and not portrait.DuckcraftUI_SetPointHooked then
                 local isResetting = false
                 hooksecurefunc(portrait, "SetPoint", function(self)
                     if isResetting or InCombatLockdown() then return end
@@ -1199,7 +1199,7 @@ local function StylePartyFrames()
                     self:SetPoint("TOPLEFT", 7, -6)
                     isResetting = false
                 end)
-                portrait.DragonUI_SetPointHooked = true
+                portrait.DuckcraftUI_SetPointHooked = true
             end
 
             -- Health bar
@@ -1279,7 +1279,7 @@ local function StylePartyFrames()
             end
 
             -- Create background and mark as styled
-            if not frame.DragonUIStyled then
+            if not frame.DuckcraftUIStyled then
                 -- Background (behind everything)
                 local background = frame:CreateTexture(nil, 'BACKGROUND', nil, 0)
                 background:SetTexture(TEXTURES.frame)
@@ -1288,28 +1288,28 @@ local function StylePartyFrames()
                 background:SetPoint('TOPLEFT', 1, -2)
 
                 -- Create border as a separate FRAME (not texture) to appear above bars
-                if not frame.DragonUI_BorderFrame then
-                    frame.DragonUI_BorderFrame = CreateFrame("Frame", nil, frame)
-                    frame.DragonUI_BorderFrame:SetFrameLevel(frame:GetFrameLevel() + 3) -- Above health/mana bars (level 2)
-                    frame.DragonUI_BorderFrame:SetAllPoints(frame)
+                if not frame.DuckcraftUI_BorderFrame then
+                    frame.DuckcraftUI_BorderFrame = CreateFrame("Frame", nil, frame)
+                    frame.DuckcraftUI_BorderFrame:SetFrameLevel(frame:GetFrameLevel() + 3) -- Above health/mana bars (level 2)
+                    frame.DuckcraftUI_BorderFrame:SetAllPoints(frame)
                     
                     -- Now create border texture inside the border frame
-                    local border = frame.DragonUI_BorderFrame:CreateTexture(nil, 'ARTWORK', nil, 1)
+                    local border = frame.DuckcraftUI_BorderFrame:CreateTexture(nil, 'ARTWORK', nil, 1)
                     border:SetTexture(TEXTURES.border)
                     border:SetTexCoord(GetPartyCoords("border"))
                     border:SetSize(128, 64)
                     border:SetPoint('TOPLEFT', 1, -2)
                     border:SetVertexColor(1, 1, 1, 1)
-                    frame.DragonUI_BorderFrame.texture = border
+                    frame.DuckcraftUI_BorderFrame.texture = border
                 end
 
                 -- Create icon container well above border frame
-                if not frame.DragonUI_IconContainer then
+                if not frame.DuckcraftUI_IconContainer then
                     local iconContainer = CreateFrame("Frame", nil, frame)
                     iconContainer:SetFrameStrata("BACKGROUND")  -- Same strata as party frame
                     iconContainer:SetFrameLevel(frame:GetFrameLevel() + 10)  -- Well above border (+3)
                     iconContainer:SetAllPoints(frame)
-                    frame.DragonUI_IconContainer = iconContainer
+                    frame.DuckcraftUI_IconContainer = iconContainer
                 end
 
                 -- Move icons to HIGH strata container and configure layers
@@ -1336,31 +1336,31 @@ local function StylePartyFrames()
                 
                 -- Move PvP and status icons to icon container (above border)
                 if leaderIcon then
-                    leaderIcon:SetParent(frame.DragonUI_IconContainer)
+                    leaderIcon:SetParent(frame.DuckcraftUI_IconContainer)
                     leaderIcon:SetDrawLayer('OVERLAY', 1)
                 end
                 if masterLooterIcon then
-                    masterLooterIcon:SetParent(frame.DragonUI_IconContainer)
+                    masterLooterIcon:SetParent(frame.DuckcraftUI_IconContainer)
                     masterLooterIcon:SetDrawLayer('OVERLAY', 1)
                 end
                 if pvpIcon then
-                    pvpIcon:SetParent(frame.DragonUI_IconContainer)
+                    pvpIcon:SetParent(frame.DuckcraftUI_IconContainer)
                     pvpIcon:SetDrawLayer('OVERLAY', 1)
                 end
                 if statusIcon then 
-                    statusIcon:SetParent(frame.DragonUI_IconContainer)
+                    statusIcon:SetParent(frame.DuckcraftUI_IconContainer)
                     statusIcon:SetDrawLayer('OVERLAY', 1)
                 end
                 if blizzardRoleIcon then
-                    blizzardRoleIcon:SetParent(frame.DragonUI_IconContainer)
+                    blizzardRoleIcon:SetParent(frame.DuckcraftUI_IconContainer)
                     blizzardRoleIcon:SetDrawLayer('OVERLAY', 1)
                 end
                 if guideIcon then
-                    guideIcon:SetParent(frame.DragonUI_IconContainer)
+                    guideIcon:SetParent(frame.DuckcraftUI_IconContainer)
                     guideIcon:SetDrawLayer('OVERLAY', 1)
                 end
 
-                frame.DragonUIStyled = true
+                frame.DuckcraftUIStyled = true
             end
             -- Hide Blizzard texts and create our custom ones
             HideBlizzardTexts(frame)
@@ -1374,7 +1374,7 @@ local function StylePartyFrames()
                 UpdateManaText(manabar, false)
             end
 
-            frame.DragonUIStyled = true
+            frame.DuckcraftUIStyled = true
         end
     end
 end
@@ -1390,7 +1390,7 @@ local function UpdateDisconnectedState(frame)
     local unit = "party" .. frame:GetID()
     if not UnitExists(unit) then
         -- Member left or slot is empty: clear stale disconnected state.
-        frame.DragonUI_Disconnected = false
+        frame.DuckcraftUI_Disconnected = false
 
         local healthbar = _G[frame:GetName() .. 'HealthBar']
         local manabar = _G[frame:GetName() .. 'ManaBar']
@@ -1421,7 +1421,7 @@ local function UpdateDisconnectedState(frame)
 
     if not isConnected then
         -- Mark frame as disconnected (used by clipping hooks to force gray)
-        frame.DragonUI_Disconnected = true
+        frame.DuckcraftUI_Disconnected = true
 
         -- Disconnected member - gray bars at full, no text (Blizzard native behavior)
         if healthbar then
@@ -1430,14 +1430,14 @@ local function UpdateDisconnectedState(frame)
         end
 
         -- Hide all custom health text elements (numbers should not show when offline)
-        if frame.DragonUI_HealthText then frame.DragonUI_HealthText:Hide() end
-        if frame.DragonUI_HealthTextLeft then frame.DragonUI_HealthTextLeft:Hide() end
-        if frame.DragonUI_HealthTextRight then frame.DragonUI_HealthTextRight:Hide() end
+        if frame.DuckcraftUI_HealthText then frame.DuckcraftUI_HealthText:Hide() end
+        if frame.DuckcraftUI_HealthTextLeft then frame.DuckcraftUI_HealthTextLeft:Hide() end
+        if frame.DuckcraftUI_HealthTextRight then frame.DuckcraftUI_HealthTextRight:Hide() end
 
         -- Hide all custom mana text elements
-        if frame.DragonUI_ManaText then frame.DragonUI_ManaText:Hide() end
-        if frame.DragonUI_ManaTextLeft then frame.DragonUI_ManaTextLeft:Hide() end
-        if frame.DragonUI_ManaTextRight then frame.DragonUI_ManaTextRight:Hide() end
+        if frame.DuckcraftUI_ManaText then frame.DuckcraftUI_ManaText:Hide() end
+        if frame.DuckcraftUI_ManaTextLeft then frame.DuckcraftUI_ManaTextLeft:Hide() end
+        if frame.DuckcraftUI_ManaTextRight then frame.DuckcraftUI_ManaTextRight:Hide() end
 
         if manabar then
             manabar:SetAlpha(0)  -- Completely hide mana bar when offline (works in combat)
@@ -1468,7 +1468,7 @@ local function UpdateDisconnectedState(frame)
 
     else
         -- Connected member - undo exactly what was done when disconnecting
-        frame.DragonUI_Disconnected = false
+        frame.DuckcraftUI_Disconnected = false
 
         -- Restore transparencies (without taint)
         if healthbar then
@@ -1512,7 +1512,7 @@ local function UpdateDisconnectedState(frame)
     end
 end
 
-local function ShouldShowDragonUIPartySlot(index)
+local function ShouldShowDuckcraftUIPartySlot(index)
     if not ShouldPartyFramesBeVisible() then
         return false
     end
@@ -1533,7 +1533,7 @@ local function RefreshSinglePartyFrameVisibility(index)
     -- Keep disconnect visuals in sync before deciding visibility.
     UpdateDisconnectedState(frame)
 
-    if ShouldShowDragonUIPartySlot(index) then
+    if ShouldShowDuckcraftUIPartySlot(index) then
         frame:Show()
     else
         frame:Hide()
@@ -1624,7 +1624,7 @@ local function SetupPartyHooks()
             CreateCustomTexts(frame)
             
             -- Force reparent icons to icon container (for dynamic PvP icons)
-            if frame.DragonUI_IconContainer then
+            if frame.DuckcraftUI_IconContainer then
                 local pvpIcon = _G[frame:GetName() .. 'PVPIcon']
                 local leaderIcon = _G[frame:GetName() .. 'LeaderIcon']
                 local masterIcon = _G[frame:GetName() .. 'MasterIcon']
@@ -1633,19 +1633,19 @@ local function SetupPartyHooks()
                 local roleIcon = _G[frame:GetName() .. 'RoleIcon']
                 
                 if pvpIcon then
-                    pvpIcon:SetParent(frame.DragonUI_IconContainer)
+                    pvpIcon:SetParent(frame.DuckcraftUI_IconContainer)
                     pvpIcon:SetDrawLayer('OVERLAY', 1)
                 end
                 if statusIcon then
-                    statusIcon:SetParent(frame.DragonUI_IconContainer)
+                    statusIcon:SetParent(frame.DuckcraftUI_IconContainer)
                     statusIcon:SetDrawLayer('OVERLAY', 1)
                 end
                 if guideIcon then
-                    guideIcon:SetParent(frame.DragonUI_IconContainer)
+                    guideIcon:SetParent(frame.DuckcraftUI_IconContainer)
                     guideIcon:SetDrawLayer('OVERLAY', 1)
                 end
                 if roleIcon then
-                    roleIcon:SetParent(frame.DragonUI_IconContainer)
+                    roleIcon:SetParent(frame.DuckcraftUI_IconContainer)
                     roleIcon:SetDrawLayer('OVERLAY', 1)
                 end
             end
@@ -1691,7 +1691,7 @@ local function SetupPartyHooks()
                 end
             end
             
-            -- Update health text with DragonUI formatting
+            -- Update health text with DuckcraftUI formatting
             UpdateHealthText(statusbar, false)
         end
     end)
@@ -1721,7 +1721,7 @@ local function SetupPartyHooks()
                 end
             end
             
-            -- Update mana text with DragonUI formatting
+            -- Update mana text with DuckcraftUI formatting
             UpdateManaText(statusbar, false)
         end
     end)
@@ -1769,7 +1769,7 @@ local function SetupPartyHooks()
     -- Hook PartyMemberFrame_UpdateOnlineStatus directly.
     -- This runs AFTER Blizzard has already called UnitFrameHealthBar_Update
     -- (which triggers our SetValue hook that may override gray with class/white
-    -- color because DragonUI_Disconnected flag isn't set yet at that point).
+    -- color because DuckcraftUI_Disconnected flag isn't set yet at that point).
     -- By hooking this function, we re-apply disconnect visuals as the LAST step.
     hooksecurefunc("PartyMemberFrame_UpdateOnlineStatus", function(frame)
         if not frame or not frame:GetName() then return end
@@ -1910,7 +1910,7 @@ SetupPartyHooks() -- Third: safe hooks only
 local readyFrame = CreateFrame("Frame")
 readyFrame:RegisterEvent("ADDON_LOADED")
 readyFrame:SetScript("OnEvent", function(self, event, addonName)
-    if addonName == "DragonUI" then
+    if addonName == "DuckcraftUI" then
         -- Apply position after the addon is fully loaded
         if PartyFrames and PartyFrames.UpdateSettings then
             PartyFrames:UpdateSettings()
@@ -2033,7 +2033,7 @@ recoveryFrame:SetScript("OnEvent", function(self, event, unit)
             local frame = _G['PartyMemberFrame' .. frameIndex]
             if frame and UnitExists(unit) then
                 -- Skip disconnected frames — their visual state is managed by UpdateDisconnectedState
-                if frame.DragonUI_Disconnected then return end
+                if frame.DuckcraftUI_Disconnected then return end
                 local healthbar = _G[frame:GetName() .. 'HealthBar']
                 local manabar = _G[frame:GetName() .. 'ManaBar']
                 if healthbar then
@@ -2072,7 +2072,7 @@ recoveryFrame:SetScript("OnEvent", function(self, event, unit)
         local unit = "party" .. i
         if frame and UnitExists(unit) then
             -- Skip disconnected frames — their visual state is managed by UpdateDisconnectedState
-            if not frame.DragonUI_Disconnected then
+            if not frame.DuckcraftUI_Disconnected then
             local healthbar = _G[frame:GetName() .. 'HealthBar']
             local manabar = _G[frame:GetName() .. 'ManaBar']
             if healthbar then
@@ -2099,7 +2099,7 @@ recoveryFrame:SetScript("OnEvent", function(self, event, unit)
                 end
                 UpdateManaText(manabar, false)
             end
-            end -- if not DragonUI_Disconnected
+            end -- if not DuckcraftUI_Disconnected
         end
     end
 end)
@@ -2111,7 +2111,7 @@ end)
 -- PartyMemberFrame_UpdateArt hook catches all vehicle art transitions.
 -- PLAYER_ENTERING_WORLD with delay handles reload while in vehicle.
 
--- Reset portrait to DragonUI's expected position after Blizzard vehicle transitions
+-- Reset portrait to DuckcraftUI's expected position after Blizzard vehicle transitions
 local function ResetPartyPortrait(frame)
     if InCombatLockdown() then return end
     local portrait = _G[frame:GetName() .. "Portrait"]
@@ -2145,8 +2145,8 @@ if type(PartyMemberFrame_UpdateArt) == "function" then
             UpdatePartyHealthBarColor(frameIndex)
         end
 
-        if frame.DragonUI_BorderFrame and frame.DragonUI_BorderFrame.texture then
-            frame.DragonUI_BorderFrame.texture:Show()
+        if frame.DuckcraftUI_BorderFrame and frame.DuckcraftUI_BorderFrame.texture then
+            frame.DuckcraftUI_BorderFrame.texture:Show()
         end
 
         UpdateManaBarTexture(frame)
@@ -2182,7 +2182,7 @@ if type(PartyMemberFrame_ToVehicleArt) == "function" then
             bg:Hide()
         end
 
-        -- Re-apply DragonUI styling
+        -- Re-apply DuckcraftUI styling
         local frameIndex = frame:GetID()
         local healthbar = _G[frame:GetName() .. "HealthBar"]
         if healthbar then
@@ -2190,8 +2190,8 @@ if type(PartyMemberFrame_ToVehicleArt) == "function" then
             UpdatePartyHealthBarColor(frameIndex)
         end
 
-        if frame.DragonUI_BorderFrame and frame.DragonUI_BorderFrame.texture then
-            frame.DragonUI_BorderFrame.texture:Show()
+        if frame.DuckcraftUI_BorderFrame and frame.DuckcraftUI_BorderFrame.texture then
+            frame.DuckcraftUI_BorderFrame.texture:Show()
         end
 
         UpdateManaBarTexture(frame)
@@ -2202,7 +2202,7 @@ if type(PartyMemberFrame_ToVehicleArt) == "function" then
     end)
 end
 
--- Hook PartyMemberFrame_ToPlayerArt — re-applies DragonUI styling when exiting vehicle
+-- Hook PartyMemberFrame_ToPlayerArt — re-applies DuckcraftUI styling when exiting vehicle
 if type(PartyMemberFrame_ToPlayerArt) == "function" then
     hooksecurefunc("PartyMemberFrame_ToPlayerArt", function(frame)
         if not frame or not frame:GetName() then return end
@@ -2227,7 +2227,7 @@ if type(PartyMemberFrame_ToPlayerArt) == "function" then
             bg:Hide()
         end
 
-        -- Re-apply DragonUI styling
+        -- Re-apply DuckcraftUI styling
         local frameIndex = frame:GetID()
         local healthbar = _G[frame:GetName() .. "HealthBar"]
         if healthbar then
@@ -2235,8 +2235,8 @@ if type(PartyMemberFrame_ToPlayerArt) == "function" then
             UpdatePartyHealthBarColor(frameIndex)
         end
 
-        if frame.DragonUI_BorderFrame and frame.DragonUI_BorderFrame.texture then
-            frame.DragonUI_BorderFrame.texture:Show()
+        if frame.DuckcraftUI_BorderFrame and frame.DuckcraftUI_BorderFrame.texture then
+            frame.DuckcraftUI_BorderFrame.texture:Show()
         end
 
         UpdateManaBarTexture(frame)

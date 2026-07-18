@@ -1,5 +1,5 @@
 -- ============================================================================
--- DragonUI - Cooldown Text Module
+-- DuckcraftUI - Cooldown Text Module
 -- Displays countdown timers on action buttons via metatable hooking.
 -- ============================================================================
 

@@ -1,12 +1,12 @@
 --[[
 ================================================================================
-DragonUI Options Panel - Action Bars Tab
+DuckcraftUI Options Panel - Action Bars Tab
 ================================================================================
 Scales, positions, button appearance, bar size for action bars.
 ================================================================================
 ]]
 
-local addon = DragonUI
+local addon = DuckcraftUI
 if not addon then return end
 
 local L = addon.L
@@ -89,7 +89,7 @@ local function BuildGeneralTab(scroll)
             end
             RefreshBars()
             Panel:SelectTab("actionbars")
-            print("|cFF00FF00[DragonUI]|r " .. LO["All action bar scales reset to 0.9"])
+            print("|cFF00FF00[DuckcraftUI]|r " .. LO["All action bar scales reset to 0.9"])
         end,
     })
 
@@ -279,7 +279,7 @@ local function BuildGeneralTab(scroll)
     else
         -- Texture previews row
         local previewRow = C:AddRow(gryphons)
-        local assets = addon._dir or "Interface\\AddOns\\DragonUI\\assets\\"
+        local assets = addon._dir or "Interface\\AddOns\\DuckcraftUI\\assets\\"
         local faction = UnitFactionGroup and UnitFactionGroup("player") or "Alliance"
 
         -- Classic gryphon preview
@@ -526,7 +526,7 @@ local function BuildLayoutTab(scroll)
             C:SetDBValue("mainbars.left.buttons_shown", 12)
             RefreshBars()
             Panel:SelectTab("actionbars")
-            print("|cFF00FF00[DragonUI]|r " .. LO["All bar layouts reset to defaults."])
+            print("|cFF00FF00[DuckcraftUI]|r " .. LO["All bar layouts reset to defaults."])
         end,
     })
 end

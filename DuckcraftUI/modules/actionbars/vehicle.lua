@@ -11,7 +11,7 @@ local InCombatLockdown = InCombatLockdown;
 local _G = getfenv(0);
 
 -- ============================================================================
--- VEHICLE MODULE FOR DRAGONUI
+-- VEHICLE MODULE FOR DUCKCRAFTUI
 -- ============================================================================
 -- Approach: Kill VehicleMenuBar in noop.lua (prevents Blizzard's vehicle
 -- transition code from interfering). Use secure state drivers and
@@ -130,7 +130,7 @@ local function CreateVehicleExitButton()
 
     vehicleExitButton = CreateFrame(
         'CheckButton',
-        'DragonUI_VehicleExitButton',
+        'DuckcraftUI_VehicleExitButton',
         UIParent,
         'SecureHandlerClickTemplate,SecureHandlerStateTemplate'
     )
@@ -262,7 +262,7 @@ local function CreateVehicleArtFrames()
 
     vehicleBarBackground = CreateFrame(
         'Frame',
-        'DragonUI_VehicleBarBackground',
+        'DuckcraftUI_VehicleBarBackground',
         UIParent,
         'VehicleBarUiTemplate'
     )
@@ -273,7 +273,7 @@ local function CreateVehicleArtFrames()
     -- Inherits visibility from parent — do NOT explicitly Hide() it
     vehiclebar = CreateFrame(
         'Frame',
-        'DragonUI_VehicleBar',
+        'DuckcraftUI_VehicleBar',
         vehicleBarBackground,
         'SecureHandlerStateTemplate'
     )
@@ -318,9 +318,9 @@ local function vehiclebar_power_setup()
     VehicleMenuBarLeaveButton:GetHighlightTexture():SetTexCoord(0.130625, 0.879375, 0.130625, 0.879375)
     VehicleMenuBarLeaveButton:GetHighlightTexture():SetBlendMode('ADD')
 
-    if not VehicleMenuBarLeaveButton.DragonUIClickHooked then
+    if not VehicleMenuBarLeaveButton.DuckcraftUIClickHooked then
         VehicleMenuBarLeaveButton:HookScript('OnClick', VehicleExit)
-        VehicleMenuBarLeaveButton.DragonUIClickHooked = true
+        VehicleMenuBarLeaveButton.DuckcraftUIClickHooked = true
     end
 
     VehicleMenuBarHealthBar:SetParent(vehiclebar)
@@ -394,7 +394,7 @@ local function vehiclebar_mechanical_setup()
     VehicleMenuBarPitchSlider:SetSize(20, 82)
     VehicleMenuBarPitchSlider:SetClearPoint('BOTTOMLEFT', 124, 2)
 
-    local bg1 = _G['DragonUI_VehicleBarBackgroundBACKGROUND1']
+    local bg1 = _G['DuckcraftUI_VehicleBarBackgroundBACKGROUND1']
     if bg1 then
         bg1:SetDrawLayer('BACKGROUND', -1)
     end
@@ -1226,7 +1226,7 @@ end
 
 function addon.DebugVehicle()
     if not addon.debugMode then return end
-    local p = function(msg) print("|cff00ccff[DragonUI Vehicle]|r " .. msg) end
+    local p = function(msg) print("|cff00ccff[DuckcraftUI Vehicle]|r " .. msg) end
     p("--- Vehicle Module Debug ---")
     p("Module enabled: " .. tostring(IsModuleEnabled()))
     p("Module applied: " .. tostring(VehicleModule.applied))
@@ -1276,7 +1276,7 @@ VehicleModule.eventFrame = initFrame
 initFrame:RegisterEvent("ADDON_LOADED")
 initFrame:RegisterEvent("PLAYER_LOGIN")
 initFrame:SetScript("OnEvent", function(self, event, addonName)
-    if event == "ADDON_LOADED" and addonName == "DragonUI" then
+    if event == "ADDON_LOADED" and addonName == "DuckcraftUI" then
         VehicleModule.initialized = true
         self:UnregisterEvent("ADDON_LOADED")
     elseif event == "PLAYER_LOGIN" then

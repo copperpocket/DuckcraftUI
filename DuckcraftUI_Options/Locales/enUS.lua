@@ -1,6 +1,6 @@
 --[[
 ================================================================================
-DragonUI_Options - English Locale (Default)
+DuckcraftUI_Options - English Locale (Default)
 ================================================================================
 Base locale for the options panel: labels, descriptions, section headers,
 dropdown values, print messages, popup text.
@@ -12,14 +12,14 @@ When adding new strings:
 ================================================================================
 ]]
 
-local L = LibStub("AceLocale-3.0"):NewLocale("DragonUI_Options", "enUS", true)
+local L = LibStub("AceLocale-3.0"):NewLocale("DuckcraftUI_Options", "enUS", true)
 if not L then return end
 
 -- ============================================================================
 -- GENERAL / PANEL
 -- ============================================================================
 
-L["DragonUI"] = true
+L["DuckcraftUI"] = true
 L["Use the tabs on the left to configure modules, action bars, unit frames, minimap, and more."] = true
 L["Editor Mode"] = true
 L["KeyBind Mode"] = true
@@ -27,9 +27,9 @@ L["Exit Editor Mode"] = true
 L["KeyBind Mode Active"] = true
 L["Move UI Elements"] = true
 L["Cannot open options during combat."] = true
-L["Open DragonUI Settings"] = true
-L["Open the DragonUI configuration panel."] = true
-L["Use /dragonui to open the full settings panel."] = true
+L["Open DuckcraftUI Settings"] = true
+L["Open the DuckcraftUI configuration panel."] = true
+L["Use /duckcraftui to open the full settings panel."] = true
 
 -- Quick Actions
 L["Quick Actions"] = true
@@ -45,11 +45,11 @@ L["About"] = true
 L["Bringing the retail WoW look to 3.3.5a, inspired by Dragonflight UI."] = true
 L["Created and maintained by Neticsoul, with community contributions."] = true
 
-L["Commands: /dragonui, /dui, /pi \226\128\148 /dragonui edit (editor) \226\128\148 /dragonui help"] = true
+L["Commands: /duckcraftui, /dui, /pi \226\128\148 /duckcraftui edit (editor) \226\128\148 /duckcraftui help"] = true
 L["GitHub (select and Ctrl+C to copy):"] = true
 L["All"] = true
 L["Error:"] = true
-L["Error: DragonUI addon not found!"] = true
+L["Error: DuckcraftUI addon not found!"] = true
 
 -- ============================================================================
 -- STATIC POPUPS
@@ -91,7 +91,7 @@ L["Place category filter tabs on the left side of the bag frame instead of the r
 
 -- Headers & descriptions
 L["Module Control"] = true
-L["Enable or disable specific DragonUI modules"] = true
+L["Enable or disable specific DuckcraftUI modules"] = true
 L["Toggle individual modules on or off. Disabled modules revert to the default Blizzard UI."] = true
 L["Visual enhancements that add Dragonflight-style polish to the UI."] = true
 L["Warning: These are individual module controls. The options above may control multiple modules at once. Changes here will be reflected above and vice versa."] = true
@@ -128,22 +128,22 @@ L["KeyBind Mode"] = true
 L["Quest Tracker"] = true
 
 -- Module toggle descriptions
-L["Enable DragonUI player castbar. When disabled, shows default Blizzard castbar."] = true
-L["Enable DragonUI player castbar styling."] = true
-L["Enable DragonUI target castbar. When disabled, shows default Blizzard castbar."] = true
-L["Enable DragonUI target castbar styling."] = true
-L["Enable DragonUI focus castbar. When disabled, shows default Blizzard castbar."] = true
-L["Enable DragonUI focus castbar styling."] = true
-L["Enable the complete DragonUI action bars system. This controls: Main action bars, vehicle interface, stance/shapeshift bars, pet action bars, multicast bars (totems/possess), button styling, and hide Blizzard elements. When disabled, all action bar related features will use default Blizzard interface."] = true
+L["Enable DuckcraftUI player castbar. When disabled, shows default Blizzard castbar."] = true
+L["Enable DuckcraftUI player castbar styling."] = true
+L["Enable DuckcraftUI target castbar. When disabled, shows default Blizzard castbar."] = true
+L["Enable DuckcraftUI target castbar styling."] = true
+L["Enable DuckcraftUI focus castbar. When disabled, shows default Blizzard castbar."] = true
+L["Enable DuckcraftUI focus castbar styling."] = true
+L["Enable the complete DuckcraftUI action bars system. This controls: Main action bars, vehicle interface, stance/shapeshift bars, pet action bars, multicast bars (totems/possess), button styling, and hide Blizzard elements. When disabled, all action bar related features will use default Blizzard interface."] = true
 L["Master toggle for the complete action bars system."] = true
 L["Includes main bars, vehicle, stance, pet, totem bars, and button styling."] = true
-L["Apply DragonUI micro menu and bags system styling and positioning. Includes character button, spellbook, talents, etc. and bag management. When disabled, these elements will use default Blizzard positioning and styling."] = true
+L["Apply DuckcraftUI micro menu and bags system styling and positioning. Includes character button, spellbook, talents, etc. and bag management. When disabled, these elements will use default Blizzard positioning and styling."] = true
 L["Micro menu and bags styling."] = true
 L["Show cooldown timers on action buttons. When disabled, cooldown timers will be hidden and the system will be completely deactivated."] = true
 L["Show cooldown timers on action buttons."] = true
-L["Enable DragonUI minimap enhancements including custom styling, positioning, tracking icons, and calendar. When disabled, uses default Blizzard minimap appearance and positioning."] = true
+L["Enable DuckcraftUI minimap enhancements including custom styling, positioning, tracking icons, and calendar. When disabled, uses default Blizzard minimap appearance and positioning."] = true
 L["Minimap styling, tracking icons, and calendar."] = true
-L["Enable DragonUI buff frame with custom styling, positioning, and toggle button functionality. When disabled, uses default Blizzard buff frame appearance and positioning."] = true
+L["Enable DuckcraftUI buff frame with custom styling, positioning, and toggle button functionality. When disabled, uses default Blizzard buff frame appearance and positioning."] = true
 L["Buff frame styling and toggle button."] = true
 L["Separate Weapon Enchants"] = true
 L["Detach weapon enchant icons (poisons, sharpening stones, etc.) from the buff bar into their own independently moveable frame. Position it freely using Editor Mode."] = true
@@ -161,7 +161,7 @@ L["Reset Weapon Enchant Position"] = true
 L["Buff frame position reset."] = true
 L["Weapon enchant position reset."] = true
 
-L["DragonUI quest tracker positioning and styling."] = true
+L["DuckcraftUI quest tracker positioning and styling."] = true
 L["LibKeyBound integration for intuitive hover + key press binding."] = true
 
 -- Toggle keybinding mode description
@@ -244,7 +244,7 @@ L["Visual style for the chat frame background."] = true
 L["Editbox Style"] = true
 L["Visual style for the chat input box background."] = true
 L["Dark"] = true
-L["DragonUI Style"] = true
+L["DuckcraftUI Style"] = true
 L["Midnight"] = true
 
 -- Combuctor
@@ -513,7 +513,7 @@ L["Use Blizzard vehicle bar art with health/power display. Requires reload."] = 
 L["Totem Bar"] = true
 L["Totem Bar (Shaman)"] = true
 L["Shamans only - Totem multicast bar. Position is controlled via Editor Mode."] = true
-L["TIP: Use Editor Mode to position the totem bar (type /dragonui edit)."] = true
+L["TIP: Use Editor Mode to position the totem bar (type /duckcraftui edit)."] = true
 
 -- ============================================================================
 -- CAST BARS TAB
@@ -651,14 +651,14 @@ L["Basic Settings"] = true
 L["Border Alpha"] = true
 L["Top border alpha (0 to hide)."] = true
 L["Addon Button Skin"] = true
-L["Apply DragonUI border styling to addon icons (e.g., bag addons)"] = true
-L["Apply DragonUI border styling to addon icons."] = true
+L["Apply DuckcraftUI border styling to addon icons (e.g., bag addons)"] = true
+L["Apply DuckcraftUI border styling to addon icons."] = true
 L["Addon Button Fade"] = true
 L["Addon icons fade out when not hovered."] = true
 L["Player Arrow Size"] = true
 L["Size of the player arrow on the minimap"] = true
 L["New Blip Style"] = true
-L["Use new DragonUI object icons on the minimap. When disabled, uses classic Blizzard icons."] = true
+L["Use new DuckcraftUI object icons on the minimap. When disabled, uses classic Blizzard icons."] = true
 L["Use newer-style minimap blip icons."] = true
 
 -- Time & Calendar
@@ -737,7 +737,7 @@ L["Show class icon instead of 3D portrait"] = true
 L["Show class icon instead of 3D portrait (only for players)"] = true
 L["Class icon instead of 3D model for players."] = true
 L["Alternative Class Icons"] = true
-L["Use DragonUI alternative class icons instead of Blizzard's class icon atlas."] = true
+L["Use DuckcraftUI alternative class icons instead of Blizzard's class icon atlas."] = true
 L["Large Numbers"] = true
 L["Format Large Numbers"] = true
 L["Format large numbers (1k, 1m)"] = true
@@ -816,7 +816,7 @@ L["Mana Bar Height"] = true
 L["Height of the mana bar when Fat Health Bar is active."] = true
 L["Mana Bar Texture"] = true
 L["Choose the texture style for the power/mana bar. Only applies in Fat Health Bar mode."] = true
-L["DragonUI (Default)"] = true
+L["DuckcraftUI (Default)"] = true
 L["Blizzard Classic"] = true
 L["Flat Solid"] = true
 L["Smooth"] = true
@@ -858,14 +858,14 @@ L["Vertical position (only active if Override is checked)"] = true
 
 -- Target of Target
 L["Target of Target"] = true
-L["Follows the Target frame by default. Move it in Editor Mode (/dragonui edit) to detach and position freely."] = true
+L["Follows the Target frame by default. Move it in Editor Mode (/duckcraftui edit) to detach and position freely."] = true
 L["Detached — positioned freely via Editor Mode"] = true
 L["Attached — follows Target frame"] = true
 L["Re-attach to Target"] = true
 
 -- Target of Focus
 L["Target of Focus"] = true
-L["Follows the Focus frame by default. Move it in Editor Mode (/dragonui edit) to detach and position freely."] = true
+L["Follows the Focus frame by default. Move it in Editor Mode (/duckcraftui edit) to detach and position freely."] = true
 L["Attached — follows Focus frame"] = true
 L["Re-attach to Focus"] = true
 
@@ -991,7 +991,7 @@ L["Enter a name for the imported preset:"] = true
 L["Imported Preset"] = true
 L["Preset imported: "] = true
 L["Invalid preset string."] = true
-L["Not a valid DragonUI preset string."] = true
+L["Not a valid DuckcraftUI preset string."] = true
 L["Failed to export preset."] = true
 
 -- CUSTOM VISIBILITY

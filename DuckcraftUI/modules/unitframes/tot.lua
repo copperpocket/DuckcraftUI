@@ -1,5 +1,5 @@
 --[[
-  DragonUI - Target of Target (ToT)
+  DuckcraftUI - Target of Target (ToT)
 
   ToT-specific configuration passed to the UF.SmallFrame closure factory.
 ]]
@@ -34,7 +34,7 @@ local ToTModule = UF.SmallFrame.Create({
     cvar                = "showTargetOfTarget",
 })
 
--- Export public API (must match names used by DragonUI_Options/unitframes.lua)
+-- Export public API (must match names used by DuckcraftUI_Options/unitframes.lua)
 addon.TargetOfTarget = {
     Refresh = ToTModule.Refresh,
     RefreshToTFrame = ToTModule.Refresh,

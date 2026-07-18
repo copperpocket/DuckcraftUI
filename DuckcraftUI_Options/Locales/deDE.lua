@@ -1,6 +1,6 @@
 ﻿--[[
 ================================================================================
-DragonUI_Options - German Locale (Default)
+DuckcraftUI_Options - German Locale (Default)
 ================================================================================
 Base locale for the options panel: labels, descriptions, section headers,
 dropdown values, print messages, popup text.
@@ -12,23 +12,23 @@ When adding new strings:
 ================================================================================
 ]]
 
-local L = LibStub("AceLocale-3.0"):NewLocale("DragonUI_Options", "deDE")
+local L = LibStub("AceLocale-3.0"):NewLocale("DuckcraftUI_Options", "deDE")
 if not L then return end
 
 -- ============================================================================
 -- GENERAL / PANEL
 -- ============================================================================
 
-L["DragonUI"] = "DragonUI"
+L["DuckcraftUI"] = "DuckcraftUI"
 L["Use the tabs on the left to configure modules, action bars, unit frames, minimap, and more."] = "Verwende die Tabs links, um Module, Aktionsleisten, Einheitenrahmen, Minimap und mehr zu konfigurieren."
 L["Editor Mode"] = "Editor-Modus"
 L["Exit Editor Mode"] = "Editor-Modus beenden"
 L["KeyBind Mode Active"] = "Tastenbelegungsmodus aktiv"
 L["Move UI Elements"] = "UI-Elemente verschieben"
 L["Cannot open options during combat."] = "Optionen können im Kampf nicht geöffnet werden."
-L["Open DragonUI Settings"] = "DragonUI-Einstellungen öffnen"
-L["Open the DragonUI configuration panel."] = "Das DragonUI-Konfigurationsfenster öffnen."
-L["Use /dragonui to open the full settings panel."] = "Nutze /dragonui, um das vollständige Einstellungsfenster zu öffnen."
+L["Open DuckcraftUI Settings"] = "DuckcraftUI-Einstellungen öffnen"
+L["Open the DuckcraftUI configuration panel."] = "Das DuckcraftUI-Konfigurationsfenster öffnen."
+L["Use /duckcraftui to open the full settings panel."] = "Nutze /duckcraftui, um das vollständige Einstellungsfenster zu öffnen."
 
 -- Quick Actions
 L["Quick Actions"] = "Schnellaktionen"
@@ -44,11 +44,11 @@ L["About"] = "Über"
 L["Bringing the retail WoW look to 3.3.5a, inspired by Dragonflight UI."] = "Der Retail-WoW-Look für 3.3.5a, inspiriert von Dragonflight UI."
 L["Created and maintained by Neticsoul, with community contributions."] = "Erstellt und gepflegt von Neticsoul, mit Beiträgen der Community."
 
-L["Commands: /dragonui, /dui, /pi — /dragonui edit (editor) — /dragonui help"] = "Befehle: /dragonui, /dui, /pi — /dragonui edit (Editor) — /dragonui help"
+L["Commands: /duckcraftui, /dui, /pi — /duckcraftui edit (editor) — /duckcraftui help"] = "Befehle: /duckcraftui, /dui, /pi — /duckcraftui edit (Editor) — /duckcraftui help"
 L["GitHub (select and Ctrl+C to copy):"] = "GitHub (markieren und Strg+C zum Kopieren):"
 L["All"] = "Alle"
 L["Error:"] = "Fehler:"
-L["Error: DragonUI addon not found!"] = "Fehler: DragonUI-Addon nicht gefunden!"
+L["Error: DuckcraftUI addon not found!"] = "Fehler: DuckcraftUI-Addon nicht gefunden!"
 
 -- ============================================================================
 -- STATIC POPUPS
@@ -83,7 +83,7 @@ L["Appearance"] = "Erscheinungsbild"
 
 -- Headers & descriptions
 L["Module Control"] = "Modulsteuerung"
-L["Enable or disable specific DragonUI modules"] = "Bestimmte DragonUI-Module aktivieren oder deaktivieren"
+L["Enable or disable specific DuckcraftUI modules"] = "Bestimmte DuckcraftUI-Module aktivieren oder deaktivieren"
 L["Toggle individual modules on or off. Disabled modules revert to the default Blizzard UI."] = "Einzelne Module ein- oder ausschalten. Deaktivierte Module fallen auf die Blizzard-Standard-UI zurück."
 L["Visual enhancements that add Dragonflight-style polish to the UI."] = "Visuelle Verbesserungen, die der UI Dragonflight-Ästhetik geben."
 L["Warning: These are individual module controls. The options above may control multiple modules at once. Changes here will be reflected above and vice versa."] = "Warnung: Das sind Einzel-Modul-Steuerungen. Die Optionen oben können mehrere Module gleichzeitig steuern. Änderungen hier werden oben übernommen und umgekehrt."
@@ -116,22 +116,22 @@ L["KeyBind Mode"] = "Tastenbelegungsmodus"
 L["Quest Tracker"] = "Questverfolgung"
 
 -- Module toggle descriptions
-L["Enable DragonUI player castbar. When disabled, shows default Blizzard castbar."] = "DragonUI-Spieler-Zauberleiste aktivieren. Wenn deaktiviert, wird die Blizzard-Standard-Zauberleiste angezeigt."
-L["Enable DragonUI player castbar styling."] = "DragonUI-Stil für die Spieler-Zauberleiste aktivieren."
-L["Enable DragonUI target castbar. When disabled, shows default Blizzard castbar."] = "DragonUI-Ziel-Zauberleiste aktivieren. Wenn deaktiviert, wird die Blizzard-Standard-Zauberleiste angezeigt."
-L["Enable DragonUI target castbar styling."] = "DragonUI-Stil für die Ziel-Zauberleiste aktivieren."
-L["Enable DragonUI focus castbar. When disabled, shows default Blizzard castbar."] = "DragonUI-Fokus-Zauberleiste aktivieren. Wenn deaktiviert, wird die Blizzard-Standard-Zauberleiste angezeigt."
-L["Enable DragonUI focus castbar styling."] = "DragonUI-Stil für die Fokus-Zauberleiste aktivieren."
-L["Enable the complete DragonUI action bars system. This controls: Main action bars, vehicle interface, stance/shapeshift bars, pet action bars, multicast bars (totems/possess), button styling, and hide Blizzard elements. When disabled, all action bar related features will use default Blizzard interface."] = "Das komplette DragonUI-Aktionsleisten-System aktivieren. Steuert: Hauptaktionsleisten, Fahrzeug-Interface, Haltungs-/Gestaltleisten, Begleiteraktionsleisten, Multicast-Leisten (Totems/Besessenheit), Button-Styling und das Ausblenden von Blizzard-Elementen. Wenn deaktiviert, nutzen alle Aktionsleisten-Funktionen die Blizzard-Standardoberfläche."
+L["Enable DuckcraftUI player castbar. When disabled, shows default Blizzard castbar."] = "DuckcraftUI-Spieler-Zauberleiste aktivieren. Wenn deaktiviert, wird die Blizzard-Standard-Zauberleiste angezeigt."
+L["Enable DuckcraftUI player castbar styling."] = "DuckcraftUI-Stil für die Spieler-Zauberleiste aktivieren."
+L["Enable DuckcraftUI target castbar. When disabled, shows default Blizzard castbar."] = "DuckcraftUI-Ziel-Zauberleiste aktivieren. Wenn deaktiviert, wird die Blizzard-Standard-Zauberleiste angezeigt."
+L["Enable DuckcraftUI target castbar styling."] = "DuckcraftUI-Stil für die Ziel-Zauberleiste aktivieren."
+L["Enable DuckcraftUI focus castbar. When disabled, shows default Blizzard castbar."] = "DuckcraftUI-Fokus-Zauberleiste aktivieren. Wenn deaktiviert, wird die Blizzard-Standard-Zauberleiste angezeigt."
+L["Enable DuckcraftUI focus castbar styling."] = "DuckcraftUI-Stil für die Fokus-Zauberleiste aktivieren."
+L["Enable the complete DuckcraftUI action bars system. This controls: Main action bars, vehicle interface, stance/shapeshift bars, pet action bars, multicast bars (totems/possess), button styling, and hide Blizzard elements. When disabled, all action bar related features will use default Blizzard interface."] = "Das komplette DuckcraftUI-Aktionsleisten-System aktivieren. Steuert: Hauptaktionsleisten, Fahrzeug-Interface, Haltungs-/Gestaltleisten, Begleiteraktionsleisten, Multicast-Leisten (Totems/Besessenheit), Button-Styling und das Ausblenden von Blizzard-Elementen. Wenn deaktiviert, nutzen alle Aktionsleisten-Funktionen die Blizzard-Standardoberfläche."
 L["Master toggle for the complete action bars system."] = "Hauptschalter für das komplette Aktionsleisten-System."
 L["Includes main bars, vehicle, stance, pet, totem bars, and button styling."] = "Enthält Hauptleisten, Fahrzeug, Haltung, Begleiter, Totemleisten und Button-Styling."
-L["Apply DragonUI micro menu and bags system styling and positioning. Includes character button, spellbook, talents, etc. and bag management. When disabled, these elements will use default Blizzard positioning and styling."] = "DragonUI-Styling und Positionierung für Mikromenü & Taschen anwenden. Enthält Charakter-Button, Zauberbuch, Talente usw. sowie Taschenverwaltung. Wenn deaktiviert, nutzen diese Elemente Blizzard-Standard-Positionierung und -Stil."
+L["Apply DuckcraftUI micro menu and bags system styling and positioning. Includes character button, spellbook, talents, etc. and bag management. When disabled, these elements will use default Blizzard positioning and styling."] = "DuckcraftUI-Styling und Positionierung für Mikromenü & Taschen anwenden. Enthält Charakter-Button, Zauberbuch, Talente usw. sowie Taschenverwaltung. Wenn deaktiviert, nutzen diese Elemente Blizzard-Standard-Positionierung und -Stil."
 L["Micro menu and bags styling."] = "Stil für Mikromenü & Taschen."
 L["Show cooldown timers on action buttons. When disabled, cooldown timers will be hidden and the system will be completely deactivated."] = "Abklingzeit-Timer auf Aktionsbuttons anzeigen. Wenn deaktiviert, werden Timer ausgeblendet und das System vollständig deaktiviert."
 L["Show cooldown timers on action buttons."] = "Abklingzeit-Timer auf Aktionsbuttons anzeigen."
-L["Enable DragonUI minimap enhancements including custom styling, positioning, tracking icons, and calendar. When disabled, uses default Blizzard minimap appearance and positioning."] = "DragonUI-Minimap-Verbesserungen aktivieren: eigenes Styling, Positionierung, Tracking-Icons und Kalender. Wenn deaktiviert, wird die Blizzard-Standard-Minimap verwendet."
+L["Enable DuckcraftUI minimap enhancements including custom styling, positioning, tracking icons, and calendar. When disabled, uses default Blizzard minimap appearance and positioning."] = "DuckcraftUI-Minimap-Verbesserungen aktivieren: eigenes Styling, Positionierung, Tracking-Icons und Kalender. Wenn deaktiviert, wird die Blizzard-Standard-Minimap verwendet."
 L["Minimap styling, tracking icons, and calendar."] = "Minimap-Styling, Tracking-Icons und Kalender."
-L["Enable DragonUI buff frame with custom styling, positioning, and toggle button functionality. When disabled, uses default Blizzard buff frame appearance and positioning."] = "DragonUI-Stärkungsfenster mit eigenem Styling, Positionierung und Umschalt-Button aktivieren. Wenn deaktiviert, wird das Blizzard-Standard-Stärkungsfenster verwendet."
+L["Enable DuckcraftUI buff frame with custom styling, positioning, and toggle button functionality. When disabled, uses default Blizzard buff frame appearance and positioning."] = "DuckcraftUI-Stärkungsfenster mit eigenem Styling, Positionierung und Umschalt-Button aktivieren. Wenn deaktiviert, wird das Blizzard-Standard-Stärkungsfenster verwendet."
 L["Buff frame styling and toggle button."] = "Stärkungsfenster-Styling und Umschalt-Button."
 L["Separate Weapon Enchants"] = "Separate Waffenverzauberungen"
 L["Detach weapon enchant icons (poisons, sharpening stones, etc.) from the buff bar into their own independently moveable frame. Position it freely using Editor Mode."] = "Entfernt die Symbole für Waffenverzauberungen (Gifte, Schleifsteine usw.) aus der Buff-Leiste und verschiebt sie in einen eigenen, unabhängig verschiebbaren Rahmen. Positionieren Sie diesen frei im Editor-Modus."
@@ -149,7 +149,7 @@ L["Reset Weapon Enchant Position"] = "Waffenverzauberungsposition zurücksetzen"
 L["Buff frame position reset."] = "Buff-Rahmenposition zurücksetzen."
 L["Weapon enchant position reset."] = "Waffenverzauberungsposition zurückgesetzt."
 
-L["DragonUI quest tracker positioning and styling."] = "Positionierung und Styling der DragonUI-Questverfolgung."
+L["DuckcraftUI quest tracker positioning and styling."] = "Positionierung und Styling der DuckcraftUI-Questverfolgung."
 L["LibKeyBound integration for intuitive hover + key press binding."] = "LibKeyBound-Integration für intuitives Belegen (Hover + Tastendruck)."
 
 -- Toggle keybinding mode description
@@ -229,7 +229,7 @@ L["Visual style for the chat frame background."] = "Visueller Stil des Chat-Fram
 L["Editbox Style"] = "Editbox-Stil"
 L["Visual style for the chat input box background."] = "Visueller Stil des Hintergrunds des Chat-Eingabefelds."
 L["Dark"] = "Dunkel"
-L["DragonUI Style"] = "DragonUI-Stil"
+L["DuckcraftUI Style"] = "DuckcraftUI-Stil"
 L["Midnight"] = "Mitternacht"
 
 -- Combuctor
@@ -492,7 +492,7 @@ L["Use Blizzard vehicle bar art with health/power display. Requires reload."] = 
 L["Totem Bar"] = "Totemleiste"
 L["Totem Bar (Shaman)"] = "Totemleiste (Schamane)"
 L["Shamans only - Totem multicast bar. Position is controlled via Editor Mode."] = "Nur Schamanen – Totem-Multicast-Leiste. Position wird über den Editor-Modus gesteuert."
-L["TIP: Use Editor Mode to position the totem bar (type /dragonui edit)."] = "TIPP: Nutze den Editor-Modus, um die Totemleiste zu positionieren (Befehl: /dragonui edit)."
+L["TIP: Use Editor Mode to position the totem bar (type /duckcraftui edit)."] = "TIPP: Nutze den Editor-Modus, um die Totemleiste zu positionieren (Befehl: /duckcraftui edit)."
 
 -- ============================================================================
 -- CAST BARS TAB
@@ -630,14 +630,14 @@ L["Basic Settings"] = "Grundeinstellungen"
 L["Border Alpha"] = "Rahmen-Alpha"
 L["Top border alpha (0 to hide)."] = "Alpha der oberen Leiste (0 zum Ausblenden)."
 L["Addon Button Skin"] = "Addon-Button-Skin"
-L["Apply DragonUI border styling to addon icons (e.g., bag addons)"] = "DragonUI-Rahmenstil auf Addon-Icons anwenden (z. B. Taschen-Addons)"
-L["Apply DragonUI border styling to addon icons."] = "DragonUI-Rahmenstil auf Addon-Icons anwenden."
+L["Apply DuckcraftUI border styling to addon icons (e.g., bag addons)"] = "DuckcraftUI-Rahmenstil auf Addon-Icons anwenden (z. B. Taschen-Addons)"
+L["Apply DuckcraftUI border styling to addon icons."] = "DuckcraftUI-Rahmenstil auf Addon-Icons anwenden."
 L["Addon Button Fade"] = "Addon-Button-Ausblenden"
 L["Addon icons fade out when not hovered."] = "Addon-Icons ausblenden, wenn nicht darübergefahren wird."
 L["Player Arrow Size"] = "Spielerpfeil-Größe"
 L["Size of the player arrow on the minimap"] = "Größe des Spielerpfeils auf der Minikarte"
 L["New Blip Style"] = "Neuer Blip-Stil"
-L["Use new DragonUI object icons on the minimap. When disabled, uses classic Blizzard icons."] = "Neue DragonUI-Objekticons auf der Minikarte verwenden. Wenn deaktiviert, werden klassische Blizzard-Icons genutzt."
+L["Use new DuckcraftUI object icons on the minimap. When disabled, uses classic Blizzard icons."] = "Neue DuckcraftUI-Objekticons auf der Minikarte verwenden. Wenn deaktiviert, werden klassische Blizzard-Icons genutzt."
 L["Use newer-style minimap blip icons."] = "Minimap-Blip-Icons im neueren Stil verwenden."
 
 -- Time & Calendar
@@ -716,7 +716,7 @@ L["Show class icon instead of 3D portrait"] = "Klassenicon statt 3D-Porträt anz
 L["Show class icon instead of 3D portrait (only for players)"] = "Klassenicon statt 3D-Porträt anzeigen (nur Spieler)"
 L["Class icon instead of 3D model for players."] = "Klassenicon statt 3D-Modell bei Spielern."
 L["Alternative Class Icons"] = "Alternative Klassenicons"
-L["Use DragonUI alternative class icons instead of Blizzard's class icon atlas."] = "DragonUI-Klassenicons anstelle des Blizzard-Klassenicon-Atlas verwenden."
+L["Use DuckcraftUI alternative class icons instead of Blizzard's class icon atlas."] = "DuckcraftUI-Klassenicons anstelle des Blizzard-Klassenicon-Atlas verwenden."
 L["Large Numbers"] = "Große Zahlen"
 L["Format Large Numbers"] = "Große Zahlen formatieren"
 L["Format large numbers (1k, 1m)"] = "Große Zahlen formatieren (1k, 1m)"
@@ -794,7 +794,7 @@ L["Mana Bar Height"] = "Mana-Leistenhöhe"
 L["Height of the mana bar when Fat Health Bar is active."] = "Höhe der Mana-Leiste, wenn die breite Lebensleiste aktiv ist."
 L["Mana Bar Texture"] = "Mana-Leistentextur"
 L["Choose the texture style for the power/mana bar. Only applies in Fat Health Bar mode."] = "Texturstil für Ressourcen-/Mana-Leiste wählen. Gilt nur im Breitmodus."
-L["DragonUI (Default)"] = "DragonUI (Standard)"
+L["DuckcraftUI (Default)"] = "DuckcraftUI (Standard)"
 L["Blizzard Classic"] = "Blizzard Classic"
 L["Flat Solid"] = "Flach (einfarbig)"
 L["Smooth"] = "Glatt"
@@ -836,14 +836,14 @@ L["Vertical position (only active if Override is checked)"] = "Vertikale Positio
 
 -- Target of Target
 L["Target of Target"] = "Ziel des Ziels"
-L["Follows the Target frame by default. Move it in Editor Mode (/dragonui edit) to detach and position freely."] = "Folgt standardmäßig dem Zielfenster. Im Editor-Modus (/dragonui edit) bewegen, um es zu lösen und frei zu positionieren."
+L["Follows the Target frame by default. Move it in Editor Mode (/duckcraftui edit) to detach and position freely."] = "Folgt standardmäßig dem Zielfenster. Im Editor-Modus (/duckcraftui edit) bewegen, um es zu lösen und frei zu positionieren."
 L["Detached — positioned freely via Editor Mode"] = "Gelöst — frei positioniert via Editor-Modus"
 L["Attached — follows Target frame"] = "Angeheftet — folgt dem Zielfenster"
 L["Re-attach to Target"] = "Wieder ans Ziel anheften"
 
 -- Target of Focus
 L["Target of Focus"] = "Ziel des Fokus"
-L["Follows the Focus frame by default. Move it in Editor Mode (/dragonui edit) to detach and position freely."] = "Folgt standardmäßig dem Fokusfenster. Im Editor-Modus (/dragonui edit) bewegen, um es zu lösen und frei zu positionieren."
+L["Follows the Focus frame by default. Move it in Editor Mode (/duckcraftui edit) to detach and position freely."] = "Folgt standardmäßig dem Fokusfenster. Im Editor-Modus (/duckcraftui edit) bewegen, um es zu lösen und frei zu positionieren."
 L["Attached — follows Focus frame"] = "Angeheftet — folgt dem Fokusfenster"
 L["Re-attach to Focus"] = "Wieder an den Fokus anheften"
 
@@ -969,5 +969,5 @@ L["Enter a name for the imported preset:"] = "Gib einen Namen für die importier
 L["Imported Preset"] = "Importierte Vorlage"
 L["Preset imported: "] = "Vorlage importiert: "
 L["Invalid preset string."] = "Ungültiger Vorlagen-String."
-L["Not a valid DragonUI preset string."] = "Kein gültiger DragonUI-Vorlagen-String."
+L["Not a valid DuckcraftUI preset string."] = "Kein gültiger DuckcraftUI-Vorlagen-String."
 L["Failed to export preset."] = "Vorlage konnte nicht exportiert werden."

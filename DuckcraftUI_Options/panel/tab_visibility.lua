@@ -1,12 +1,12 @@
 --[[
 ================================================================================
-DragonUI Options Panel - Visibility Tab
+DuckcraftUI Options Panel - Visibility Tab
 ================================================================================
 Centralized master control for frame visibility across all modules.
 ================================================================================
 ]]
 
-local addon = DragonUI
+local addon = DuckcraftUI
 if not addon then return end
 
 local L = addon.L
@@ -27,6 +27,7 @@ local refreshMicro    = function() if addon.RefreshMicromenuVisibility then addo
 local refreshBags     = function() if addon.RefreshBagBarVisibility then addon.RefreshBagBarVisibility() end end
 local refreshMinimap  = function() if addon.RefreshMinimapVisibility then addon.RefreshMinimapVisibility() end end
 local refreshXpRep    = function() if addon.RefreshXpRepBars then addon.RefreshXpRepBars() end end
+local refreshStance  = function() if addon.RefreshStanceVisibility then addon.RefreshStanceVisibility() end end
 
 -- Canonical master options. `kind` drives the master widget; sliders carry range.
 local MASTER_OPTS = {
@@ -101,6 +102,8 @@ local VisibilityTargets = {
 
     { refresh = refreshXpRep, map = SnakeMap("xprepbar.visibility.xp") },
     { refresh = refreshXpRep, map = SnakeMap("xprepbar.visibility.rep") },
+
+    { refresh = refreshStance, map = SnakeMap("additional.stance.visibility") },
 }
 
 -- Push one canonical option to every element that declares it. Undeclared = skipped.
@@ -453,6 +456,16 @@ local function BuildVisibilityTab(scroll)
                     if addon.RefreshMinimap then addon:RefreshMinimap() end
                 end,
             })
+        end,
+    })
+
+    -- Stance Bar
+    BuildVisibilitySection(scroll, {
+        label = "Stance Bar Visibility",
+        base  = "additional.stance.visibility",
+        desc  = "The stance/shapeshift bar is always visible by default. Check Hidden to hide it and reveal it only under the conditions below. Uses alpha fading, so it is safe in combat.",
+        refresh = function()
+            if addon.RefreshStanceVisibility then addon.RefreshStanceVisibility() end
         end,
     })
 

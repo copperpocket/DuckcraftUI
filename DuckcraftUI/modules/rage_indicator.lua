@@ -2,7 +2,7 @@ local addon = select(2, ...)
 local _G = getfenv(0)
 
 -- ============================================================================
--- RAGE INDICATOR MODULE FOR DRAGONUI
+-- RAGE INDICATOR MODULE FOR DUCKCRAFTUI
 -- Tints action button icons by range/usability state:
 --   out of range = red, not enough mana = blue, unusable = gray.
 -- ============================================================================
@@ -222,7 +222,7 @@ local function Initialize()
 
     SetupHooks()
 
-    indicatorFrame = CreateFrame("Frame", "DragonUI_RageIndicatorFrame")
+    indicatorFrame = CreateFrame("Frame", "DuckcraftUI_RageIndicatorFrame")
     indicatorFrame:Hide()
     indicatorFrame.buttonList = {}
     indicatorFrame:SetScript("OnUpdate", function(self, elapsed)
@@ -240,7 +240,7 @@ local function Initialize()
         UpdateAllButtons()
     end)
 
-    eventFrame = CreateFrame("Frame", "DragonUI_RageIndicatorEventFrame")
+    eventFrame = CreateFrame("Frame", "DuckcraftUI_RageIndicatorEventFrame")
     RegisterTrackedEvent(eventFrame, "PLAYER_ENTERING_WORLD")
     RegisterTrackedEvent(eventFrame, "PLAYER_TARGET_CHANGED")
     RegisterTrackedEvent(eventFrame, "ACTIONBAR_SLOT_CHANGED")
@@ -268,7 +268,7 @@ local initFrame = CreateFrame("Frame")
 RegisterTrackedEvent(initFrame, "ADDON_LOADED")
 RegisterTrackedEvent(initFrame, "PLAYER_LOGIN")
 initFrame:SetScript("OnEvent", function(self, event, addonName)
-    if event == "ADDON_LOADED" and addonName == "DragonUI" then
+    if event == "ADDON_LOADED" and addonName == "DuckcraftUI" then
         Initialize()
         self:UnregisterEvent("ADDON_LOADED")
     elseif event == "PLAYER_LOGIN" then

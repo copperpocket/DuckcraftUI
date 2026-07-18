@@ -2,33 +2,33 @@ local addon = select(2, ...);
 
 --[[
 ================================================================================
-DragonUI - Core Initialization
+DuckcraftUI - Core Initialization
 ================================================================================
 This file handles the main addon initialization using AceAddon-3.0.
 Utility functions have been moved to core/api.lua
 
-Options are loaded on demand from DragonUI_Options addon (ElvUI pattern).
+Options are loaded on demand from DuckcraftUI_Options addon (ElvUI pattern).
 ================================================================================
 ]]
 
--- Expose addon globally for DragonUI_Options to access
-_G.DragonUI = addon
+-- Expose addon globally for DuckcraftUI_Options to access
+_G.DuckcraftUI = addon
 
 -- Localization (initialized early in config.lua so core/ files can use it)
 local L = addon.L
 
 -- Create addon object using AceAddon
-addon.core = LibStub("AceAddon-3.0"):NewAddon("DragonUI", "AceConsole-3.0", "AceEvent-3.0", "AceTimer-3.0");
+addon.core = LibStub("AceAddon-3.0"):NewAddon("DuckcraftUI", "AceConsole-3.0", "AceEvent-3.0", "AceTimer-3.0");
 
--- Pre-define Options table (will be filled by DragonUI_Options)
-addon.Options = { type = "group", name = "DragonUI", args = {} }
+-- Pre-define Options table (will be filled by DuckcraftUI_Options)
+addon.Options = { type = "group", name = "DuckcraftUI", args = {} }
 
 -- Track if options addon is loaded
 addon.OptionsLoaded = false
 
 function addon.core:OnInitialize()
     -- Replace the temporary addon.db with the real AceDB
-    addon.db = LibStub("AceDB-3.0"):New("DragonUIDB", addon.defaults);
+    addon.db = LibStub("AceDB-3.0"):New("DuckcraftUIDB", addon.defaults);
 
     addon:ApplyDatabaseMigrations()
 
@@ -55,13 +55,13 @@ function addon.core:OnEnable()
         addon.LoadCommands()
     else
         -- Fallback to legacy registration
-        self:RegisterChatCommand("dragonui", "SlashCommand")
+        self:RegisterChatCommand("duckcraftui", "SlashCommand")
         self:RegisterChatCommand("pi", "SlashCommand")
     end
 
-    -- Fire custom event to signal that DragonUI is fully initialized
+    -- Fire custom event to signal that DuckcraftUI is fully initialized
     -- This ensures modules get the correct config values
-    self:SendMessage("DRAGONUI_READY");
+    self:SendMessage("DUCKCRAFTUI_READY");
 end
 
 -- ============================================================================
@@ -70,19 +70,19 @@ end
 
 function addon:ToggleOptionsUI(msg)
     if InCombatLockdown() then
-        print("|cFFFF0000[DragonUI]|r " .. L["Cannot open options in combat."])
+        print("|cFFFF0000[DuckcraftUI]|r " .. L["Cannot open options in combat."])
         return
     end
 
-    if not IsAddOnLoaded("DragonUI_Options") then
+    if not IsAddOnLoaded("DuckcraftUI_Options") then
         local noConfig
-        local _, _, _, _, reason = GetAddOnInfo("DragonUI_Options")
+        local _, _, _, _, reason = GetAddOnInfo("DuckcraftUI_Options")
         
         if reason ~= "MISSING" and reason ~= "DISABLED" then
-            LoadAddOn("DragonUI_Options")
+            LoadAddOn("DuckcraftUI_Options")
             
             -- Check if it actually loaded
-            if not IsAddOnLoaded("DragonUI_Options") then 
+            if not IsAddOnLoaded("DuckcraftUI_Options") then 
                 noConfig = true 
             else
                 addon.OptionsLoaded = true
@@ -92,7 +92,7 @@ function addon:ToggleOptionsUI(msg)
         end
 
         if noConfig then
-            print("|cFFFF0000[DragonUI]|r " .. L["Error -- Addon 'DragonUI_Options' not found or is disabled."])
+            print("|cFFFF0000[DuckcraftUI]|r " .. L["Error -- Addon 'DuckcraftUI_Options' not found or is disabled."])
             return
         end
     end
@@ -101,7 +101,7 @@ function addon:ToggleOptionsUI(msg)
     if addon.OptionsPanel then
         addon.OptionsPanel:Toggle(msg)
     else
-        print("|cFFFF0000[DragonUI]|r " .. L["Options panel not available. Try /reload."])
+        print("|cFFFF0000[DuckcraftUI]|r " .. L["Options panel not available. Try /reload."])
     end
 end
 
@@ -147,10 +147,10 @@ function addon.core:SlashCommand(input)
             if addon.EditorMode then
                 addon.EditorMode:Toggle()
             else
-                print("|cFFFF0000[DragonUI]|r " .. L["Editor mode not available."])
+                print("|cFFFF0000[DuckcraftUI]|r " .. L["Editor mode not available."])
             end
         else
-            print("|cFF00FF00[DragonUI]|r " .. L["Commands: /dragonui config, /dragonui edit"])
+            print("|cFF00FF00[DuckcraftUI]|r " .. L["Commands: /duckcraftui config, /duckcraftui edit"])
         end
     end
 end

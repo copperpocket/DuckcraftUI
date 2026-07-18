@@ -2,7 +2,7 @@ local addon = select(2, ...);
 local _G = getfenv(0);
 
 -- ============================================================================
--- UNITFRAME LAYERS MODULE FOR DRAGONUI
+-- UNITFRAME LAYERS MODULE FOR DUCKCRAFTUI
 -- ============================================================================
 -- Adds heal prediction bars, absorb shields, animated health loss, and mana
 -- cost prediction to all unit frames. Ported from UnitFrameLayers addon.
@@ -83,7 +83,7 @@ addon.UFL_UnitGetTotalAbsorbs = UFL_UnitGetTotalAbsorbs;
 -- ============================================================================
 -- Intentionally left empty. Writing to the global PowerBarColor table taints
 -- it; Blizzard's UnitFrameManaBar_UpdateType() reads PowerBarColor, so any
--- write here spreads DragonUI taint into secure unit-frame code. fullPowerAnim
+-- write here spreads DuckcraftUI taint into secure unit-frame code. fullPowerAnim
 -- also has no effect in 3.3.5a.
 
 
@@ -427,18 +427,18 @@ local function UnitFrameLayer_Initialize(self, myHealPredictionBar, otherHealPre
 	if ( self.unit == "player" ) then
 		-- Animated health loss
 		if moduleConfig and moduleConfig.animated_loss ~= false then
-			self.PlayerFrameHealthBarAnimatedLoss = CreateFrame("StatusBar", nil, self, "DragonUI_PlayerFrameHealthBarAnimatedLossTemplate");
+			self.PlayerFrameHealthBarAnimatedLoss = CreateFrame("StatusBar", nil, self, "DuckcraftUI_PlayerFrameHealthBarAnimatedLossTemplate");
 			self.PlayerFrameHealthBarAnimatedLoss:SetUnitHealthBar("player", self.healthbar);
 			self.PlayerFrameHealthBarAnimatedLoss:SetFrameLevel(self.healthbar:GetFrameLevel() - 1);
 		end
 
 		-- Builder/Spender feedback frames (driven by the global UnitFrameManaBar_OnUpdate override)
 		if moduleConfig and moduleConfig.builder_spender and self.manabar then
-			self.manabar.FeedbackFrame = CreateFrame("Frame", nil, self.manabar, "DragonUI_BuilderSpenderFrame");
+			self.manabar.FeedbackFrame = CreateFrame("Frame", nil, self.manabar, "DuckcraftUI_BuilderSpenderFrame");
 			self.manabar.FeedbackFrame:SetAllPoints();
 			self.manabar.FeedbackFrame:SetFrameLevel(self:GetParent():GetFrameLevel() + 2);
 
-			self.manabar.FullPowerFrame = CreateFrame("Frame", nil, self.manabar, "DragonUI_FullPowerFrameTemplate");
+			self.manabar.FullPowerFrame = CreateFrame("Frame", nil, self.manabar, "DuckcraftUI_FullPowerFrameTemplate");
 
 			local powerType, powerToken = UnitPowerType(self.unit);
 			local info = nil;
@@ -462,17 +462,17 @@ local function UnitFrameLayer_Initialize(self, myHealPredictionBar, otherHealPre
 
 	-- Force bars to use global OnUpdate handlers so prediction/loss logic updates
 	-- continuously even when other modules reset scripts on the statusbars.
-	self.__DragonUI_UFL = self.__DragonUI_UFL or {};
-	self.__DragonUI_UFL.initialized = true;
+	self.__DuckcraftUI_UFL = self.__DuckcraftUI_UFL or {};
+	self.__DuckcraftUI_UFL.initialized = true;
 	if self.healthbar then
-		if self.__DragonUI_UFL.origHealthOnUpdate == nil then
-			self.__DragonUI_UFL.origHealthOnUpdate = self.healthbar:GetScript("OnUpdate");
+		if self.__DuckcraftUI_UFL.origHealthOnUpdate == nil then
+			self.__DuckcraftUI_UFL.origHealthOnUpdate = self.healthbar:GetScript("OnUpdate");
 		end
 		self.healthbar:SetScript("OnUpdate", _G.UnitFrameHealthBar_OnUpdate);
 	end
 	if self.manabar then
-		if self.__DragonUI_UFL.origManaOnUpdate == nil then
-			self.__DragonUI_UFL.origManaOnUpdate = self.manabar:GetScript("OnUpdate");
+		if self.__DuckcraftUI_UFL.origManaOnUpdate == nil then
+			self.__DuckcraftUI_UFL.origManaOnUpdate = self.manabar:GetScript("OnUpdate");
 		end
 		self.manabar:SetScript("OnUpdate", _G.UnitFrameManaBar_OnUpdate);
 	end
@@ -488,7 +488,7 @@ local function InitializeSingleUnitFrame(frame)
 		return
 	end
 
-	if frame.__DragonUI_UFL and frame.__DragonUI_UFL.initialized then
+	if frame.__DuckcraftUI_UFL and frame.__DuckcraftUI_UFL.initialized then
 		return
 	end
 
@@ -521,7 +521,7 @@ local function InitializeSingleUnitFrame(frame)
 	end
 
 	if not frame.myHealPredictionBar then
-		CreateFrame("Frame", nil, frame, "DragonUI_StatusBarHealPredictionTemplate");
+		CreateFrame("Frame", nil, frame, "DuckcraftUI_StatusBarHealPredictionTemplate");
 	end
 
 	UnitFrameLayer_Initialize(frame,
@@ -680,7 +680,7 @@ local function ApplyUnitFrameLayersSystem()
 		hooksecurefunc("UnitFrame_OnEvent", function(self, event, ...)
 			if not IsModuleEnabled() then return end
 
-			if ( not self.__DragonUI_UFL or not self.__DragonUI_UFL.initialized ) then
+			if ( not self.__DuckcraftUI_UFL or not self.__DuckcraftUI_UFL.initialized ) then
 				-- Create the heal prediction template on this frame
 				InitializeSingleUnitFrame(self);
 			end
@@ -743,12 +743,12 @@ local function RestoreUnitFrameLayersSystem()
 		if frame then
 			HideFrameChildren(frame);
 			UnitFrame_UnregisterCallback(frame);
-			if frame.__DragonUI_UFL then
+			if frame.__DuckcraftUI_UFL then
 				if frame.healthbar then
-					frame.healthbar:SetScript("OnUpdate", frame.__DragonUI_UFL.origHealthOnUpdate);
+					frame.healthbar:SetScript("OnUpdate", frame.__DuckcraftUI_UFL.origHealthOnUpdate);
 				end
 				if frame.manabar then
-					frame.manabar:SetScript("OnUpdate", frame.__DragonUI_UFL.origManaOnUpdate);
+					frame.manabar:SetScript("OnUpdate", frame.__DuckcraftUI_UFL.origManaOnUpdate);
 				end
 			end
 		end
@@ -806,9 +806,9 @@ local function OnProfileChanged()
 end
 
 if addon.core and addon.core.RegisterMessage then
-	addon.core.RegisterMessage(addon, "DRAGONUI_PROFILE_CHANGED", OnProfileChanged);
-	addon.core.RegisterMessage(addon, "DRAGONUI_PROFILE_COPIED", OnProfileChanged);
-	addon.core.RegisterMessage(addon, "DRAGONUI_PROFILE_RESET", OnProfileChanged);
+	addon.core.RegisterMessage(addon, "DUCKCRAFTUI_PROFILE_CHANGED", OnProfileChanged);
+	addon.core.RegisterMessage(addon, "DUCKCRAFTUI_PROFILE_COPIED", OnProfileChanged);
+	addon.core.RegisterMessage(addon, "DUCKCRAFTUI_PROFILE_RESET", OnProfileChanged);
 end
 
 -- Also register via callback table if available
@@ -817,11 +817,11 @@ if addon.profileCallbacks then
 end
 
 -- ============================================================================
--- DIAGNOSTIC COMMAND: /dragonui ufl
+-- DIAGNOSTIC COMMAND: /duckcraftui ufl
 -- ============================================================================
 
 addon.DiagnoseUnitFrameLayers = function()
-	local P = function(msg) print("|cFF00FF00[DragonUI UFL]|r " .. msg) end
+	local P = function(msg) print("|cFF00FF00[DuckcraftUI UFL]|r " .. msg) end
 	local OK = "|cFF00FF00OK|r"
 	local FAIL = "|cFFFF0000FAIL|r"
 	local WARN = "|cFFFFFF00WARN|r"
@@ -916,5 +916,5 @@ addon.DiagnoseUnitFrameLayers = function()
 	P("Global UnitFrameManaBar_OnUpdate overridden: " .. (UnitFrameLayersModule.hooks["UnitFrameManaBar_OnUpdate_override"] and OK or FAIL))
 
 	P("=== End Diagnostic ===")
-	P("Tip: Cast a HoT or apply a shield, then run /dragonui ufl again to see live data.")
+	P("Tip: Cast a HoT or apply a shield, then run /duckcraftui ufl again to see live data.")
 end
