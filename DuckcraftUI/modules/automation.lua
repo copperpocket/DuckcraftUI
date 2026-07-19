@@ -29,7 +29,6 @@ end
 
 -- true only if module is enabled AND the given sub-option is on AND shift is up
 local function Active(key)
-    if not IsModuleEnabled() then return false end
     if IsShiftKeyDown() then return false end   -- manual override
     local cfg = GetConfig()
     return cfg and cfg[key] == true
@@ -37,6 +36,14 @@ end
 
 local function Print(msg)
     if addon.Print then addon:Print(msg) else print("|cff1784d1DuckcraftUI:|r " .. msg) end
+end
+
+local function AutoOpenBags()
+    if not Active("open_bags") then return end
+    OpenBackpack()
+    for bag = 1, 4 do
+        OpenBag(bag)
+    end
 end
 
 -- ----------------------------------------------------------------------------
@@ -80,7 +87,7 @@ end
 -- GOSSIP AUTOMATION
 -- ----------------------------------------------------------------------------
 local function AutoGossip()
-    if not IsModuleEnabled() or IsShiftKeyDown() then return end
+    if IsShiftKeyDown() then return end
     local cfg = GetConfig()
     if not cfg then return end
 
@@ -216,9 +223,9 @@ eventFrame:SetScript("OnEvent", function(_, event)
     elseif event == "GOSSIP_SHOW" then
         AutoGossip()
     elseif event == "MERCHANT_SHOW" then
-        print("DUCK: MERCHANT_SHOW fired, sell_junk active =", (function() return Active("sell_junk") end)())
         AutoRepair()      -- repair first so junk-sale gold isn't needed for it
         StartSellJunk()
+        AutoOpenBags()
     end
 end)
 

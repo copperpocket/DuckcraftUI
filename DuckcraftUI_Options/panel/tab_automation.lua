@@ -5,7 +5,6 @@ DuckcraftUI Options Panel - Automation Tab
 Auto quest accept/turn-in, gossip auto-select, sell junk, auto-repair.
 ================================================================================
 ]]
-print("DUCK: tab_automation.lua LOADED")
 
 local addon = DuckcraftUI
 if not addon then return end
@@ -19,22 +18,6 @@ local function BuildAutomationTab(scroll)
     C:AddLabel(scroll, "|cffFFD700" .. LO["Automation"] .. "|r", { color = C.Theme.textGold })
     C:AddDescription(scroll, LO["Automate common interactions with NPCs and merchants. Hold Shift when interacting to bypass automation."])
     C:AddSpacer(scroll)
-
-    -- Master enable
-    local generalSection = C:AddSection(scroll, LO["Automation"])
-    C:AddToggle(generalSection, {
-        label = LO["Enable Automation"],
-        desc  = LO["Enables or disables the Automation module."],
-        getFunc = function()
-            return addon.db.profile.modules and addon.db.profile.modules.automation
-                and addon.db.profile.modules.automation.enabled
-        end,
-        setFunc = function(val)
-            if not addon.db.profile.modules then addon.db.profile.modules = {} end
-            if not addon.db.profile.modules.automation then addon.db.profile.modules.automation = {} end
-            addon.db.profile.modules.automation.enabled = val
-        end,
-    })
 
     -- Quests / gossip
     local questSection = C:AddSection(scroll, LO["Quests & Gossip"])
@@ -60,6 +43,11 @@ local function BuildAutomationTab(scroll)
         label = LO["Repair"],
         desc  = LO["Automatically repair all equipment when visiting a merchant that offers repairs."],
         dbPath = "modules.automation.repair",
+    })
+    C:AddToggle(merchantSection, {
+        label = LO["Open All Bags"],
+        desc  = LO["Open all your bags automatically when visiting a merchant."],
+        dbPath = "modules.automation.open_bags",
     })
     C:AddToggle(merchantSection, {
         label = LO["Use Guild Bank for Repairs"],

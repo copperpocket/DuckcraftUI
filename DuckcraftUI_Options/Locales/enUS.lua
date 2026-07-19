@@ -1093,3 +1093,5 @@ L["Automatically repair all equipment when visiting a merchant that offers repai
 L["Use Guild Bank for Repairs"] = true
 L["Automate quests, gossip, selling junk, and repairs"] = true
 L["Try guild bank funds before your own gold when repairing."] = true
+L["Open All Bags"] = true
+L["Open all your bags automatically when visiting a merchant."] = true

@@ -813,13 +813,14 @@ local defaults = {
                 fadeDuration    = 3,      -- fade animation length
                 fadingDisabled  = false,  -- true = chat never fades
             },
-                        automation = {
-                enabled = false,          -- master; off by default (opt-in)
+            automation = {
+                enabled = true,           -- master; off by default (opt-in)
                 automate_quests = false,  -- auto accept / complete / turn-in
                 automate_gossip = false,  -- auto-select single-option gossip
                 sell_junk = false,        -- auto-sell greys at merchants
                 repair = false,           -- auto repair-all at merchants
                 repair_use_guild = false, -- try guild funds before personal gold
+                open_bags = false,        -- open all bags when visiting a merchant
             },
             combuctor = {
                 enabled = false -- All-in-one bag replacement with filtering and search
