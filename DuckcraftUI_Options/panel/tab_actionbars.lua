@@ -166,10 +166,13 @@ local function BuildGeneralTab(scroll)
         callback = RefreshButtons,
     })
 
-    C:AddToggle(textVis, {
-        label = LO["Show Page Numbers"],
+    C:AddToggle(textVis, {  
+        label = "Show Page Numbers",
+        desc  = "Show the action bar page number and paging arrows.",
         dbPath = "buttons.pages.show",
-        requiresReload = true,
+        callback = function()
+            if addon.RefreshActionPager then addon.RefreshActionPager() end
+        end,
     })
 
     -- Cooldown text

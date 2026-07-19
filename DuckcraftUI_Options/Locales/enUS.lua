@@ -1095,3 +1095,4 @@ L["Automate quests, gossip, selling junk, and repairs"] = true
 L["Try guild bank funds before your own gold when repairing."] = true
 L["Open All Bags"] = true
 L["Open all your bags automatically when visiting a merchant."] = true
+L["Show the action bar page number and paging arrows."] = true

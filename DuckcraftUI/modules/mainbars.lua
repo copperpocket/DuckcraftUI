@@ -4057,5 +4057,22 @@ function addon.RefreshMainbarsSystem()
 
 end
 
+function addon.RefreshActionPager()
+    if InCombatLockdown() then return end
+    local show = addon.db and addon.db.profile and addon.db.profile.buttons
+                 and addon.db.profile.buttons.pages
+                 and addon.db.profile.buttons.pages.show
+    if show then
+        if ActionBarUpButton then ActionBarUpButton:Show() end
+        if ActionBarDownButton then ActionBarDownButton:Show() end
+        if MainMenuBarPageNumber then MainMenuBarPageNumber:Show() end
+    else
+        if ActionBarUpButton then ActionBarUpButton:Hide() end
+        if ActionBarDownButton then ActionBarDownButton:Hide() end
+        if MainMenuBarPageNumber then MainMenuBarPageNumber:Hide() end
+    end
+end
+
+
 -- Alias for compatibility
 addon.RefreshMainbars = addon.RefreshMainbarsSystem
