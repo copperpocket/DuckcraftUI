@@ -57,4 +57,7 @@
 
     <!-- Automation module -->
     <Script file="automation.lua"/>
+
+    <!-- Character Panel module -->
+    <Script file="charpanel.lua"/>
 </Ui>

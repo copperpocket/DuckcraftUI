@@ -832,7 +832,8 @@ local defaults = {
                 enabled = false, -- Heal prediction, absorb shields, animated health loss overlays on unit frames
                 animated_loss = true, -- Animated red health loss bar on player frame
                 builder_spender = false -- Mana gain/loss glow feedback (experimental)
-            }
+            },
+            charpanel = { enabled = true },
         },
 
         -- LAYOUT PRESETS (user-saved UI snapshots within this profile)

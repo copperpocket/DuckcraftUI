@@ -418,3 +418,8 @@ L["Sold junk for %s"] = true
 L["Repaired with guild funds (%s)"] = true
 L["Repaired for %s"] = true
 L["Not enough money to repair."] = true
+
+L["Character Panel"] = true
+L["Show Helm / Cloak toggles on the character panel"] = true
+L["Helm"] = true
+L["Cloak"] = true
