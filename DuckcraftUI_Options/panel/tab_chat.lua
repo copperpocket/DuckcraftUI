@@ -147,6 +147,17 @@ local function BuildChatTab(scroll)
     })
 
     -- ====================================================================
+    -- CLASS COLOR TOGGLE
+    -- ====================================================================
+
+    C:AddToggle(appearanceSection, {
+        label = LO["Class Colored Names"],
+        desc  = LO["Color player names in chat by their class color."],
+        dbPath = "modules.chatmods.classColors",
+        callback = function() end,
+    })
+
+    -- ====================================================================
     -- FADE
     -- ====================================================================
     local fadeSection = C:AddSection(scroll, LO["Chat Fade"])

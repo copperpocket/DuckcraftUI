@@ -800,6 +800,7 @@ local defaults = {
                 chatBgIdleAlpha = 0, -- Chat style background opacity when idle/mouse away (0 = hidden, 1 = always visible)
                 editboxIdleAlpha = 0, -- Editbox minimum opacity when idle (0 = fades with tabs, 1 = always visible)
                 editboxStyle = "dark", -- Editbox background style: "none", "dark", "dragon", "midnight"
+                classColors = false,
                 visibility = {
                     show_on_hover = false,
                     show_in_combat = false,

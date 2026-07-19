@@ -1072,3 +1072,6 @@ L["PlayerVisibilityDesc"] = "By default the frame is always visible, like the st
 L["Fade Delay"] = true
 L["Show XP and reputation bars only when selected conditions are active. Existing XP and reputation availability rules still apply."] = true
 L["Keep Map Visible"] = true
+-- Class colored names (chat)
+L["Class Colored Names"] = true
+L["Color player names in chat by their class color."] = true

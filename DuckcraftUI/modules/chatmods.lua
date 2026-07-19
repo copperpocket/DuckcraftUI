@@ -1033,6 +1033,55 @@ local function ApplyStickyChannels()
 end
 
 -- ============================================================================
+-- CLASS COLORED NAMES
+-- Wraps GetColoredName (3.3.5a) so the chat *display* name is class-colored,
+-- while the underlying |Hplayer:...|h link data (built from raw arg2) is left
+-- intact. Sender class comes from arg12 (GUID) via GetPlayerInfoByGUID.
+-- ============================================================================
+
+local function GetClassColorFromGUID(guid)
+    if not guid or guid == "" then return nil end
+    local _, class = GetPlayerInfoByGUID(guid)
+    if class and RAID_CLASS_COLORS[class] then
+        return RAID_CLASS_COLORS[class]
+    end
+    return nil
+end
+
+local function ApplyClassColors()
+    -- Install the wrapper only once; live on/off is gated by config per call.
+    if ChatModsModule.hooks.classColorNames then return end
+
+    ChatModsModule.originalStates.GetColoredName = _G.GetColoredName
+    local originalGetColoredName = _G.GetColoredName
+
+    _G.GetColoredName = function(event, arg1, arg2, arg3, arg4, arg5, arg6,
+                                 arg7, arg8, arg9, arg10, arg11, arg12, ...)
+        local name = originalGetColoredName(event, arg1, arg2, arg3, arg4, arg5,
+                                            arg6, arg7, arg8, arg9, arg10, arg11, arg12, ...)
+
+        local cfg = GetModuleConfig()
+        if not (cfg and cfg.classColors) then
+            return name
+        end
+
+        if not name or name == "" then
+            return name
+        end
+
+        local color = GetClassColorFromGUID(arg12)
+        if color then
+            return format("|cff%02x%02x%02x%s|r",
+                color.r * 255, color.g * 255, color.b * 255, name)
+        end
+
+        return name
+    end
+
+    ChatModsModule.hooks.classColorNames = true
+end
+
+-- ============================================================================
 -- APPLY / RESTORE SYSTEM
 -- ============================================================================
 
@@ -1052,6 +1101,8 @@ local function ApplyChatModsSystem()
     ApplyURLDetection()
     ApplyChatCopy()
     ApplyStickyChannels()
+    ApplyClassColors()
+
 
     -- AFK/DND dedup filters
     if not ChatModsModule.hooks.afkDndFilter then
@@ -1154,10 +1205,15 @@ local function RestoreChatModsSystem()
         copyFrame:Hide()
     end
 
+    -- Restore original GetColoredName (class color wrapper)
+    if ChatModsModule.originalStates.GetColoredName then
+        _G.GetColoredName = ChatModsModule.originalStates.GetColoredName
+        ChatModsModule.originalStates.GetColoredName = nil
+        ChatModsModule.hooks.classColorNames = nil
+    end
+
     -- Hooks installed via hooksecurefunc can't be removed, but they'll be
     -- guarded by ChatModsModule.applied check if we wrap them.
-    -- For a full disable, a /reload is recommended.
-
     ChatModsModule.applied = false
 end
 
