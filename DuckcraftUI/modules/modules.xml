@@ -54,4 +54,7 @@
     
     <!-- Bag Sort module (sort buttons for bags and bank) -->
     <Script file="bagsort.lua"/>
+
+    <!-- Automation module -->
+    <Script file="automation.lua"/>
 </Ui>

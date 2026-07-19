@@ -1075,3 +1075,21 @@ L["Keep Map Visible"] = true
 -- Class colored names (chat)
 L["Class Colored Names"] = true
 L["Color player names in chat by their class color."] = true
+-- Automation tab
+L["Automation"] = true
+L["Automate common interactions with NPCs and merchants. Hold Shift when interacting to bypass automation."] = true
+L["Enable Automation"] = true
+L["Enables or disables the Automation module."] = true
+L["Quests & Gossip"] = true
+L["Automate Quests"] = true
+L["Automatically accept, complete, and turn in quests. Quests with a reward choice are left for you to pick."] = true
+L["Automate Gossip"] = true
+L["Automatically select an NPC gossip option when there is only one and no quests are attached."] = true
+L["Merchant"] = true
+L["Sell Junk"] = true
+L["Automatically sell all grey-quality items when visiting a merchant."] = true
+L["Repair"] = true
+L["Automatically repair all equipment when visiting a merchant that offers repairs."] = true
+L["Use Guild Bank for Repairs"] = true
+L["Automate quests, gossip, selling junk, and repairs"] = true
+L["Try guild bank funds before your own gold when repairing."] = true

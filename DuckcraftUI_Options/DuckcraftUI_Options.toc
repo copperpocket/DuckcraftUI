@@ -54,6 +54,7 @@ panel\tab_general.lua
 panel\tab_modules.lua
 panel\tab_actionbars.lua
 panel\tab_additionalbars.lua
+panel\tab_automation.lua
 panel\tab_xprepbars.lua
 panel\tab_unitframes.lua
 panel\tab_castbars.lua

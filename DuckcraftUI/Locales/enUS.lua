@@ -412,3 +412,9 @@ L["Error in SafeCall:"] = true
 L["Double-Click to Copy"] = true
 L["Copy Text"] = true
 
+L["Automation"] = true
+L["Automate quests, gossip, selling junk, and repairs"] = true
+L["Sold junk for %s"] = true
+L["Repaired with guild funds (%s)"] = true
+L["Repaired for %s"] = true
+L["Not enough money to repair."] = true
