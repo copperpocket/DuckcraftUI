@@ -962,7 +962,7 @@ end
         if config.show_in_combat and state.inCombat then return true end
         if config.show_with_target and UnitExists("target") then return true end
 
-        if showOnHealth then
+        if config.show_on_health then
             local health = UnitHealth("player")
             local maxHealth = UnitHealthMax("player")
 
@@ -972,7 +972,7 @@ end
             end
         end
 
-        if showOnPower then
+        if config.show_on_power then
             local power
             local maxPower
 
