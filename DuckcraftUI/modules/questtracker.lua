@@ -128,7 +128,11 @@ local function ReplaceBlizzardFrame(frame)
         end
 
         ScheduleTimer(0.1, function()
-            watchFrame:SetAlpha(1)
+            if addon.RefreshQuestTrackerVisibility then
+                addon.RefreshQuestTrackerVisibility()
+            else
+                watchFrame:SetAlpha(1)
+            end
         end)
         watchFrameAttached = true
     else
@@ -250,6 +254,240 @@ local function UpdateQuestTrackerPosition()
 end
 
 -- =============================================================================
+-- QUEST TRACKER VISIBILITY / FADE (Option B: independent engine, mirrors stance)
+-- Fade WatchFrame itself: it is the real parent of the header, lines, collapse
+-- button and background texture, so alpha cascades to all of them. WatchFrame is
+-- NOT secure, so SetAlpha is safe in combat. Config: questtracker.visibility
+-- =============================================================================
+
+local questVisibilityState = {
+    hovered     = false,
+    inCombat    = InCombatLockdown(),
+    alpha       = 1,
+    startAlpha  = 1,
+    targetAlpha = 1,
+    elapsed     = 0,
+    fading      = false,
+}
+
+local function GetQuestTrackerVisibilityConfig()
+    if addon.db and addon.db.profile and addon.db.profile.questtracker then
+        return addon.db.profile.questtracker.visibility
+    end
+    return nil
+end
+
+local function IsCursorOverQuestTracker()
+    local wf = WatchFrame
+    if not wf then return false end
+
+    local left, right = wf:GetLeft(), wf:GetRight()
+    local bottom, top = wf:GetBottom(), wf:GetTop()
+    if not left or not right or not bottom or not top then return false end
+
+    local scale = wf:GetEffectiveScale()
+    local cursorX, cursorY = GetCursorPosition()
+    cursorX = cursorX / scale
+    cursorY = cursorY / scale
+
+    return cursorX >= left and cursorX <= right
+        and cursorY >= bottom and cursorY <= top
+end
+
+local function ShouldShowQuestTracker()
+    -- Never fade out while the user is positioning it in editor mode.
+    if QuestTrackerModule.editorActive then
+        return true
+    end
+
+    local config = GetQuestTrackerVisibilityConfig()
+    if not config then return true end          -- unconfigured: normal behavior
+    if not config.hidden then return true end    -- not hidden by default: normal
+
+    if config.show_on_hover and questVisibilityState.hovered then
+        return true
+    end
+    if config.show_in_combat and questVisibilityState.inCombat then
+        return true
+    end
+    if config.show_with_target and UnitExists("target") then
+        return true
+    end
+    if config.show_on_health then
+        local health = UnitHealth("player")
+        local maxHealth = UnitHealthMax("player")
+        if maxHealth and maxHealth > 0 and health and health < maxHealth then
+            return true
+        end
+    end
+    if config.show_on_power then
+        local power, maxPower
+        if UnitPower and UnitPowerMax then
+            power, maxPower = UnitPower("player"), UnitPowerMax("player")
+        elseif UnitMana and UnitManaMax then
+            power, maxPower = UnitMana("player"), UnitManaMax("player")
+        end
+        if maxPower and maxPower > 0 and power and power < maxPower then
+            return true
+        end
+    end
+
+    return false
+end
+
+local function GetQuestFadeDuration()
+    local config = GetQuestTrackerVisibilityConfig()
+    return tonumber(config and config.fade_duration) or 0
+end
+
+-- Single control point: fade WatchFrame; cascade handles the rest.
+local function ApplyQuestTrackerAlpha(alpha)
+    if WatchFrame then
+        WatchFrame:SetAlpha(alpha)
+    end
+end
+
+local function StartQuestTrackerFade(shouldShow)
+    local state = questVisibilityState
+    local targetAlpha = shouldShow and 1 or 0
+    local duration = GetQuestFadeDuration()
+
+    local currentAlpha
+    if state.fading then
+        currentAlpha = state.alpha
+    else
+        currentAlpha = (WatchFrame and WatchFrame:GetAlpha()) or 1
+    end
+    currentAlpha = math.max(0, math.min(1, currentAlpha))
+
+    if duration <= 0 or math.abs(currentAlpha - targetAlpha) < 0.001 then
+        state.alpha, state.startAlpha, state.targetAlpha = targetAlpha, targetAlpha, targetAlpha
+        state.elapsed, state.fading = 0, false
+        ApplyQuestTrackerAlpha(targetAlpha)
+        return
+    end
+
+    state.alpha, state.startAlpha, state.targetAlpha = currentAlpha, currentAlpha, targetAlpha
+    state.elapsed, state.fading = 0, true
+    ApplyQuestTrackerAlpha(currentAlpha)
+end
+
+-- Deferred hide (fade_delay).
+local questHideDelay = CreateFrame("Frame")
+questHideDelay:Hide()
+questHideDelay._elapsed = 0
+questHideDelay._target = 0
+questHideDelay:SetScript("OnUpdate", function(self, e)
+    self._elapsed = self._elapsed + e
+    if self._elapsed < self._target then return end
+    self:Hide()
+    if not ShouldShowQuestTracker() then
+        StartQuestTrackerFade(false)
+    end
+end)
+
+local function RefreshQuestTrackerVisibilityInternal()
+    if not IsModuleEnabled() then return end
+    if not WatchFrame then return end
+
+    if ShouldShowQuestTracker() then
+        questHideDelay:Hide()
+        questHideDelay._elapsed = 0
+        StartQuestTrackerFade(true)
+    else
+        local config = GetQuestTrackerVisibilityConfig()
+        local delay = tonumber(config and config.fade_delay) or 0
+        if delay <= 0 then
+            questHideDelay:Hide()
+            StartQuestTrackerFade(false)
+        elseif not questHideDelay:IsShown() then
+            questHideDelay._elapsed = 0
+            questHideDelay._target = delay
+            questHideDelay:Show()
+        end
+    end
+end
+
+-- Public hook (called by the options manifest, same as stance/buffs).
+function addon.RefreshQuestTrackerVisibility()
+    if not IsModuleEnabled() then return end
+    RefreshQuestTrackerVisibilityInternal()
+end
+
+-- Tween engine.
+local questFadeFrame = CreateFrame("Frame")
+questFadeFrame:Show()
+questFadeFrame:SetScript("OnUpdate", function(_, elapsed)
+    local state = questVisibilityState
+    if not state.fading then return end
+
+    local duration = GetQuestFadeDuration()
+    if duration <= 0 then
+        state.alpha, state.fading = state.targetAlpha, false
+    else
+        state.elapsed = state.elapsed + elapsed
+        local progress = state.elapsed / duration
+        if progress >= 1 then
+            state.alpha, state.fading = state.targetAlpha, false
+        else
+            local eased = progress * progress * (3 - 2 * progress)  -- smoothstep
+            state.alpha = state.startAlpha + (state.targetAlpha - state.startAlpha) * eased
+        end
+    end
+    ApplyQuestTrackerAlpha(state.alpha)
+end)
+
+-- Hover poll (only active when show_on_hover is enabled).
+local questHoverFrame = CreateFrame("Frame")
+local questHoverElapsed = 0
+questHoverFrame:SetScript("OnUpdate", function(_, elapsed)
+    questHoverElapsed = questHoverElapsed + elapsed
+    if questHoverElapsed < 0.05 then return end
+    questHoverElapsed = 0
+
+    local config = GetQuestTrackerVisibilityConfig()
+    if not config or not config.show_on_hover then
+        if questVisibilityState.hovered then
+            questVisibilityState.hovered = false
+            RefreshQuestTrackerVisibilityInternal()
+        end
+        return
+    end
+
+    local hovered = IsCursorOverQuestTracker()
+    if hovered ~= questVisibilityState.hovered then
+        questVisibilityState.hovered = hovered
+        RefreshQuestTrackerVisibilityInternal()
+    end
+end)
+
+-- Condition drivers (combat / target / health / power).
+local questVisibilityEvents = CreateFrame("Frame")
+questVisibilityEvents:RegisterEvent("PLAYER_TARGET_CHANGED")
+questVisibilityEvents:RegisterEvent("PLAYER_REGEN_DISABLED")
+questVisibilityEvents:RegisterEvent("PLAYER_REGEN_ENABLED")
+questVisibilityEvents:RegisterEvent("UNIT_HEALTH")
+questVisibilityEvents:RegisterEvent("UNIT_MAXHEALTH")
+questVisibilityEvents:RegisterEvent("UNIT_HEALTH_FREQUENT")
+questVisibilityEvents:RegisterEvent("UNIT_MANA")
+questVisibilityEvents:RegisterEvent("UNIT_MAXMANA")
+questVisibilityEvents:RegisterEvent("UNIT_RAGE")
+questVisibilityEvents:RegisterEvent("UNIT_FOCUS")
+questVisibilityEvents:RegisterEvent("UNIT_ENERGY")
+questVisibilityEvents:RegisterEvent("UNIT_RUNIC_POWER")
+questVisibilityEvents:RegisterEvent("UNIT_MAXPOWER")
+questVisibilityEvents:RegisterEvent("UNIT_DISPLAYPOWER")
+questVisibilityEvents:SetScript("OnEvent", function(_, event, unit)
+    if event:sub(1, 5) == "UNIT_" and unit ~= "player" then return end
+    if event == "PLAYER_REGEN_DISABLED" then
+        questVisibilityState.inCombat = true
+    elseif event == "PLAYER_REGEN_ENABLED" then
+        questVisibilityState.inCombat = false
+    end
+    RefreshQuestTrackerVisibilityInternal()
+end)
+
+-- =============================================================================
 -- DUCKCRAFTUI REFRESH FUNCTION
 -- =============================================================================
 function addon.RefreshQuestTracker()
@@ -348,6 +586,11 @@ function QuestTrackerModule:Initialize()
 
     -- Apply font immediately so WoW's first render already uses our size
     ApplyQuestTrackerFonts()
+
+    if addon.RefreshQuestTrackerVisibility then
+        addon.RefreshQuestTrackerVisibility()
+    end
+
 end
 
 -- =============================================================================
@@ -440,6 +683,10 @@ local function InstallQuestTrackerHooks()
             -- Apply background styling after layout.
             pcall(ApplyQuestTrackerStyling)
 
+            if addon.RefreshQuestTrackerVisibility then
+                addon.RefreshQuestTrackerVisibility()
+            end
+
             watchFrameHookActive = false
         end)
     end
@@ -519,6 +766,7 @@ end
 -- =============================================================================
 function QuestTrackerModule:ShowEditorTest()
     if self.questTrackerFrame then
+        QuestTrackerModule.editorActive = true
         self.questTrackerFrame:SetMovable(true)
         self.questTrackerFrame:EnableMouse(true)
         self.questTrackerFrame:RegisterForDrag("LeftButton")
@@ -599,6 +847,7 @@ end
 
 function QuestTrackerModule:HideEditorTest(savePosition)
     if self.questTrackerFrame then
+        QuestTrackerModule.editorActive = false
         self.questTrackerFrame:SetMovable(false)
         self.questTrackerFrame:EnableMouse(false)
         self.questTrackerFrame:SetScript("OnDragStart", nil)
@@ -616,6 +865,11 @@ function QuestTrackerModule:HideEditorTest(savePosition)
         if savePosition then
             UpdateQuestTrackerPosition()
         end
+
+        if addon.RefreshQuestTrackerVisibility then
+            addon.RefreshQuestTrackerVisibility()
+        end
+
     end
 end
 

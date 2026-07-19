@@ -28,6 +28,7 @@ local refreshBags     = function() if addon.RefreshBagBarVisibility then addon.R
 local refreshMinimap  = function() if addon.RefreshMinimapVisibility then addon.RefreshMinimapVisibility() end end
 local refreshXpRep    = function() if addon.RefreshXpRepBars then addon.RefreshXpRepBars() end end
 local refreshStance  = function() if addon.RefreshStanceVisibility then addon.RefreshStanceVisibility() end end
+local refreshQuest = function() if addon.RefreshQuestTrackerVisibility then addon.RefreshQuestTrackerVisibility() end end
 
 -- Canonical master options. `kind` drives the master widget; sliders carry range.
 local MASTER_OPTS = {
@@ -104,6 +105,7 @@ local VisibilityTargets = {
     { refresh = refreshXpRep, map = SnakeMap("xprepbar.visibility.rep") },
 
     { refresh = refreshStance, map = SnakeMap("additional.stance.visibility") },
+    { refresh = refreshQuest, map = SnakeMap("questtracker.visibility") },
 }
 
 -- Push one canonical option to every element that declares it. Undeclared = skipped.
@@ -456,6 +458,16 @@ local function BuildVisibilityTab(scroll)
                     if addon.RefreshMinimap then addon:RefreshMinimap() end
                 end,
             })
+        end,
+    })
+    
+    -- Quest Tracker
+    BuildVisibilitySection(scroll, {
+        label = "Quest Tracker Visibility",
+        base  = "questtracker.visibility",
+        desc  = "The quest objective tracker is always visible by default. Check Hidden to hide it and reveal it only under the conditions below. Uses alpha fading, so it is safe in combat.",
+        refresh = function()
+            if addon.RefreshQuestTrackerVisibility then addon.RefreshQuestTrackerVisibility() end
         end,
     })
 

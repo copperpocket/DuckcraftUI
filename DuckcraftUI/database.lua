@@ -171,6 +171,16 @@ local defaults = {
             y = -255,
             show_header = true,
             font_size = 12,      -- Point size for quest tracker text (WoW default: 11)
+            visibility = {
+                hidden           = false,
+                show_on_hover    = false,
+                show_in_combat   = false,
+                show_with_target = false,
+                show_on_health   = false,
+                show_on_power    = false,
+                fade_delay       = 0,
+                fade_duration    = 0.2,
+            },
         },
         -- Loot Roll
         lootroll = {
