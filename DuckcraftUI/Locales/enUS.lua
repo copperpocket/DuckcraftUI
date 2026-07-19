@@ -423,3 +423,6 @@ L["Character Panel"] = true
 L["Show Helm / Cloak toggles on the character panel"] = true
 L["Helm"] = true
 L["Cloak"] = true
+
+L["Minimap Button Bag"] = true
+L["Collect addon minimap icons into a single button"] = true

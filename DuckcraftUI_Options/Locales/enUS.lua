@@ -1096,3 +1096,8 @@ L["Try guild bank funds before your own gold when repairing."] = true
 L["Open All Bags"] = true
 L["Open all your bags automatically when visiting a merchant."] = true
 L["Show the action bar page number and paging arrows."] = true
+L["Minimap Button Bag"] = true
+L["Collect addon minimap icons into a single button"] = true
+-- options locale:
+L["Collect Minimap Buttons"] = true
+L["Gather addon minimap icons into a single button. Hover it to see them."] = true

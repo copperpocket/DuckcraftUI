@@ -764,6 +764,10 @@ local defaults = {
             minimap = {
                 enabled = true -- Apply DuckcraftUI minimap enhancements including custom styling, positioning, tracking icons, and calendar
             },
+            minimapbuttons = { 
+                enabled = false, -- Apply DuckcraftUI minimap button collection
+                angle = 135
+            },
             buffs = {
                 enabled = true -- Enable DuckcraftUI buff frame with custom styling, positioning, and toggle button functionality
             },

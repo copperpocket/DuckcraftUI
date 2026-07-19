@@ -145,6 +145,16 @@ local function BuildMinimapTab(scroll)
         callback = RefreshMinimap,
     })
 
+    C:AddToggle(display, {
+        label = LO["Collect Minimap Buttons"],
+        desc  = LO["Gather addon minimap icons into a single button. Hover it to see them."],
+        dbPath = "modules.minimapbuttons.enabled",
+        callback = function()
+            if addon.RefreshMinimapButtons then addon.RefreshMinimapButtons() end
+        end,
+        requiresReload = true,  -- reparenting is cleanest with a fresh load
+    })
+
     -- ====================================================================
     -- SEXYMAP COMPATIBILITY  (only when SexyMap is installed)
     -- ====================================================================

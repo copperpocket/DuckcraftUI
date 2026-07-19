@@ -60,4 +60,7 @@
 
     <!-- Character Panel module -->
     <Script file="charpanel.lua"/>
+
+    <!-- Minimap buttons module -->
+    <Script file="minimapbuttons.lua"/>
 </Ui>
