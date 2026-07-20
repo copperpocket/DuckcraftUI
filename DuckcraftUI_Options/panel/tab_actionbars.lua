@@ -138,6 +138,18 @@ local function BuildGeneralTab(scroll)
         callback = RefreshBars,
     })
 
+    C:AddToggle(buttons, {
+        label = LO["Always Show Action Bars"],
+        desc  = LO["Keep empty action bar slots visible. Helpful for keybinding."],
+        dbPath = "actionbars.always_show_action_bars",
+        callback = function()
+            if addon.RefreshAlwaysShowActionBars then
+                addon.RefreshAlwaysShowActionBars()
+            end
+        end,
+        requiresReload = true,
+    })
+
     -- Text visibility sub-section
     local textVis = C:AddSection(scroll, LO["Text Visibility"])
 

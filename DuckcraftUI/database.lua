@@ -281,6 +281,7 @@ local defaults = {
             visibility_fade_duration = 0,
             visibility_fade_delay = 0,
             fade_delay = 0,
+            always_show_action_bars = false,
         },
 
 

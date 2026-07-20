@@ -2805,6 +2805,9 @@ end
 
             -- Sync Blizzard CVars with DuckcraftUI bar enable/disable settings
             addon.SyncBarCVarsFromProfile()
+            if addon.RefreshAlwaysShowActionBars then
+                addon.RefreshAlwaysShowActionBars()
+            end
 
             self:UnregisterEvent("PLAYER_ENTERING_WORLD")
 
@@ -4073,6 +4076,12 @@ function addon.RefreshActionPager()
     end
 end
 
+function addon.RefreshAlwaysShowActionBars()
+    if InCombatLockdown() then return end
+    local db = addon.db and addon.db.profile and addon.db.profile.actionbars
+    if not db then return end
+    SetCVar("alwaysShowActionBars", db.always_show_action_bars and "1" or "0")
+end
 
 -- Alias for compatibility
 addon.RefreshMainbars = addon.RefreshMainbarsSystem
