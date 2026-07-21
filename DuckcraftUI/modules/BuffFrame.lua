@@ -256,11 +256,6 @@ local function ShouldShowBuffFrame()
         return true
     end
 
-    -- Manual collapse always wins.
-    if buffsHiddenByToggle then
-        return false
-    end
-
     -- Single master: "Hidden". If not hidden, behave like normal WoW.
     if not config.hidden then
         return true
